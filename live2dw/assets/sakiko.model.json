@@ -1,0 +1,359 @@
+{
+  "conf_ver": 1,
+  "type": 0,
+  "model": "sakiko_other-25.moc",
+  "textures": [
+    "texture_00.png",
+    "texture_01.png"
+  ],
+  "controllers": {
+    "param_hit": {},
+    "param_loop": {},
+    "key_trigger": {},
+    "param_trigger": {},
+    "area_trigger": {},
+    "hand_trigger": {},
+    "eye_blink": {
+      "min_interval": 500,
+      "max_interval": 6000,
+      "enabled": true
+    },
+    "lip_sync": {
+      "gain": 5.0
+    },
+    "mouse_tracking": {
+      "smooth_time": 0.15,
+      "enabled": true
+    },
+    "auto_breath": {
+      "enabled": true
+    },
+    "extra_motion": {
+      "enabled": true
+    },
+    "accelerometer": {
+      "enabled": true
+    },
+    "microphone": {},
+    "transform": {},
+    "face_tracking": {
+      "enabled": true
+    },
+    "hand_tracking": {},
+    "param_value": {},
+    "part_opacity": {},
+    "artmesh_opacity": {},
+    "artmesh_color": {},
+    "artmesh_culling": {
+      "default_mode": 0
+    },
+    "intimacy_system": {}
+  },
+  "hit_areas": [
+    {
+      "name": "D_PSD.177",
+      "id": "D_PSD.177",
+      "motion": "tick"
+    }
+  ],
+  "motions": {
+    "idle": [
+      {
+        "file": "idle01.mtn",
+        "expression": "idle01.exp",
+        "priority": 2
+      }
+    ],
+    "tick": [
+      {
+        "file": "maskon_surprised01.mtn",
+        "text": "怎、怎麼了？",
+        "expression": "surprised01.exp",
+        "priority": 3
+      }
+    ],
+    "start": [
+      {
+        "file": "bow.mtn",
+        "text": "你好，我是豐川祥子",
+        "fade_in": 2,
+        "fade_out": 5,
+        "expression": "idle01.exp"
+      }
+    ]
+  },
+  "expressions": [
+    {
+      "name": "angry01.exp",
+      "file": "angry01.exp.json"
+    },
+    {
+      "name": "angry02.exp",
+      "file": "angry02.exp.json"
+    },
+    {
+      "name": "angry07.exp",
+      "file": "angry07.exp.json"
+    },
+    {
+      "name": "cry01.exp",
+      "file": "cry01.exp.json"
+    },
+    {
+      "name": "cry02.exp",
+      "file": "cry02.exp.json"
+    },
+    {
+      "name": "cry03.exp",
+      "file": "cry03.exp.json"
+    },
+    {
+      "name": "cry04.exp",
+      "file": "cry04.exp.json"
+    },
+    {
+      "name": "idle01.exp",
+      "file": "idle01.exp.json"
+    },
+    {
+      "name": "kime01.exp",
+      "file": "kime01.exp.json"
+    },
+    {
+      "name": "odoodo01.exp",
+      "file": "odoodo01.exp.json"
+    },
+    {
+      "name": "sad01.exp",
+      "file": "sad01.exp.json"
+    },
+    {
+      "name": "sad02.exp",
+      "file": "sad02.exp.json"
+    },
+    {
+      "name": "sakiko_casual-2023.physics",
+      "file": "sakiko_casual-2023.physics.json"
+    },
+    {
+      "name": "sakiko_jh_school_winter-2023.physics",
+      "file": "sakiko_jh_school_winter-2023.physics.json"
+    },
+    {
+      "name": "sakiko_other-25.physics",
+      "file": "sakiko_other-25.physics.json"
+    },
+    {
+      "name": "sakiko_school_summer-2023.physics",
+      "file": "sakiko_school_summer-2023.physics.json"
+    },
+    {
+      "name": "sakiko_school_winter-2023.physics",
+      "file": "sakiko_school_winter-2023.physics.json"
+    },
+    {
+      "name": "serious01.exp",
+      "file": "serious01.exp.json"
+    },
+    {
+      "name": "serious02.exp",
+      "file": "serious02.exp.json"
+    },
+    {
+      "name": "shame01.exp",
+      "file": "shame01.exp.json"
+    },
+    {
+      "name": "shame02.exp",
+      "file": "shame02.exp.json"
+    },
+    {
+      "name": "sigh01.exp",
+      "file": "sigh01.exp.json"
+    },
+    {
+      "name": "sigh02.exp",
+      "file": "sigh02.exp.json"
+    },
+    {
+      "name": "smile01.exp",
+      "file": "smile01.exp.json"
+    },
+    {
+      "name": "smile02.exp",
+      "file": "smile02.exp.json"
+    },
+    {
+      "name": "smile03.exp",
+      "file": "smile03.exp.json"
+    },
+    {
+      "name": "smile04.exp",
+      "file": "smile04.exp.json"
+    },
+    {
+      "name": "smile05.exp",
+      "file": "smile05.exp.json"
+    },
+    {
+      "name": "smile06.exp",
+      "file": "smile06.exp.json"
+    },
+    {
+      "name": "surprised01.exp",
+      "file": "surprised01.exp.json"
+    },
+    {
+      "name": "surprised02.exp",
+      "file": "surprised02.exp.json"
+    },
+    {
+      "name": "thinking01.exp",
+      "file": "thinking01.exp.json"
+    },
+    {
+      "name": "thinking02.exp",
+      "file": "thinking02.exp.json"
+    },
+    {
+      "name": "angry01.exp",
+      "file": "angry01.exp.json"
+    },
+    {
+      "name": "angry02.exp",
+      "file": "angry02.exp.json"
+    },
+    {
+      "name": "angry07.exp",
+      "file": "angry07.exp.json"
+    },
+    {
+      "name": "cry01.exp",
+      "file": "cry01.exp.json"
+    },
+    {
+      "name": "cry02.exp",
+      "file": "cry02.exp.json"
+    },
+    {
+      "name": "cry03.exp",
+      "file": "cry03.exp.json"
+    },
+    {
+      "name": "cry04.exp",
+      "file": "cry04.exp.json"
+    },
+    {
+      "name": "idle01.exp",
+      "file": "idle01.exp.json"
+    },
+    {
+      "name": "kime01.exp",
+      "file": "kime01.exp.json"
+    },
+    {
+      "name": "odoodo01.exp",
+      "file": "odoodo01.exp.json"
+    },
+    {
+      "name": "sad01.exp",
+      "file": "sad01.exp.json"
+    },
+    {
+      "name": "sad02.exp",
+      "file": "sad02.exp.json"
+    },
+    {
+      "name": "sakiko_casual-2023.physics",
+      "file": "sakiko_casual-2023.physics.json"
+    },
+    {
+      "name": "sakiko_jh_school_winter-2023.physics",
+      "file": "sakiko_jh_school_winter-2023.physics.json"
+    },
+    {
+      "name": "sakiko_other-25.physics",
+      "file": "sakiko_other-25.physics.json"
+    },
+    {
+      "name": "sakiko_school_summer-2023.physics",
+      "file": "sakiko_school_summer-2023.physics.json"
+    },
+    {
+      "name": "sakiko_school_winter-2023.physics",
+      "file": "sakiko_school_winter-2023.physics.json"
+    },
+    {
+      "name": "serious01.exp",
+      "file": "serious01.exp.json"
+    },
+    {
+      "name": "serious02.exp",
+      "file": "serious02.exp.json"
+    },
+    {
+      "name": "shame01.exp",
+      "file": "shame01.exp.json"
+    },
+    {
+      "name": "shame02.exp",
+      "file": "shame02.exp.json"
+    },
+    {
+      "name": "sigh01.exp",
+      "file": "sigh01.exp.json"
+    },
+    {
+      "name": "sigh02.exp",
+      "file": "sigh02.exp.json"
+    },
+    {
+      "name": "smile01.exp",
+      "file": "smile01.exp.json"
+    },
+    {
+      "name": "smile02.exp",
+      "file": "smile02.exp.json"
+    },
+    {
+      "name": "smile03.exp",
+      "file": "smile03.exp.json"
+    },
+    {
+      "name": "smile04.exp",
+      "file": "smile04.exp.json"
+    },
+    {
+      "name": "smile05.exp",
+      "file": "smile05.exp.json"
+    },
+    {
+      "name": "smile06.exp",
+      "file": "smile06.exp.json"
+    },
+    {
+      "name": "surprised01.exp",
+      "file": "surprised01.exp.json"
+    },
+    {
+      "name": "surprised02.exp",
+      "file": "surprised02.exp.json"
+    },
+    {
+      "name": "thinking01.exp",
+      "file": "thinking01.exp.json"
+    },
+    {
+      "name": "thinking02.exp",
+      "file": "thinking02.exp.json"
+    }
+  ],
+  "physics": "sakiko_other-25.physics.json",
+  "physics_v2": {
+    "file": "sakiko_other-25.physics.json"
+  },
+  "pose": "angry01.exp.json",
+  "options": {
+    "tex_type": 0
+  }
+}
