@@ -1,0 +1,669 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://marumarumarsh.github.io/2026/01/11/OS/3_OS_Structure/">
+
+
+
+  <title>
+Chapter 2. OS Structure |
+棉花糖小窩 = 一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ = 棉花糖絕對不能烤！！</title>
+<meta name="generator" content="Hexo 8.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Chapter 2. OS Structure
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="創建時間：2026-01-11 07:55:42">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">發表於</span>
+    <time itemprop="dateCreated datePublished" datetime="2026-01-11T07:55:42+08:00">2026-01-11</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切換導航欄">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">棉花糖小窩</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res021081_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res037014_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036010_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036015_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res040014_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res037008_rip/card_normal.png"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首頁</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-TW">
+  <link itemprop="mainEntityOfPage" href="https://marumarumarsh.github.io/2026/01/11/OS/3_OS_Structure/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/ava1.jpg">
+    <meta itemprop="name" content="Maru">
+    <meta itemprop="description" content="棉花糖絕對不能烤！！, 垮惹">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="os-services"><a class="markdownIt-Anchor" href="#os-services">#</a> OS Services</h1>
+<h2 id="user-interface"><a class="markdownIt-Anchor" href="#user-interface">#</a> User Interface</h2>
+<ul>
+<li><strong>CLI (Command Line Interface)</strong>
+<ul>
+<li>Command Interpreter / Shell
+<ul>
+<li>不屬於 OS，打的指令不是直接交給 OS 而是交給 Shell，方便使用者使用指令</li>
+<li>一台電腦根據每個使用者的喜好不同，可以做一些客製化的調整</li>
+</ul>
+</li>
+<li>Text-based interface</li>
+<li>Examples: Bash, Zsh, PowerShell</li>
+<li>下指令的介面，允許使用者透過文字指令與系統互動</li>
+<li>優點：靈活、資源消耗低</li>
+<li>缺點：學習曲線較陡峭，不適合初學者</li>
+</ul>
+</li>
+<li><strong>GUI (Graphical User Interface)</strong>
+<ul>
+<li>Visual-based interface</li>
+<li>Examples: Windows, macOS, GNOME, KDE</li>
+<li>允許使用者透過圖形元素如視窗、圖示和選單與系統互動</li>
+<li>優點：使用者友善、直觀、適合初學者</li>
+<li>缺點：資源消耗較高，對進階任務的彈性較低</li>
+</ul>
+</li>
+</ul>
+<p>多數系統兩者兼具備</p>
+<h2 id="communication-models"><a class="markdownIt-Anchor" href="#communication-models">#</a> Communication Models</h2>
+<p>這裡的 Communication 指的不只是 Process 與 Process 之間，也可以是跨電腦的 level<br>
+ 不管是哪種，我們都可以透過 memory 的使用把 Communication 切成兩大類：</p>
+<h3 id="message-passing"><a class="markdownIt-Anchor" href="#message-passing">#</a> Message Passing</h3>
+<ul>
+<li>介紹：簡單來講就是 memory copy，但不是直接複製過去的而是先到 kernel 繞了一圈<br>
+例如說 Process A 要傳東西給 Process B
+<ol>
+<li>Process A 把 message 複製到 kernel (OS 的 memory)</li>
+<li>Process B 從 kernel 複製 message 到自己的 memory</li>
+<li>Process B 讀取 message</li>
+</ol>
+</li>
+<li>考量：
+<ul>
+<li>Protection：如果直接複製會越界，因此需要透過 system call 來處理</li>
+<li>Synchronization：需要確保 Process B 在讀取 message 時，Process A 已經完成寫入</li>
+<li>Efficiency：複製資料會有額外的時間和資源消耗</li>
+<li>Reliability：透過 OS 進行傳輸，可以增加錯誤檢測和恢復的機制</li>
+</ul>
+</li>
+<li>缺點：需要一直 copy 所以速度相對比較慢</li>
+</ul>
+<h3 id="shared-memory"><a class="markdownIt-Anchor" href="#shared-memory">#</a> Shared Memory</h3>
+<ul>
+<li>介紹：
+<ul>
+<li>兩個 Process <strong>共享同一塊 memory</strong>，這樣他們就可以利用這塊 memory 溝通（也是需要透過 system call 先跟 OS 講</li>
+<li>速度較快，因為不需要複製資料</li>
+</ul>
+</li>
+<li>缺點：
+<ul>
+<li>Synchronization：需要額外的機制來確保兩個 Process 不會同時修改共享記憶體，導致資料不一致</li>
+<li>Protection：需要確保只有授權的 Process 能存取共享記憶體，避免未授權存取</li>
+</ul>
+</li>
+<li>最常見的地方大概是 multi-thread programming</li>
+</ul>
+<p><img data-src="https://i.imgur.com/4w6SVHZ.png" alt=""></p>
+<h3 id="還有以下幾類核心服務"><a class="markdownIt-Anchor" href="#還有以下幾類核心服務">#</a> 還有以下幾類核心服務：</h3>
+<ul>
+<li>Program Execution<br>
+ 最基本的服務。OS 負責載入並執行程式，並在程式結束後釋放資源，確保使用者或應用程式能在系統上運行</li>
+<li>I/O Operations<br>
+ 提供輸入 / 輸出操作的介面，例如讀取鍵盤輸入、顯示螢幕輸出、存取磁碟檔案。這些都需要透過 OS 的系統呼叫來完成</li>
+<li>File-system Manipulation<br>
+ 管理檔案系統。包括建立、刪除、讀取、寫入檔案，以及目錄的操作。OS 提供一致的介面讓應用程式能方便地操作檔案</li>
+<li>Error Detection<br>
+OS 會監控系統運作，偵測並回報錯誤，例如硬體故障、記憶體存取錯誤或程式執行異常，確保系統穩定性</li>
+<li>Resource Allocation<br>
+ 當多個程式同時執行時，OS 需要分配 CPU、記憶體、I/O 裝置等資源，避免衝突並提升效率</li>
+<li>Accounting<br>
+OS 會記錄資源使用情況，例如 CPU 時間、記憶體用量，方便系統管理者進行效能分析或計費</li>
+<li>Protection and Security<br>
+ 提供保護機制，避免程式互相干擾，並確保資料安全。包括存取控制、使用者驗證，以及防止惡意程式破壞系統</li>
+</ul>
+<h1 id="os-application-interface"><a class="markdownIt-Anchor" href="#os-application-interface">#</a> OS-Application Interface</h1>
+<h2 id="system-calls"><a class="markdownIt-Anchor" href="#system-calls">#</a> System Calls</h2>
+<ul>
+<li>由 OS 提供的 function call 為唯一的 interface，所以在 OS 上面會有一個 system call layer</li>
+<li>也是一種 Software Interrupt，這樣才能去改變 Mode Bit 進入 Kernel Mode</li>
+<li>為了效能，是使用 Assembly Language 所撰寫</li>
+<li>類型：
+<ul>
+<li>行程控制 (process control)：abort, create, terminate process, allocate/free memory</li>
+<li>檔案的管理 (file manipulation)：create, delete, open, close file</li>
+<li>裝置的管理 (device manipulation)：read, write, reposition device</li>
+<li>資訊的維護 (information maintenance)：get/set time or date, get/set system data</li>
+<li>通信 (communication)：send receive message</li>
+<li>保護 (protection)：control access to resources<br>
+<img data-src="https://i.imgur.com/Qu33WPt.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h2 id="api-application-program-interface"><a class="markdownIt-Anchor" href="#api-application-program-interface">#</a> API (Application Program Interface)</h2>
+<p>直接使用 System Call 很麻煩所以 User 的程式通常使用 API 而不是直接呼叫 System Call</p>
+<ul>
+<li>大部分的 API 都是使用 C 語言做成的 Library</li>
+<li>API 有可能包含很多 System Call，也有可能完全沒有 System Call （方便使用，像是一些數學的計算如 abs ()
+<blockquote>
+<p>因為不一定會用到 system call，所以 Call 了 API 不一定會進到 kernel mode，不一定會有 interrupt</p>
+</blockquote>
+</li>
+<li>一些常見 API
+<ul>
+<li>Win32 API for Windows</li>
+<li>POSIX API for POSIX-based Systems (UNIX、 Linux、Mac OS)</li>
+<li>Java API for Java Virtual Machine (JVM)</li>
+</ul>
+</li>
+</ul>
+<p><img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjCQCOJb7qK3MytaQl0A63PM0p64geoIYy6ovhtfh09FkoVsYGtJ8nsmx1s5Ue4NWYdHyRdjpi3eIa97vNjLMDxRZRqvY5ei50z_mQ1a96KRASUvceIV6rVGDCzXgXq1vyKGxU2ZhfUi-TX/s640/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7+2014-12-13+%E4%B8%8B%E5%8D%888.31.55-35.png" alt=""></p>
+<h3 id="補充-system-call的參數如何傳遞給os"><a class="markdownIt-Anchor" href="#補充-system-call的參數如何傳遞給os">#</a> [補充] System Call 的參數如何傳遞給 OS?</h3>
+<p>在執行中的程式與 OS 之間傳遞參數有三種常見方法：</p>
+<ul>
+<li>用暫存器儲存這些參數</li>
+<li>將參數用表儲存在記憶體中，同時用一個暫存器記錄此表起始位址並傳給 OS</li>
+<li>利用 System Stack。要存放參數時將之 Push 到 Stack 再由 OS 從 Stack 中 Pop 取出參數</li>
+</ul>
+<h1 id="os-structure"><a class="markdownIt-Anchor" href="#os-structure">#</a> OS Structure</h1>
+<ul>
+<li>使用者目標：簡單使用、學習、安全、可靠</li>
+<li>系統目標：簡單設計、維護、有效率</li>
+</ul>
+<h2 id="simple-os-architecture"><a class="markdownIt-Anchor" href="#simple-os-architecture">#</a> Simple OS Architecture</h2>
+<p>最早期的 OS 幾乎沒有架構，因為那時候最重要的是 User friendly，除了 Driver 與 OS 其它系統架構全部混在一起</p>
+<ul>
+<li>優點：開發快</li>
+<li>缺點：定義不清楚、不安全、不好維護</li>
+<li>例子：早期的 MS-DOS</li>
+</ul>
+<h2 id="layered-os-architecture"><a class="markdownIt-Anchor" href="#layered-os-architecture">#</a> Layered OS Architecture</h2>
+<p><img data-src="https://i.imgur.com/VDl254t.png" alt=""></p>
+<ul>
+<li>使用由上而下 (top-down) 的作法，每一層只能呼叫比自己低層的服務</li>
+<li>底層 (第 0 層) 為硬體，最高層 (第 N 層) 為使用者介面</li>
+<li>優點：好 Debug、好維護</li>
+<li>缺點：
+<ul>
+<li>效率較差，因為有 layer 可能會有很多 memory copy</li>
+<li>難去定義層，像是 Memory 可能也會 call 到 I/O</li>
+</ul>
+</li>
+</ul>
+<h2 id="microkernel-os"><a class="markdownIt-Anchor" href="#microkernel-os">#</a> Microkernel OS</h2>
+<p><img data-src="https://hackmd.io/_uploads/Hkt_muFeC.png" alt=""></p>
+<ul>
+<li>kernel 的程式碼<strong>精簡化</strong><br>
+因為只要那些 code 沒有 bug 就好，比較 reliable</li>
+<li><strong>Modularize 的概念</strong><br>
+ Kernel 只負責溝通不同 Module，Kernel 以外的全部在 User Space</li>
+<li>客戶端與各式服務以 message passing 通訊<br>
+<img data-src="https://i.imgur.com/iIYLC4J.png" alt=""></li>
+<li>優點：容易擴展（加到 user space）、容易 porting（移植到其他硬體平台）</li>
+<li>缺點：系統功能增加而效能降低、processes 溝通需 interrupt 而較慢</li>
+</ul>
+<h2 id="modular-os-architecture現大多採用"><a class="markdownIt-Anchor" href="#modular-os-architecture現大多採用">#</a> Modular OS Architecture（現大多採用）</h2>
+<p><img data-src="https://i.imgur.com/Be1C9Qs.png" alt=""></p>
+<ul>
+<li>跟 microkernel OS 的差別：全部都在 kernel space，所以彈性比較高，至少溝通就不需要透過 message passing</li>
+<li>用到 object-oriented 的概念</li>
+<li>可載入的模組核心 (loadable kernel modules)：
+<ul>
+<li>每一核心模組都有定義好的介面</li>
+<li>核心提供主要的服務，其他的服務則在核心執行時動態的被製作</li>
+<li>其他核心模組可在需要的時候被載入</li>
+</ul>
+</li>
+</ul>
+<h2 id="virtual-machine"><a class="markdownIt-Anchor" href="#virtual-machine">#</a> Virtual Machine</h2>
+<p><img data-src="https://i.imgur.com/mYRdapB.png" alt=""><br>
+透過軟體模擬的機制，創造一份與底層硬體一模一樣的功能介面</p>
+<ul>
+<li>用處：
+<ul>
+<li>兼容性<br>
+有些軟體可能會有特定的執行環境，我們可以用 VM 來解決這個問題</li>
+<li>開發用<br>
+如果用實機研究要一直重新開機，硬體也很有可能會壞掉，但如果用 VM 就沒這個問題了</li>
+<li>honey bound<br>
+ 當作 honey pot 讓外界攻擊… 再由原本的去觀察</li>
+<li>雲端計算<br>
+一台機器會被切成很多台 VM 供大家使用，然後也方便管理</li>
+</ul>
+</li>
+<li>優點：
+<ul>
+<li>對於 OS 的測試與開發是一個很好的平台工具</li>
+<li>VM 是孤立的，所以在 OS 的開發或測試過程中所引起的不當錯誤也不會對實體系統造成危害</li>
+<li>測試 OS 可在 VM 上執行而其它 User Program 仍可在其它的 VM 上正常運行不會中止</li>
+<li>提供完全的 Protection，使用者不會互相影響</li>
+</ul>
+</li>
+<li>缺點：
+<ul>
+<li>製作極為困難</li>
+<li>VM 之間非常的孤立，所以不易溝通及資源共享。</li>
+<li>效能沒有真正的系統好</li>
+</ul>
+</li>
+</ul>
+<h3 id="full-virtualization"><a class="markdownIt-Anchor" href="#full-virtualization">#</a> Full-Virtualization</h3>
+<p><img data-src="https://933yee.github.io/notes/images/os-chapter2/FullVirtualization.png" alt=""></p>
+<ul>
+<li>Guest OS 的程式碼完全不用動，可以直接裝在原本的 OS 上</li>
+<li>OS 完全不會知道自己是裝在 VM 裡面，所以叫做 Full Virtualization</li>
+</ul>
+<h3 id="para-virtualization"><a class="markdownIt-Anchor" href="#para-virtualization">#</a> Para-virtualization</h3>
+<p><img data-src="https://933yee.github.io/notes/images/os-chapter2/Para-virtualization.png" alt=""></p>
+<ul>
+<li>會多一個 global zone，通常叫 manager，他知道所有的 VM 的存在</li>
+<li>另外裝在上面的 OS (guest) 也需要被修改，好處是這樣就可以開一些後門了速度也不一定會比較慢</li>
+</ul>
+<h3 id="java-virtual-machine"><a class="markdownIt-Anchor" href="#java-virtual-machine">#</a> Java Virtual Machine</h3>
+<p><img data-src="https://933yee.github.io/notes/images/os-chapter2/JavaVirtualMachine.png" alt=""></p>
+<ul>
+<li>Java 本身執行的方式就像執行在一個 VM 上，但因為只執行 instruction 所以相對單純</li>
+<li>Java 編譯完後會有自己的 binary code，它不是 x86 也不是 misc，不是任何一個硬體的指令，它是 JVM 上的 bytecode</li>
+<li>有一些 Translation 上的優化，像 <strong>Just-In-Time (JIT)</strong> 記錄 Translation 過的 Instruction</li>
+</ul>
+<h1 id="ref-notes"><a class="markdownIt-Anchor" href="#ref-notes">#</a> Ref Notes</h1>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQEtpcHBlci9TeURTVk5feFA=">Kipper OS 筆記 - Chapter 2: Operating-System Structures</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly85MzN5ZWUuZ2l0aHViLmlvL25vdGVzLzIwMjQvMDcvMTgvb3MtY2hhcHRlcjIv">933yee’s Notes</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQFBsLWVRVDlDUWFTMGpoRXhLcUw4X3cvQmtoT1NSNGpXL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGcyUyRlMxWG15S0NvWj90eXBlPWJvb2s=">陳品媛的筆記</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubXJvcGVuZ2F0ZS5jb20vMjAxNS8wMS9vcGVyYXRpbmctc3lzdGVtLWNoMi1vcy1zdHJ1Y3R1cmVzLmh0bWw=">Mr. Opengate. OS - Ch2</span></li>
+</ul>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新於</span>
+    <time title="修改時間：2026-01-11 12:13:11" itemprop="dateModified" datetime="2026-01-11T12:13:11+08:00">2026-01-11</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>作者： </strong>Maru <i class="ic i-at"><em>@</em></i>一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ
+  </li>
+  <li class="link">
+    <strong>文章連結：</strong>
+    <a href="https://marumarumarsh.github.io/2026/01/11/OS/3_OS_Structure/" title="Chapter 2. OS Structure">https://marumarumarsh.github.io/2026/01/11/OS/3_OS_Structure/</a>
+  </li>
+  <li class="license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2026/01/10/OS/2_Introduction/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res037011_rip&#x2F;card_after_training.png" title="Chapter 1. Introduction">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 1. Introduction</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目錄">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#os-services"><span class="toc-number">1.</span> <span class="toc-text"> OS Services</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#user-interface"><span class="toc-number">1.1.</span> <span class="toc-text"> User Interface</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#communication-models"><span class="toc-number">1.2.</span> <span class="toc-text"> Communication Models</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#message-passing"><span class="toc-number">1.2.1.</span> <span class="toc-text"> Message Passing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shared-memory"><span class="toc-number">1.2.2.</span> <span class="toc-text"> Shared Memory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%82%84%E6%9C%89%E4%BB%A5%E4%B8%8B%E5%B9%BE%E9%A1%9E%E6%A0%B8%E5%BF%83%E6%9C%8D%E5%8B%99"><span class="toc-number">1.2.3.</span> <span class="toc-text"> 還有以下幾類核心服務：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#os-application-interface"><span class="toc-number">2.</span> <span class="toc-text"> OS-Application Interface</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#system-calls"><span class="toc-number">2.1.</span> <span class="toc-text"> System Calls</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#api-application-program-interface"><span class="toc-number">2.2.</span> <span class="toc-text"> API (Application Program Interface)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A3%9C%E5%85%85-system-call%E7%9A%84%E5%8F%83%E6%95%B8%E5%A6%82%E4%BD%95%E5%82%B3%E9%81%9E%E7%B5%A6os"><span class="toc-number">2.2.1.</span> <span class="toc-text"> [補充] System Call 的參數如何傳遞給 OS?</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#os-structure"><span class="toc-number">3.</span> <span class="toc-text"> OS Structure</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#simple-os-architecture"><span class="toc-number">3.1.</span> <span class="toc-text"> Simple OS Architecture</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#layered-os-architecture"><span class="toc-number">3.2.</span> <span class="toc-text"> Layered OS Architecture</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#microkernel-os"><span class="toc-number">3.3.</span> <span class="toc-text"> Microkernel OS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#modular-os-architecture%E7%8F%BE%E5%A4%A7%E5%A4%9A%E6%8E%A1%E7%94%A8"><span class="toc-number">3.4.</span> <span class="toc-text"> Modular OS Architecture（現大多採用）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#virtual-machine"><span class="toc-number">3.5.</span> <span class="toc-text"> Virtual Machine</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#full-virtualization"><span class="toc-number">3.5.1.</span> <span class="toc-text"> Full-Virtualization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#para-virtualization"><span class="toc-number">3.5.2.</span> <span class="toc-text"> Para-virtualization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#java-virtual-machine"><span class="toc-number">3.5.3.</span> <span class="toc-text"> Java Virtual Machine</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ref-notes"><span class="toc-number">4.</span> <span class="toc-text"> Ref Notes</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="本站概要">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Maru"
+      data-src="/images/ava1.jpg">
+  <p class="name" itemprop="name">Maru</p>
+  <div class="description" itemprop="description">垮惹</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">12</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首頁</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>隨機文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Linear%20model%20selection%20and%20regularization/" title="Linear model selection and regularization">Linear model selection and regularization</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/09/OS/0_Start/" title="作業系統(Operating System)筆記版面介紹">作業系統(Operating System)筆記版面介紹</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/27/Intro/" title="练习题与答案（測試）">练习题与答案（測試）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/09/OS/1_Historical_Prospective/" title="Chapter 0. Historical Prospective">Chapter 0. Historical Prospective</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/%E5%89%8D%E8%A8%80/" title="先備軟體介紹">先備軟體介紹</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/11/OS/3_OS_Structure/" title="Chapter 2. OS Structure">Chapter 2. OS Structure</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Classification/" title="Classification">Classification</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/11/10/%E6%97%A5%E6%96%87/%E6%97%A5%E6%9C%AC%E8%AA%9E%E3%81%AE%E6%A3%AE/" title="【一冊で合格する】Ｎ1  - 錯題集">【一冊で合格する】Ｎ1  - 錯題集</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Statistical%20Learning/" title="Statistical Learning">Statistical Learning</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Resampling%20Methods/" title="Resampling Methods">Resampling Methods</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新評論</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maru @ 棉花糖小窩</span>
+  </div>
+  <div class="powered-by">
+    基於 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2026/01/11/OS/3_OS_Structure/',
+    favicon: {
+      show: "（●´3｀●）復活成功",
+      hide: "(´Д｀)瀏覽器崩潰啦"
+    },
+    search : {
+      placeholder: "文章搜尋",
+      empty: "關於 「 ${query} 」 ，什麼也沒搜到",
+      stats: "${time} ms 內找到 ${hits} 條結果"
+    },
+    valine: true,copy_tex: true,
+    katex: true,fancybox: true,
+    copyright: '複製成功，轉載請遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 協議。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/sakiko.model.json"},"display":{"position":"left","width":280,"height":400,"hOffset":0,"vOffset":-50},"mobile":{"show":false},"react":{"opacity":1},"dialog":{"enable":false,"hitokoto":false},"log":false});</script></body>
+</html>
