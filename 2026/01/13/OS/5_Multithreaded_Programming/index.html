@@ -1,0 +1,680 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://marumarumarsh.github.io/2026/01/13/OS/5_Multithreaded_Programming/">
+
+
+
+  <title>
+Chapter 4. Multithreaded Programming |
+棉花糖小窩 = 一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ = 棉花糖絕對不能烤！！</title>
+<meta name="generator" content="Hexo 8.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Chapter 4. Multithreaded Programming
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="創建時間：2026-01-13 08:12:18">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">發表於</span>
+    <time itemprop="dateCreated datePublished" datetime="2026-01-13T08:12:18+08:00">2026-01-13</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切換導航欄">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">棉花糖小窩</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://anihonetwallpaper.com/image/2024/10/202402203-ProjectSEKAI-AkiyamaMizuki.jpg"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res038004_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res026048_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res029039_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036008_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res038011_rip/card_normal.png"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首頁</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-TW">
+  <link itemprop="mainEntityOfPage" href="https://marumarumarsh.github.io/2026/01/13/OS/5_Multithreaded_Programming/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/ava1.jpg">
+    <meta itemprop="name" content="Maru">
+    <meta itemprop="description" content="棉花糖絕對不能烤！！, 垮惹">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="thread-introduction"><a class="markdownIt-Anchor" href="#thread-introduction">#</a> Thread Introduction</h1>
+<ul>
+<li>Motivation<br>
+<img data-src="https://i.imgur.com/Hs3CoDY.png" alt=""></li>
+<li><strong>Benefits of Multithreading</strong><br>
+<img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiLedqs7GJQXUwD6TbbrlxeWlhz8fvoSCOhBJNV99MzEUKhdpIPf5KEH1jrzHnza6KC7RLCcWlxeqsP9Hv9HoHUXDSmjVsCeHbT9BfMo0lDMpcRf1lmmajovfQvXFB-w-yIHkREqflTYuu1/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7+2014-11-17+%E4%B8%8B%E5%8D%888.04.31-17.png" alt="">
+<ul>
+<li><strong>Responsiveness</strong>：允許程式中的某部份被中斷或是執行得非常久時，該程式仍然可以繼續執行</li>
+<li><strong>Resource Sharing</strong>：分享 code、data 和 OS 資源</li>
+<li><strong>Economy</strong>：輕量化的 process。<br>
+(context switch 一個 thread 比 process 快約 5 倍，建立一個 thread 比 process 快約 13 倍)</li>
+<li><strong>Utilization of MP arch</strong>：多個 thread 能在多個處理器平行處理</li>
+</ul>
+</li>
+</ul>
+<h2 id="multicore-programming"><a class="markdownIt-Anchor" href="#multicore-programming">#</a> Multicore Programming</h2>
+<p>Multithreaded programming 提供一種更有效率使用多核心的機制，改善 concurrency</p>
+<blockquote>
+<p>concurrency : 快速切換來同時運行多個 task，但實際上同時只執行一個<br>
+多核心 / 多處理器 (multicore/multiprocessor)：無論多個運算核心是在單一或多個 CPU 晶片上，都稱為多核心 / 多處理器</p>
+</blockquote>
+<ul>
+<li>parallelism：執行在<strong>多核心系統</strong><br>
+<img data-src="https://i.imgur.com/g1kZxrE.png" alt="">
+<ul>
+<li>Data Parallelism：資料分成不同 core 來執行，某段只由一個 core 執行</li>
+<li>Task Parallelism：同一段資料可能有多個 core 來執行，執行不同的任務<br>
+<img data-src="https://i.imgur.com/Dafwbbc.png" alt=""></li>
+</ul>
+</li>
+<li>concurrency：執行在<strong>單處理器或核心</strong>，支持<strong>多個任務</strong>執行<br>
+<img data-src="https://i.imgur.com/M7W5ufi.png" alt=""></li>
+</ul>
+<h2 id="user-vs-kernel-threads"><a class="markdownIt-Anchor" href="#user-vs-kernel-threads">#</a> User vs. Kernel Threads</h2>
+<ul>
+<li>User threads
+<ul>
+<li>在 user mode 下進行，OS 不知道有這些 thread 存在也不需要 OS 介入管理</li>
+<li>即所謂 user-level threads library，支援 creation、deletion、scheduling</li>
+<li>每個 user thread 屬一個 process</li>
+<li>優點：不由 kernel 直接控制，通常在創建及管理上會比較快</li>
+<li>缺點：若 process 的 user thread 發出鎖定的 system call 且 kernel 是 single thread 則整個 process 被鎖住</li>
+<li>Example：POSIX Pthreads、Win32 threads、Java threads</li>
+</ul>
+</li>
+<li>Kernel threads
+<ul>
+<li>在 kernel mode 下進行，OS 知道有這些 thread 存在，由 OS 介入管理</li>
+<li>由 OS（kernel）直接支援 creation、deletion、scheduling，由 TCB 控制的 thread</li>
+<li>kernel thread 與 process 無關</li>
+<li>優點：多個 thread 可同時發出 system call，若某個 thread 被 block 仍可由 kernel 安排其他 threads 執行工作</li>
+<li>缺點：由 kernel 進行創建及管理，速度較慢</li>
+<li>Example：Windows 2000 （NT）、Solaris、Linux、Tru64 UNIX</li>
+</ul>
+</li>
+</ul>
+<h3 id="挑戰"><a class="markdownIt-Anchor" href="#挑戰">#</a> 挑戰</h3>
+<ul>
+<li>Dividing activities：將 program 拆成多個可以同時處理的任務</li>
+<li>Data splitting：除了計算任務要拆，資料也要能夠拆開給不同任務處理。有時候 data 很複雜，不一定是平分給所有任務處理</li>
+<li>Data dependency：shared data 的同步，是平行程式中最複雜且重要的部份</li>
+<li>Balance：各個任務的執行時間要差不多，否則會受限於執行最久的任務</li>
+<li>Testing and debugging：不知誰先誰後，而且可能會有 10 幾個 thread 同時跑</li>
+</ul>
+<h1 id="multi-threading-models"><a class="markdownIt-Anchor" href="#multi-threading-models">#</a> Multi-threading models</h1>
+<h2 id="many-to-one"><a class="markdownIt-Anchor" href="#many-to-one">#</a> Many-to-One</h2>
+<p><img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhsvqHKWhO3H_W3UmjED43r4NVUoI_fegRQheACTJGYB1xg0v1qTBU2UsC6n2I1QlvXZ_p0mYHAA7Z5oHUJZNPsX-dE0yyebe4qFVkTrE0t2Ri4MRpwh7MsZMMolsgFJXvV1l6TBwL_oQRK/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7+2014-11-17+%E4%B8%8B%E5%8D%888.18.02-20.png" alt=""></p>
+<ul>
+<li>優點：mapping，user thread library（user space）決定，有效率</li>
+<li>缺點：
+<ul>
+<li>整個 process 可能被 block</li>
+<li>無法利用多核心，因為只有一個 kernel thread</li>
+</ul>
+</li>
+</ul>
+<h2 id="one-to-one"><a class="markdownIt-Anchor" href="#one-to-one">#</a> One-to-One</h2>
+<p><img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjHvxd35TQnaR2c9Bc7CbwOuHbkHoSe1mKdoFdH7VxptCqWLSd0n97TxH3hxJp33rlsA0bSOamjl0f3MeQlyaic5Wp3WDwDvcw0YZPYKkamdO2vbfmARWD79xJ29RDVlrbaoaXQI_VAW9NB/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7+2014-11-17+%E4%B8%8B%E5%8D%888.18.38-23.png" alt=""></p>
+<ul>
+<li>優點：More concurrency</li>
+<li>缺點：
+<ul>
+<li>成本較高</li>
+<li>Overhead，每創一個 user thread 就要創一個 kernel thread</li>
+<li>要限制執行緒產生的個數，產生一個 user thread 時需連帶產生一個 kernel thread，而 kernel thread 會對程式的執行產生一些額外的負擔</li>
+</ul>
+</li>
+</ul>
+<h2 id="many-to-many"><a class="markdownIt-Anchor" href="#many-to-many">#</a> Many-to-Many</h2>
+<p><img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhWWrKGguIejU1wyxK0-CJENWgk9gcsN5g3VNZ2u0h2Q656J1Y6EAav1DvkNAXOcDalIeSvPepKiGcxPIff8vzcC6X4lR52jkWf-ByF3Qu7MP_QV18HRGV5s5diw-ZTEd3h2EJRI4sVmSOr/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7+2014-11-17+%E4%B8%8B%E5%8D%888.21.17-26.png" alt=""></p>
+<ul>
+<li>允許 developer create 他想要的 thread 數量</li>
+<li>優點：
+<ul>
+<li>系統不會被 single thread 執行鎖死</li>
+<li>比 one-to-one 經濟</li>
+<li>可以多個 thread 平行跑在多個處理器</li>
+<li>當一個 thread 執行到 blocking call，kernel 能排程另一個 thread 進來執行</li>
+</ul>
+</li>
+</ul>
+<h2 id="two-level-model"><a class="markdownIt-Anchor" href="#two-level-model">#</a> Two-level model</h2>
+<ul>
+<li>類似多對多，但允許使用者執行緒被綁到一個核心執行緒</li>
+</ul>
+<h1 id="threaded-case-study"><a class="markdownIt-Anchor" href="#threaded-case-study">#</a> Threaded Case Study</h1>
+<h2 id="shared-memory-programming"><a class="markdownIt-Anchor" href="#shared-memory-programming">#</a> Shared-Memory Programming</h2>
+<ul>
+<li>定義
+<ul>
+<li>process 互相溝通透過一塊共享的記憶體</li>
+<li>比 message passing 更快，有效率</li>
+</ul>
+</li>
+<li>議題
+<ul>
+<li>Synchronization</li>
+<li>Deadlock</li>
+<li>Cache coherence</li>
+</ul>
+</li>
+<li>Programming techniques
+<ul>
+<li>Parallelizing compiler</li>
+<li>Unix processes</li>
+<li>Threads (Pthread, Java)</li>
+</ul>
+</li>
+</ul>
+<h3 id="thread-libraries"><a class="markdownIt-Anchor" href="#thread-libraries">#</a> Thread libraries</h3>
+<h4 id="pthreads"><a class="markdownIt-Anchor" href="#pthreads">#</a> Pthreads</h4>
+<p>POSIX standard for thread Operating 的實作</p>
+<ul>
+<li>pthread_create (thread, attr, routine, arg)：創一個新的 thread<br>
+<img data-src="https://i.imgur.com/KeJZc9g.png" alt="">
+<ul>
+<li>thread：回傳的 thread id</li>
+<li>attr：thread attributes (NULL 為預設)</li>
+<li>routine：thread 要執行的 function</li>
+<li>arg：傳給 routine 的參數</li>
+</ul>
+</li>
+<li>pthread_join (threadId, status)：block 住直到特定的 thread terminate，完成 thread 之間的同步化</li>
+<li>pthread_detach(threadId)：<br>
+<img data-src="https://i.imgur.com/NJtxDfB.png" alt="">
+<ul>
+<li>當一個 thread 被分離，之後就不能被 join</li>
+<li>分離一個 thread，會 free 掉一些系統資源</li>
+</ul>
+</li>
+</ul>
+<h4 id="java-threads"><a class="markdownIt-Anchor" href="#java-threads">#</a> Java threads</h4>
+<ul>
+<li>thread creation
+<ul>
+<li>Extending Thread class</li>
+<li>Implementing the Runnable interface</li>
+</ul>
+</li>
+<li>Java threads 用 thread library on the host system 實作</li>
+<li>Thread mapping 依據 JVM 的實作</li>
+</ul>
+<h4 id="linux-threads"><a class="markdownIt-Anchor" href="#linux-threads">#</a> Linux Threads</h4>
+<ul>
+<li>不支援 multithreading</li>
+<li>Pthreads 實作 are available for user-level</li>
+<li>fork system call – 創一個新的 process 和一份父行程的相關 data 的 copy</li>
+<li>clone system call – 創一個新的 process 和一個 link 指到父行程的相關 data<br>
+<img data-src="https://i.imgur.com/mOuZ3ln.png" alt="">
+<ul>
+<li>一組 flag 表 sharing 的程度</li>
+<li>沒有 flag 升起 –&gt; 等同 fork ()</li>
+<li>全部 flag 升起</li>
+</ul>
+</li>
+</ul>
+<h1 id="threading-issues"><a class="markdownIt-Anchor" href="#threading-issues">#</a> Threading Issues</h1>
+<ol>
+<li>Semantics of  <code>fork()</code>  and  <code>exec()</code> ，fork 呼叫一個 thread 或 all thread?<br>
+Undefined. maybe the following
+<ul>
+<li>只 fork 該 thread : 當 child 做工作與 parent 不同</li>
+<li>fork 整個 process : 當 child 所做的工作與 parent 相同</li>
+</ul>
+</li>
+<li>Signal handling
+<ul>
+<li>default 由編輯器自動載入預設的訊號處理</li>
+<li>user-defined 自行定義訊號的處理</li>
+</ul>
+<blockquote>
+<p>[補充] process 或裝置通知 kernel -&gt; interrupt；kernel 通知 process -&gt; signal</p>
+</blockquote>
+</li>
+<li>Thread cancellation
+<ul>
+<li>asynchronous cancellation : 立刻取消</li>
+<li>deferred cancellation : 一個時間周期到才會取消</li>
+<li>actual cancellation : 根據 thread 狀態取消</li>
+</ul>
+</li>
+<li>Thread pools
+<ul>
+<li>產生多個 thread 並等待執行，因為使用現有 thread 比新產生一個 thread 快</li>
+<li>此法等待執行的 thread 數目前依目前 thread pool 大小決定</li>
+</ul>
+</li>
+<li>TLS (thread-local storage)
+<ul>
+<li>TLS 要解決的問題，並不是 Thread 之間資源共享的問題，而是 Thread 本身資源共享的問題</li>
+<li>TLS 是在 thread 中佈置一塊空間，並讓 thread 外面可以觀測</li>
+</ul>
+</li>
+<li>Light weight process (LWP)
+<ul>
+<li>介於 user-level thread 和 kernel-level thread 的資料結構，用來提供一個 virtual process 讓應用程式 thread 做排程</li>
+<li>支援多個 User-level Thread 對應到一個 kernel thread，屬於 kernel-level thread</li>
+</ul>
+</li>
+<li>Thread libraries : pthreads<br>
+Pthreads (POSIX threads) 是依據 ieee 1003.1c 標準定義的 thread 標準，定義了創建和操縱 thread 的一套 API，可用在 user-level 和 kernel-level，常用在一般 Unix 作業系統。</li>
+<li>Implicit threading methods
+<ul>
+<li>thread pools</li>
+<li>openMP</li>
+<li>grand central dispatch</li>
+<li>TBB (threading building blocks)</li>
+</ul>
+</li>
+</ol>
+<h1 id="ref-notes"><a class="markdownIt-Anchor" href="#ref-notes">#</a> Ref Notes</h1>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQEtpcHBlci9IMTFEN2hKTXc=">Kipper’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQENoYW5nLUNoaWEtQ2hpL09TL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGJTQwQ2hhbmctQ2hpYS1DaGklMkZPUy1DSDQ=">Chang-Chia-Chi’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQFBsLWVRVDlDUWFTMGpoRXhLcUw4X3cvQmtoT1NSNGpXL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGcyUyRnJKcmVqeU5rZj90eXBlPWJvb2s=">陳品媛的筆記</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubXJvcGVuZ2F0ZS5jb20vMjAxNS8wMS9vcGVyYXRpbmctc3lzdGVtLWNoNC1tdWx0aXRocmVhZC5odG1s">Mr. Opengate. OS - Ch4</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93YW5nd2lsbHkuZ2l0aHViLmlvL3dpbGx5d2FuZ2thYS8yMDE4LzA3LzEwL09wZXJhdGluZy1TeXN0ZW0tUHJvY2Vzcy1NYW5hZ2VtZW50LWFuZC1UaHJlYWQtTWFuYWdlbWVudC8=">WillyWangkaa’s Note</span></li>
+</ul>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新於</span>
+    <time title="修改時間：2026-01-14 08:32:07" itemprop="dateModified" datetime="2026-01-14T08:32:07+08:00">2026-01-14</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>作者： </strong>Maru <i class="ic i-at"><em>@</em></i>一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ
+  </li>
+  <li class="link">
+    <strong>文章連結：</strong>
+    <a href="https://marumarumarsh.github.io/2026/01/13/OS/5_Multithreaded_Programming/" title="Chapter 4. Multithreaded Programming">https://marumarumarsh.github.io/2026/01/13/OS/5_Multithreaded_Programming/</a>
+  </li>
+  <li class="license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2026/01/12/OS/4_Processes_Concept/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res038012_rip&#x2F;card_after_training.png" title="Chapter 3. Processes Concept">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 3. Processes Concept</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2026/01/14/OS/6_Process_Scheduling/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res038011_rip&#x2F;card_normal.png" title="Chapter 5. Process Scheduling">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 5. Process Scheduling</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目錄">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#thread-introduction"><span class="toc-number">1.</span> <span class="toc-text"> Thread Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#multicore-programming"><span class="toc-number">1.1.</span> <span class="toc-text"> Multicore Programming</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#user-vs-kernel-threads"><span class="toc-number">1.2.</span> <span class="toc-text"> User vs. Kernel Threads</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%91%E6%88%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text"> 挑戰</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#multi-threading-models"><span class="toc-number">2.</span> <span class="toc-text"> Multi-threading models</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#many-to-one"><span class="toc-number">2.1.</span> <span class="toc-text"> Many-to-One</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#one-to-one"><span class="toc-number">2.2.</span> <span class="toc-text"> One-to-One</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#many-to-many"><span class="toc-number">2.3.</span> <span class="toc-text"> Many-to-Many</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#two-level-model"><span class="toc-number">2.4.</span> <span class="toc-text"> Two-level model</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#threaded-case-study"><span class="toc-number">3.</span> <span class="toc-text"> Threaded Case Study</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#shared-memory-programming"><span class="toc-number">3.1.</span> <span class="toc-text"> Shared-Memory Programming</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#thread-libraries"><span class="toc-number">3.1.1.</span> <span class="toc-text"> Thread libraries</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#pthreads"><span class="toc-number">3.1.1.1.</span> <span class="toc-text"> Pthreads</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#java-threads"><span class="toc-number">3.1.1.2.</span> <span class="toc-text"> Java threads</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#linux-threads"><span class="toc-number">3.1.1.3.</span> <span class="toc-text"> Linux Threads</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#threading-issues"><span class="toc-number">4.</span> <span class="toc-text"> Threading Issues</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ref-notes"><span class="toc-number">5.</span> <span class="toc-text"> Ref Notes</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="本站概要">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Maru"
+      data-src="/images/ava1.jpg">
+  <p class="name" itemprop="name">Maru</p>
+  <div class="description" itemprop="description">垮惹</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">21</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首頁</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2026/01/12/OS/4_Processes_Concept/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2026/01/14/OS/6_Process_Scheduling/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>隨機文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/15/OS/7_Process_Synchronization/" title="Chapter 6. Process Synchronization">Chapter 6. Process Synchronization</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Linear%20model%20selection%20and%20regularization/" title="Linear model selection and regularization">Linear model selection and regularization</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/11/OS/3_OS_Structure/" title="Chapter 2. OS Structure">Chapter 2. OS Structure</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Regression/" title="Regression">Regression</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/20/OS/11_File_System_Interface/" title="Chapter 10. File System Interface">Chapter 10. File System Interface</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/18/OS/9_Memory_Management/" title="Chapter 8. Memory Management">Chapter 8. Memory Management</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Statistical%20Learning/" title="Statistical Learning">Statistical Learning</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/%E5%89%8D%E8%A8%80/" title="先備軟體介紹">先備軟體介紹</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/14/OS/6_Process_Scheduling/" title="Chapter 5. Process Scheduling">Chapter 5. Process Scheduling</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Resampling%20Methods/" title="Resampling Methods">Resampling Methods</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新評論</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maru @ 棉花糖小窩</span>
+  </div>
+  <div class="powered-by">
+    基於 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2026/01/13/OS/5_Multithreaded_Programming/',
+    favicon: {
+      show: "（●´3｀●）復活成功",
+      hide: "(´Д｀)瀏覽器崩潰啦"
+    },
+    search : {
+      placeholder: "文章搜尋",
+      empty: "關於 「 ${query} 」 ，什麼也沒搜到",
+      stats: "${time} ms 內找到 ${hits} 條結果"
+    },
+    valine: true,copy_tex: true,
+    katex: true,fancybox: true,
+    copyright: '複製成功，轉載請遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 協議。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/sakiko.model.json"},"display":{"position":"left","width":280,"height":400,"hOffset":0,"vOffset":-50},"mobile":{"show":false},"react":{"opacity":1},"dialog":{"enable":false,"hitokoto":false},"log":false});</script></body>
+</html>

@@ -1,0 +1,698 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://marumarumarsh.github.io/2026/01/17/OS/8_%20Deadlocks/">
+
+
+
+  <title>
+Chapter 7. Deadlocks |
+棉花糖小窩 = 一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ = 棉花糖絕對不能烤！！</title>
+<meta name="generator" content="Hexo 8.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Chapter 7. Deadlocks
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="創建時間：2026-01-17 10:44:54">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">發表於</span>
+    <time itemprop="dateCreated datePublished" datetime="2026-01-17T10:44:54+08:00">2026-01-17</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切換導航欄">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">棉花糖小窩</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res021081_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res038011_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://anihonetwallpaper.com/image/2025/10/202501841-BanG_Dream-WakamiyaEve.jpg"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res037009_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036004_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res038010_rip/card_after_training.png"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首頁</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-TW">
+  <link itemprop="mainEntityOfPage" href="https://marumarumarsh.github.io/2026/01/17/OS/8_%20Deadlocks/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/ava1.jpg">
+    <meta itemprop="name" content="Maru">
+    <meta itemprop="description" content="棉花糖絕對不能烤！！, 垮惹">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="deadlock-characterization"><a class="markdownIt-Anchor" href="#deadlock-characterization">#</a> Deadlock Characterization</h1>
+<p><img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjhugmhY-BsjVggSbr2phn2PCjvO4o8McLDUWb_wTBUSg7mzUrMrPrNjl1h51KwvfeO2U3BLAm5in0RgidkYJg3nYjlGYNTe9D0zatB1scgqhfS20qAhHbmVh7BwRTutkbMJnYxzwJYQyLG/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7+2014-12-06+%E4%B8%8B%E5%8D%886.24.13-17.png" alt=""><br>
+Deadlock 意思是系統中存在一組 process 陷入互相等待對方所擁有的資源的情況，造成所有的 process 無法往下執行，使得 <strong>CPU 利用度大幅降低</strong></p>
+<p>Deadlock 發生須符合以下四項充要條件（四個條件都要成立 for <strong>possible deadlock</strong>）：</p>
+<ol>
+<li><strong>Mutual Exclusion</strong> : 資源不可共享</li>
+<li><strong>Hold and Wait</strong> : 已分配資源的 process 可再請求其他資源</li>
+<li><strong>No Preemption</strong> : 資源不可被強制奪取</li>
+<li><strong>Circular Wait</strong> :
+<ul>
+<li P_0,="" P_1,="" …,="" P_n="">存在一個 waiting processes set <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow></mrow><annotation encoding="application/x-tex"></annotation></semantics></math></span><span class="katex-html" aria-hidden="true"></span></span></li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>0</mn></msub><mo>→</mo><msub><mi>P</mi><mn>1</mn></msub><mo>→</mo><msub><mi>P</mi><mn>2</mn></msub><mo>→</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>→</mo><msub><mi>P</mi><mi>n</mi></msub><mo>→</mo><msub><mi>P</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">P_0\rightarrow P_1\rightarrow P_2\rightarrow ... \rightarrow P_n\rightarrow P_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>（deadlock 不會存在於 single process 環境中）</li>
+</ul>
+</li>
+</ol>
+<h2 id="deadlock-vs-starvation"><a class="markdownIt-Anchor" href="#deadlock-vs-starvation">#</a> Deadlock vs Starvation</h2>
+<p><img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg22pOyNKwitjxrhhmSfRNEgKVw3WCUcIsiBmUsIMfJ0z_8-CMYrf2uBIIWA-GqEjBg1uc3L9IXqshDhROnYJ6bJ143zz1UObedAkj8nFnvjOjuT-wXjmvlF7g9-8bpS3LyHVw516JvBmo_/s640/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7+2014-12-06+%E4%B8%8B%E5%8D%886.38.42-23.png" alt=""></p>
+<h2 id="deadlock-detection"><a class="markdownIt-Anchor" href="#deadlock-detection">#</a> Deadlock Detection</h2>
+<ul>
+<li>沒 cycle 就一定不會發生 deadlock，Circular wait 這個條件不會成立</li>
+<li>如果圖有 cycle
+<ul>
+<li>每個 resource type 只有一個 instance → deadlock</li>
+<li>每個 resource type 有多個 instances → 可能有 deadlock</li>
+</ul>
+</li>
+</ul>
+<h2 id="handling-deadlocks"><a class="markdownIt-Anchor" href="#handling-deadlocks">#</a> Handling Deadlocks</h2>
+<ul>
+<li>確保系統永不進入 deadlock state
+<ul>
+<li>deadlock prevention
+<ul>
+<li>事前避免</li>
+<li>確保四個條件至少有個條件不成立</li>
+</ul>
+</li>
+<li>deadlock avoidance
+<ul>
+<li>執行過程間避免</li>
+<li>在分配之前，<strong>動態檢查 resource-allocation state</strong></li>
+<li>沒有 deadlock 危險性才會讓過</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>允許進入 deadlock state 而後要能 recover
+<ul>
+<li>deadlock detection</li>
+<li>deadlock recovery</li>
+</ul>
+</li>
+<li>忽略問題和假裝 deadlock 從未發生在 system
+<ul>
+<li>交由使用者自己去解決，選一個砍掉</li>
+</ul>
+</li>
+</ul>
+<h1 id="deadlock-handling-strategies"><a class="markdownIt-Anchor" href="#deadlock-handling-strategies">#</a> Deadlock Handling Strategies</h1>
+<ul>
+<li>prevention 和 avoidance 保證系統不會進入 Deadlock，但資源利用度低</li>
+<li>而 detection 資源利用度較高，但若 Deadlock 需要做 recovery，則 cost 極高</li>
+</ul>
+<h2 id="deadlock-prevention"><a class="markdownIt-Anchor" href="#deadlock-prevention">#</a> Deadlock Prevention</h2>
+<p>打破必要條件四項之一，即可保證 Deadlock 永不發生</p>
+<ul>
+<li><strong>Mutual exclusion</strong>：
+<ul>
+<li>如果資源是分享的，就不用擔心他會產生 deadlock<br>
+e.g. read-only data</li>
+<li>有些資源不是 sharable<br>
+e.g. printer</li>
+</ul>
+</li>
+<li><strong>Hold and wait</strong>：
+<ul>
+<li>行程要求一個資源時不能握有任何資源</li>
+<li>除非 proces 可以一次取得所有工作所需的資源，才允許持有資源</li>
+<li>資源使用率<strong>低</strong>，想要用，卻不能用，可能產生 starvation</li>
+</ul>
+</li>
+<li><strong>Preemption</strong> : 讓高優先 process 搶低優先 process 的資源，會造成 starvation</li>
+<li><strong>Circular waiting</strong>：Process 須按照資源編號<strong>遞增方式</strong>申請資源
+<ul>
+<li>Let <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mrow><msub><mi>R</mi><mn>0</mn></msub><mo separator="true">,</mo><msub><mi>R</mi><mn>1</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>R</mi><mi>N</mi></msub></mrow></mrow><annotation encoding="application/x-tex">R={R_0, R_1, ..., R_N}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span> be the set of resource types</li>
+<li>When request <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">R_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, should release all <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">R_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> where <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>&gt;</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">i&gt;k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69862em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></li>
+<li>例：
+<ul>
+<li>F(tape drive) = 1, F(disk drive) = 5, F(printer) = 12</li>
+<li>行程必須要求 tape、disk drive 在 printer 之前</li>
+<li>若是已經有了 printer，此時想要 tape，必須先將 printer free 掉</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="deadlock-avoidance"><a class="markdownIt-Anchor" href="#deadlock-avoidance">#</a> Deadlock Avoidance</h2>
+<p><img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEil885Pn14HIbUeK7wVLrizUHk0EGPwMmKAufpbO3BvavEy2fx1_lrwRefC7vfKcXhKP2Q2mQQ7MqYUEOPevjGbGkcLKc0Zwdpl1WqUtJrydKoqv8c2cBV3JyFpMBxyfno-Sm3L5k6ulW8F/s320/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7+2014-12-06+%E4%B8%8B%E5%8D%887.05.23-32.png" alt=""><br>
+process 提出資源申請時，OS 會執行 Banker algorithm 來判斷系統在「假設核准該申請後」是否處於 Safe state，是則核准，否則請 process 等待</p>
+<ul>
+<li>safe state : 存在 safe sequence</li>
+<li>unsafe state : 可能有 deadlock</li>
+</ul>
+<h3 id="algorithms"><a class="markdownIt-Anchor" href="#algorithms">#</a> Algorithms</h3>
+<ul>
+<li>Single instance of a resource type：<strong>resource-allocation graph (RAG) algorithm</strong> based on <strong>circle detection</strong></li>
+<li>Multiple instances of a resource type：<strong>banker’s algorithm</strong> based on <strong>safe sequence detection</strong></li>
+</ul>
+<h3 id="resource-allocation-graph-rag-algorithm"><a class="markdownIt-Anchor" href="#resource-allocation-graph-rag-algorithm">#</a> Resource-Allocation Graph (RAG) Algorithm</h3>
+<ol>
+<li>Request edge<br>
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>i</mi></msub><mo>→</mo><msub><mi>R</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">P_i \rightarrow R_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>（代表 process 請求資源）</li>
+<li>Assignment edge<br>
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>j</mi></msub><mo>→</mo><msub><mi>P</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">R_j \rightarrow P_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>（代表資源已分配給 process）<br>
+釋放資源時，assignment edge 轉為 claim edge</li>
+<li>Claim edge<br>
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>i</mi></msub><mo>⇢</mo><msub><mi>R</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">P_i \dashrightarrow R_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel amsrm">⇢</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>（代表 process 未來可能會請求資源）<br>
+請求資源時，則將 claim edge 轉為 request edge</li>
+</ol>
+<ul>
+<li>resource 在試驗前一定要先被 claim</li>
+<li>只有當沒有 cycle 被產生才能核准 request
+<ul>
+<li>使用 cycle-detection algorithm, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></li>
+</ul>
+</li>
+<li>一個 request 若被改成 assignment 可能會產生 cycle，則被 <strong>reject 或 delay</strong></li>
+</ul>
+<h3 id="safe-state"><a class="markdownIt-Anchor" href="#safe-state">#</a> Safe state</h3>
+<ul>
+<li>safe state : 存在 safe sequence</li>
+<li>unsafe state : 可能有 deadlock</li>
+<li>deadlock avoidance：確保系統永不進入 unsafe state</li>
+<li>定義
+<ul>
+<li>如果存在 sequence of allocations 去滿足所有行程的 request，則說 system 處在 safe state</li>
+<li>此 sequence of allocations，稱作是 safe sequence</li>
+</ul>
+</li>
+</ul>
+<h3 id="bankers-algorithm"><a class="markdownIt-Anchor" href="#bankers-algorithm">#</a> Banker’s algorithm</h3>
+<ul>
+<li>Banker algorithm
+<ul>
+<li>使用通用的 safety algorithm 去提早決定在分配之後，是否有 safe sequence 存在</li>
+<li>safe sequence 存在時，才會去執行分配動作</li>
+</ul>
+</li>
+<li>Safety algorithm
+<ol>
+<li>假設 processes 需要 maximum resources</li>
+<li>找到一個行程，若是分配後 available resources 能被滿足即分配給他<br>
+釋放被該行程使用的資源<br>
+反覆執行直到所有的行程都被滿足</li>
+</ol>
+</li>
+<li>Single instance : topological sort (using wait-for graph)
+<ul>
+<li>使用 adjcent matrix：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></li>
+<li>使用 adjcent list：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>V</mi><mo>+</mo><mi>E</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(V+E)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mclose">)</span></span></span></span></li>
+</ul>
+</li>
+<li>Several instance : 用 Banker algorithm 判斷系統是否已經在 unsafe state</li>
+</ul>
+<p>Recovery scheme :</p>
+<ul>
+<li>終止 process (成本都高)
+<ul>
+<li>全部刪除</li>
+<li>一次刪一個 process，直到打破 deadlock。</li>
+</ul>
+</li>
+<li>資源搶奪
+<ul>
+<li>剝奪 victim process 資源 (可能造成 starvation)</li>
+<li>恢復無該資源前狀態 (cost 高)</li>
+</ul>
+</li>
+</ul>
+<h3 id="single-instance-of-each-resource-type"><a class="markdownIt-Anchor" href="#single-instance-of-each-resource-type">#</a> Single Instance of Each Resource Type</h3>
+<p><img data-src="https://i.imgur.com/YMLduc3.png" alt=""></p>
+<ul>
+<li>若有 circle 就是死結</li>
+<li>將 request/assignment edges 轉成 wait-for graph</li>
+<li>如果有 cycle 存在 wait-for graph，deadlock 存在</li>
+</ul>
+<h3 id="multiple-instance-for-each-resource-type"><a class="markdownIt-Anchor" href="#multiple-instance-for-each-resource-type">#</a> Multiple-Instance for Each Resource Type</h3>
+<ul>
+<li>Total instances: A:7, B:2, C:6</li>
+<li>Available instances: A:0, B:0, C:0</li>
+<li>safe state → &lt;P0, P2, P3, P1, P4&gt; → no deadlock</li>
+<li>If P2 request = &lt;0, 0, 1&gt; → no safe sequence → deadlock</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">process</th>
+<th style="text-align:center">Allocation(A B C)</th>
+<th style="text-align:center">Request(A B C)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">P0</td>
+<td style="text-align:center">0 1 0</td>
+<td style="text-align:center">0 0 0</td>
+</tr>
+<tr>
+<td style="text-align:center">P1</td>
+<td style="text-align:center">2 0 0</td>
+<td style="text-align:center">2 0 2</td>
+</tr>
+<tr>
+<td style="text-align:center">P2</td>
+<td style="text-align:center">3 0 3</td>
+<td style="text-align:center">0 0 0</td>
+</tr>
+<tr>
+<td style="text-align:center">P3</td>
+<td style="text-align:center">2 1 1</td>
+<td style="text-align:center">1 0 0</td>
+</tr>
+<tr>
+<td style="text-align:center">P4</td>
+<td style="text-align:center">0 0 2</td>
+<td style="text-align:center">0 0 2</td>
+</tr>
+</tbody>
+</table>
+<h3 id="process-termination"><a class="markdownIt-Anchor" href="#process-termination">#</a> Process termination</h3>
+<ol>
+<li>中斷所有 deadlocked 的行程</li>
+<li>一次中斷一個行程，直到 cycle 排除<br>
+哪個行程我們應該先中斷？</li>
+</ol>
+<h3 id="resource-preemption"><a class="markdownIt-Anchor" href="#resource-preemption">#</a> Resource preemption</h3>
+<ol>
+<li>選一個受害者去 preempt<br>
+which one to preempt？</li>
+<li>rollback
+<ul>
+<li>checkpoint</li>
+<li>部份 rollback 或全部 rollback？</li>
+</ul>
+</li>
+<li>starvation<br>
+ 可以同一個行程被 preempted？</li>
+</ol>
+<h1 id="ref-notes"><a class="markdownIt-Anchor" href="#ref-notes">#</a> Ref Notes</h1>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vVXUwakRLLXJTeUtOS3E2OTB5MTQ2Zw==">Kipper’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQENoYW5nLUNoaWEtQ2hpL09TL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGJTQwQ2hhbmctQ2hpYS1DaGklMkZPUy1DSDc=">Chang-Chia-Chi’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQFBsLWVRVDlDUWFTMGpoRXhLcUw4X3cvQmtoT1NSNGpXL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGcyUyRlMxVS1VcXZHRw==">陳品媛的筆記</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubXJvcGVuZ2F0ZS5jb20vMjAxNS8wMS9vcGVyYXRpbmctc3lzdGVtLWNoNy1kZWFkbG9jay5odG1s">Mr. Opengate. OS - Ch7</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93YW5nd2lsbHkuZ2l0aHViLmlvL3dpbGx5d2FuZ2thYS8yMDE4LzA3LzEwL09wZXJhdGluZy1TeXN0ZW0tRGVhZGxvY2sv">WillyWangkaa’s Note</span></li>
+</ul>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新於</span>
+    <time title="修改時間：2026-01-18 10:42:15" itemprop="dateModified" datetime="2026-01-18T10:42:15+08:00">2026-01-18</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>作者： </strong>Maru <i class="ic i-at"><em>@</em></i>一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ
+  </li>
+  <li class="link">
+    <strong>文章連結：</strong>
+    <a href="https://marumarumarsh.github.io/2026/01/17/OS/8_%20Deadlocks/" title="Chapter 7. Deadlocks">https://marumarumarsh.github.io/2026/01/17/OS/8_ Deadlocks/</a>
+  </li>
+  <li class="license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2026/01/15/OS/7_Process_Synchronization/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res036015_rip&#x2F;card_normal.png" title="Chapter 6. Process Synchronization">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 6. Process Synchronization</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2026/01/18/OS/9_Memory_Management/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res037008_rip&#x2F;card_after_training.png" title="Chapter 8. Memory Management">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 8. Memory Management</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目錄">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#deadlock-characterization"><span class="toc-number">1.</span> <span class="toc-text"> Deadlock Characterization</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#deadlock-vs-starvation"><span class="toc-number">1.1.</span> <span class="toc-text"> Deadlock vs Starvation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#deadlock-detection"><span class="toc-number">1.2.</span> <span class="toc-text"> Deadlock Detection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#handling-deadlocks"><span class="toc-number">1.3.</span> <span class="toc-text"> Handling Deadlocks</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#deadlock-handling-strategies"><span class="toc-number">2.</span> <span class="toc-text"> Deadlock Handling Strategies</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#deadlock-prevention"><span class="toc-number">2.1.</span> <span class="toc-text"> Deadlock Prevention</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#deadlock-avoidance"><span class="toc-number">2.2.</span> <span class="toc-text"> Deadlock Avoidance</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#algorithms"><span class="toc-number">2.2.1.</span> <span class="toc-text"> Algorithms</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#resource-allocation-graph-rag-algorithm"><span class="toc-number">2.2.2.</span> <span class="toc-text"> Resource-Allocation Graph (RAG) Algorithm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#safe-state"><span class="toc-number">2.2.3.</span> <span class="toc-text"> Safe state</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bankers-algorithm"><span class="toc-number">2.2.4.</span> <span class="toc-text"> Banker’s algorithm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#single-instance-of-each-resource-type"><span class="toc-number">2.2.5.</span> <span class="toc-text"> Single Instance of Each Resource Type</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#multiple-instance-for-each-resource-type"><span class="toc-number">2.2.6.</span> <span class="toc-text"> Multiple-Instance for Each Resource Type</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#process-termination"><span class="toc-number">2.2.7.</span> <span class="toc-text"> Process termination</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#resource-preemption"><span class="toc-number">2.2.8.</span> <span class="toc-text"> Resource preemption</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ref-notes"><span class="toc-number">3.</span> <span class="toc-text"> Ref Notes</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="本站概要">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Maru"
+      data-src="/images/ava1.jpg">
+  <p class="name" itemprop="name">Maru</p>
+  <div class="description" itemprop="description">垮惹</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">21</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首頁</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2026/01/15/OS/7_Process_Synchronization/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2026/01/18/OS/9_Memory_Management/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>隨機文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/18/OS/9_Memory_Management/" title="Chapter 8. Memory Management">Chapter 8. Memory Management</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/20/OS/11_File_System_Interface/" title="Chapter 10. File System Interface">Chapter 10. File System Interface</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/14/OS/6_Process_Scheduling/" title="Chapter 5. Process Scheduling">Chapter 5. Process Scheduling</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/11/10/%E6%97%A5%E6%96%87/%E6%97%A5%E6%9C%AC%E8%AA%9E%E3%81%AE%E6%A3%AE/" title="【一冊で合格する】Ｎ1  - 錯題集">【一冊で合格する】Ｎ1  - 錯題集</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/21/OS/12_File_System_Implementation/" title="Chapter 11. File System Implementation">Chapter 11. File System Implementation</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/09/OS/0_Start/" title="作業系統(Operating System)筆記版面介紹">作業系統(Operating System)筆記版面介紹</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/19/OS/10_Virtual_Memory_Management/" title="Chapter 9. Virtual Memory Management">Chapter 9. Virtual Memory Management</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/13/OS/5_Multithreaded_Programming/" title="Chapter 4. Multithreaded Programming">Chapter 4. Multithreaded Programming</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Classification/" title="Classification">Classification</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/12/OS/4_Processes_Concept/" title="Chapter 3. Processes Concept">Chapter 3. Processes Concept</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新評論</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maru @ 棉花糖小窩</span>
+  </div>
+  <div class="powered-by">
+    基於 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2026/01/17/OS/8_ Deadlocks/',
+    favicon: {
+      show: "（●´3｀●）復活成功",
+      hide: "(´Д｀)瀏覽器崩潰啦"
+    },
+    search : {
+      placeholder: "文章搜尋",
+      empty: "關於 「 ${query} 」 ，什麼也沒搜到",
+      stats: "${time} ms 內找到 ${hits} 條結果"
+    },
+    valine: true,copy_tex: true,
+    katex: true,fancybox: true,
+    copyright: '複製成功，轉載請遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 協議。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/sakiko.model.json"},"display":{"position":"left","width":280,"height":400,"hOffset":0,"vOffset":-50},"mobile":{"show":false},"react":{"opacity":1},"dialog":{"enable":false,"hitokoto":false},"log":false});</script></body>
+</html>

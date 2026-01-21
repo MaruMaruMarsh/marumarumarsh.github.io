@@ -1,0 +1,883 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://marumarumarsh.github.io/2026/01/14/OS/6_Process_Scheduling/">
+
+
+
+  <title>
+Chapter 5. Process Scheduling |
+棉花糖小窩 = 一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ = 棉花糖絕對不能烤！！</title>
+<meta name="generator" content="Hexo 8.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Chapter 5. Process Scheduling
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="創建時間：2026-01-14 08:31:14">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">發表於</span>
+    <time itemprop="dateCreated datePublished" datetime="2026-01-14T08:31:14+08:00">2026-01-14</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切換導航欄">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">棉花糖小窩</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res034040_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res040012_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036010_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res026046_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res039012_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036012_rip/card_after_training.png"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首頁</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-TW">
+  <link itemprop="mainEntityOfPage" href="https://marumarumarsh.github.io/2026/01/14/OS/6_Process_Scheduling/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/ava1.jpg">
+    <meta itemprop="name" content="Maru">
+    <meta itemprop="description" content="棉花糖絕對不能烤！！, 垮惹">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="basic-concepts"><a class="markdownIt-Anchor" href="#basic-concepts">#</a> Basic Concepts</h1>
+<h2 id="multiprogramming"><a class="markdownIt-Anchor" href="#multiprogramming">#</a> Multiprogramming</h2>
+<p>OS 用 multiprogramming 方法</p>
+<ul>
+<li>keep 多個 process 在 memory 中</li>
+<li>一次只有一個 process 在 CPU 執行，其他的 process 處於 waiting 狀態</li>
+<li>當執行狀態的行程必須等待資源才能往下執行（I/O request），作業系統拿回 CPU 的控制權交給等待的行程</li>
+<li>目的：CPU 隨時有執行狀態的行程，使 CPU 使用率最大化</li>
+</ul>
+<h2 id="cpu-io-burst-cycle"><a class="markdownIt-Anchor" href="#cpu-io-burst-cycle">#</a> CPU-I/O Burst Cycle</h2>
+<p>Process 基本上不是在執行 instruction，就是在執行 I/O，執行一連串的 instructions 又稱為 burst (CPU burst &amp; I/O burst)</p>
+<ul>
+<li>流程：process 一開始都是 CPU Burst，交由 CPU 去處理該 process，接著是 I/O Burst，做 I/O 資料的傳送
+<ul>
+<li>一般來說，多數的 CPU burst 時間很短，少部份的 CPU burst 時間很長</li>
+</ul>
+</li>
+<li>I/O Bound vs. CPU Bound
+<ul>
+<li>I/O Bound（I/O 密集）的 Program 通常有很多短的 CPU burst (若沒有很長的 CPU burst，則通常是 I/O Bound)</li>
+<li>CPU Bound（計算密集）的 Program 可能有一些很長的 CPU burst (如很長的 for loop)</li>
+</ul>
+</li>
+</ul>
+<p>這兩個狀態間一直循環，最後會呼叫一個終止行程執行的 system call 作為行程的結束</p>
+<h2 id="cpu-排程決定時機"><a class="markdownIt-Anchor" href="#cpu-排程決定時機">#</a> CPU 排程決定時機</h2>
+<p>CPU scheduling 從在 ready queue 的 process 中挑選 process 進入 CPU 執行<br>
+ CPU scheduling 選擇的 process 會在以下情況改變 :</p>
+<ol>
+<li>Running -&gt; Waiting (I/O request)</li>
+<li>Running -&gt; Ready (time slice 到)</li>
+<li>Waiting -&gt; Ready (I/O 完成)</li>
+<li>Termination</li>
+</ol>
+<h3 id="non-preemptive-與-preemptive-法則"><a class="markdownIt-Anchor" href="#non-preemptive-與-preemptive-法則">#</a> Non-preemptive 與 preemptive 法則</h3>
+<h4 id="non-preemptive-scheduling-cooperative-scheduling"><a class="markdownIt-Anchor" href="#non-preemptive-scheduling-cooperative-scheduling">#</a> Non-preemptive scheduling / Cooperative scheduling</h4>
+<p>process 一旦進入 running 狀態，除非該 process 自行放棄 CPU (I/O request or terminate)，否則不會被強制中斷</p>
+<ul>
+<li>排程器只會在以下兩種情況下被呼叫：
+<ul>
+<li>Running -&gt; Waiting (I/O request)</li>
+<li>Running -&gt; Termination</li>
+</ul>
+</li>
+<li>特點：
+<ul>
+<li>Simpler in design</li>
+<li>Poor responsiveness</li>
+<li>Potential hazards</li>
+</ul>
+</li>
+</ul>
+<h4 id="preemptive-scheduling-主流"><a class="markdownIt-Anchor" href="#preemptive-scheduling-主流">#</a> Preemptive scheduling （主流）</h4>
+<p>process 可以被強制中斷，並放回 ready queue</p>
+<ul>
+<li>排程器在全部四種情況下都會被呼叫</li>
+<li>特點：
+<ul>
+<li>Higher responsiveness</li>
+<li>Hard to share resources race conditions</li>
+<li>Higher overheads</li>
+</ul>
+</li>
+<li>問題
+<ul>
+<li>共享資源的同步問題 (synchronization problem)：<br>
+process 在被中斷前，可能正在使用某些共享資源，若此時被中斷並換另一個 process 執行，可能會導致共享資源的錯誤使用
+<ul>
+<li>解決方法：critical section、mutex locks、semaphores、monitors</li>
+</ul>
+</li>
+<li>priority inversion problem：<br>
+高優先權的 process 被低優先權的 process 所阻塞，導致無法執行
+<ul>
+<li>解決方法：priority inheritance</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="dispatcher"><a class="markdownIt-Anchor" href="#dispatcher">#</a> Dispatcher</h3>
+<p>dispatcher 負責將 CPU 控制權交給經由 Short-term scheduler 所挑選出的 process 做以下處理：</p>
+<ul>
+<li>switching context：把現在的 process 存回 PCB，把選定的下個 process 的 PCB 資訊載入到 CPU register</li>
+<li>switching to user mode</li>
+<li>jumping to the proper location in the user program to restart that program</li>
+</ul>
+<h4 id="dispatcher-latency"><a class="markdownIt-Anchor" href="#dispatcher-latency">#</a> Dispatcher Latency</h4>
+<p><img data-src="https://i.imgur.com/R2IXFvT.png" alt=""><br>
+指從 dispatcher 被呼叫要停止一個 process 並開始執行另一個 process 所需的時間</p>
+<ul>
+<li>Scheduling time</li>
+<li>Interrupt re-enabling time</li>
+<li>Context switch time</li>
+</ul>
+<h1 id="scheduling-algorithms"><a class="markdownIt-Anchor" href="#scheduling-algorithms">#</a> Scheduling Algorithms</h1>
+<h2 id="scheduling-criteria"><a class="markdownIt-Anchor" href="#scheduling-criteria">#</a> Scheduling Criteria</h2>
+<ul>
+<li>CPU utilization：理論上 0%~100%，以一顆 core 去算</li>
+<li>Throughput：在一個時間單位內完成的行程數量</li>
+<li>Turnaround time：submission ~ completion（從 ready ~ terminate 的時間）</li>
+<li>Waiting time：在 ready queue 的 waiting 時間</li>
+<li>Response time：submission ~ the first response is produced</li>
+</ul>
+<h2 id="algorithms"><a class="markdownIt-Anchor" href="#algorithms">#</a> Algorithms</h2>
+<h3 id="fcfs-first-come-first-served"><a class="markdownIt-Anchor" href="#fcfs-first-come-first-served">#</a> FCFS ( First-Come, First-Served )</h3>
+<p>依 (Burst time) 抵達順序執行 (先來的先執行)</p>
+<ul>
+<li>Non-preemptive</li>
+<li>最好和最糟的情況平均等待時間相差很大<br>
+<img data-src="https://www.cs.uic.edu/~jbell/CourseNotes/OperatingSystems/images/Chapter5/5_FCFS_Chart.jpg" alt="">
+<ul>
+<li>最糟情況：process 按照 burst time 從大到小抵達<br>
+ AWT=[P (0)+P (24)+P (27)]/3=(0+24+27)/3=17 ms.</li>
+<li>最好情況：process 按照 burst time 從小到大抵達<br>
+ AWT=[P (0)+P (3)+P (6)]/3=(0+3+6)/3=3 ms.</li>
+</ul>
+</li>
+<li>優點
+<ul>
+<li>簡單易實作</li>
+<li>公平</li>
+</ul>
+</li>
+<li>缺點
+<ul>
+<li>較長的 process 會讓後面的 process 等待很久，造成平均等待時間變長</li>
+<li>低 CPU 利用度</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>護衛效應 (Convoy Effect)<br>
+ 很多 process 均在等待一個需要很長 CPU Time 來完成工作 process，造成平均等待時間大幅增加的不良現象。對 I/O-bound process 有極糟糕的影響，會造成低 I/O 利用度。</p>
+</blockquote>
+<h3 id="sjf-shortest-job-first"><a class="markdownIt-Anchor" href="#sjf-shortest-job-first">#</a> SJF ( Shortest Job First )</h3>
+<p>短任務先做，分可插隊與不可插隊</p>
+<ul>
+<li>運用行程下一個 CPU burst 的長度，而非 CPU burst total 長度</li>
+<li>有最短的 CPU burst 的長度先得到 CPU 使用權</li>
+<li>Schemes
+<ul>
+<li>Non-Preemptive SJF: 當一個行程拿到 CPU，不會被搶佔直到他完成<br>
+<img data-src="https://i.imgur.com/wQBZGsP.png" alt=""></li>
+<li>Preemptive SJF / SRTF (Shortest Remaining Time First): 當一個新的行程抵達 ready queue 時，若該行程的 CPU burst 長度小於目前執行行程的剩餘時間，則搶佔目前執行的行程<br>
+<img data-src="https://i.imgur.com/XV0JkpF.png" alt=""></li>
+</ul>
+</li>
+<li>優點
+<ul>
+<li>average waiting time 一定最短
+<ul>
+<li>SJF (non-preemptive) 若 burst all ready at 0, 則全體等待時間最短</li>
+<li>SRTF (preemptive) 若 任務抵達時間隨機，則全體等待時間最短</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>缺點
+<ul>
+<li>不公平</li>
+<li>Starvation 的問題：低優先度的 process 可能永遠無法執行
+<blockquote>
+<p>解決方法：aging，隨著等待時間增加，提升 process 的 priority</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="determining-length-of-next-cpu-burst"><a class="markdownIt-Anchor" href="#determining-length-of-next-cpu-burst">#</a> Determining Length of Next CPU Burst</h4>
+<p>由於 SJF 的難處是在執行下一個 CPU burst 前無法得知實際的執行長度<br>
+所以 Approximate SJF 下一個 burst 可預測，為過去 CPU burst 長度的 exponential average<br>
+<img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh3g-iObnfrZvtoTi2gPjB7u4Y-Miv810x_LFYd-NjxZ421n_F_4D_UX0Wed2wHDdtqCLsHn5Jmh0275kIlU-CIR9eS9SXtrwP9XRG51seHbyUSzrtUnbATDqnaLHQr9Aq8kjUUHq2Ow9mU/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7+2014-11-19+%E4%B8%8B%E5%8D%889.05.46-26.png" alt=""></p>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">t_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76508em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> = 上一次預估的 CPU Burst Time</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi></mrow><annotation encoding="application/x-tex">\tau</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span></span></span></span> = 上一次實際的 CPU Burst Time</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>τ</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\tau_{n+1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.638891em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:-0.1132em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span> = 此次預估的 CPU Burst Time</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> = 分配比率，常用 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">1/2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord">/</span><span class="mord">2</span></span></span></span></li>
+</ul>
+<h3 id="priority-method"><a class="markdownIt-Anchor" href="#priority-method">#</a> Priority Method</h3>
+<ul>
+<li>為更加普遍的 SJF，CPU 被分配給高優先度的行程</li>
+<li>每個 process 有 priority number</li>
+<li>可以為 Preemptive 或 Non-preemptive</li>
+<li>優先度可由內部或外部決定
+<ul>
+<li>內部：由 OS 用某些特徵決定</li>
+<li>外部：由使用者所決定</li>
+</ul>
+</li>
+<li>每個 process 有個 priority number</li>
+<li>有 starvation 的問題
+<blockquote>
+<p>解決方法：aging，隨著等待時間增加，提升 process 的 priority</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="round-robin"><a class="markdownIt-Anchor" href="#round-robin">#</a> Round Robin</h3>
+<p><img data-src="https://i.imgur.com/ZjjIYVq.png" alt=""><br>
+限制 process 在 CPU 執行的時間 (time quantum)，通常是 10~100 ms，達規定的執行時間後，被下一順位的 process preempted 並加到 ready queue 的尾端</p>
+<ul>
+<li>Performance<br>
+TQ Large –&gt; 類似 FCFS<br>
+TQ small –&gt; (context switch) 負擔加重</li>
+<li>turnaround 表現不好，response 表現好</li>
+<li>有可能發生提早結束的情形</li>
+<li>分時系統所使用的排程法</li>
+</ul>
+<h3 id="multilevel-queues"><a class="markdownIt-Anchor" href="#multilevel-queues">#</a> Multilevel Queues</h3>
+<p>分成多層佇列，每層佇列分別使用自己的排班法則，同一個佇列通常放類似功能的 process</p>
+<ul>
+<li>現在 OS 大多用這種方法</li>
+<li>因為還是只有一個 queue 的程式可以執行，所以 queue 之間也有排程，常見的作法是用權重的方式隨機挑選一個出來
+<ul>
+<li>Fixed priority scheduling：有 starvation 問題，若最上層的 queue 先做，下層的 process 可能一直做不到</li>
+<li>Time slice：每個 queue 分配一定的 CPU time</li>
+</ul>
+</li>
+<li>queue 間也有 priority，每層之間不能轉移<br>
+<img data-src="https://i.imgur.com/chwaPIM.png" alt=""></li>
+</ul>
+<h3 id="multilevel-feedback-queues"><a class="markdownIt-Anchor" href="#multilevel-feedback-queues">#</a> Multilevel Feedback Queues</h3>
+<p>process 可以在不同的 queue 中移動，因為也是一種 priority queue，也會有 starvation 的問題，通常搭配 aging 實作</p>
+<ul>
+<li>想法：將行程依據他們的 <strong>CPU burst 特性</strong>做分類
+<ul>
+<li>I/O-bound 和互動性的行程：放在較高的 priority queue –-&gt; short CPU burst，其 cpu burst 比較短，不會佔住 cpu</li>
+<li>CPU-bound 行程：放在較低 priority queue –-&gt; long CPU burst</li>
+</ul>
+</li>
+<li>三層以上的 queue<br>
+<img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEijCG7L64pdUU1-IxNzItKnPpROu-XWY2gOwDsi4B2oQVhczQp3yIe-QtEde9MpDMetFRW67LQGvOT59dw21ShrMJ0c9Dxr9C_B5BMmjq2GLzvrw28oiBcwNOAbwMYtYttkoSIoZ_jKKrOe/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7+2015-01-15+%E4%B8%8A%E5%8D%8812.35.33.png" alt="">
+<ul>
+<li>Q0：time quantum 為 8 ms，使用 RR</li>
+<li>Q1：time quantum 為 16 ms，使用 RR</li>
+<li>Q2：FCFS</li>
+</ul>
+</li>
+<li>定義所需參數根據
+<ul>
+<li>queues 數量</li>
+<li>每個 queue 的排程演算法</li>
+<li>提昇 / 降級一個行程的方法</li>
+</ul>
+</li>
+<li>最通用的也最複雜的 CPU 排班演算法</li>
+</ul>
+<h2 id="各種排程的比較"><a class="markdownIt-Anchor" href="#各種排程的比較">#</a> 各種排程的比較</h2>
+<p><img data-src="https://i.imgur.com/RGB6o52.png" alt=""></p>
+<h1 id="multi-processor-multi-core-processor-real-time"><a class="markdownIt-Anchor" href="#multi-processor-multi-core-processor-real-time">#</a> Multi-Processor &amp; Multi-Core Processor &amp; Real-Time</h1>
+<h2 id="multi-processor-scheduling"><a class="markdownIt-Anchor" href="#multi-processor-scheduling">#</a> Multi-Processor Scheduling</h2>
+<h3 id="multi-processor-scheduling-2"><a class="markdownIt-Anchor" href="#multi-processor-scheduling-2">#</a> Multi-Processor Scheduling</h3>
+<ul>
+<li>Asymmetric multiprocessing (AMP)
+<ul>
+<li>所有的系統活動由<strong>一個 processor 所控制</strong>，其他的 process 只處理由 master 分配的 user code</li>
+<li>緩解 data sharing 的需求</li>
+<li>比 SMP 簡單</li>
+</ul>
+</li>
+<li>Symmetric multiprocessing (SMP)
+<ul>
+<li>每個 processor 都有自己的排程</li>
+<li>所有的行程在相同的 ready queue，或每個 processor 有自己的 ready queue</li>
+<li>需要同步化機制</li>
+</ul>
+</li>
+</ul>
+<h3 id="processor-affinity"><a class="markdownIt-Anchor" href="#processor-affinity">#</a> Processor affinity</h3>
+<p>process 與執行它的 processor 之間有 affinity 關係</p>
+<ul>
+<li>process 會將最近常使用的資料放在執行它的 processor 的快取中</li>
+<li>快取的無效及資料重新放入是高成本的行為</li>
+<li>Solution
+<ul>
+<li>soft affinity: 允許 process 在不同 processor 執行</li>
+<li>hard affinity: 只能在同一個 processor 執行</li>
+</ul>
+</li>
+</ul>
+<h3 id="numa-and-cpu-scheduling"><a class="markdownIt-Anchor" href="#numa-and-cpu-scheduling">#</a> NUMA and CPU Scheduling</h3>
+<ul>
+<li>Non-uniform memory access (NUMA) :<br>
+<img data-src="https://i.imgur.com/XxBB177.png" alt=""><br>
+NUMA（non-uniform memory access）發生在有 CPU 與 memory boards 的系統</li>
+<li>Real time CPU scheduling : 要求在很準確時間執行的 task (EX 火箭)，不能被其他 process 影響
+<ul>
+<li>soft real-time : priority 高的先處理，但無法保證高 priority 一定可以被 schedule</li>
+<li>hard real-time : 一定滿足條件，重點放在執行的時間</li>
+</ul>
+<blockquote>
+<p>event latency : event 發生到被 serve 的這段時間</p>
+<ul>
+<li>interrupt latency : interrupt 進來後直到執行完 interrupt 的時間</li>
+<li>dispatch latency : 選好下個 process 到執行完 dispatch 的時間。dispatch 有可能 conflict，也就是要等別人處理完資料，花額外時間去處理 conflict</li>
+</ul>
+</blockquote>
+</li>
+<li>Load-balancing
+<ul>
+<li>讓不同 processors 間的 workload 盡量平均</li>
+<li>只在 processor 有 private queue 的系統下才需要</li>
+<li>兩種策略（通常是平行實作）
+<ul>
+<li>push migration: 將 processes 移動到閒置或 less-busy 的 processor 中</li>
+<li>pull migration: 閒置的 processor 將等待中的 task 從其他忙碌的 processor 中拉過來</li>
+</ul>
+</li>
+<li>Load balancing 經常抵銷 processor affinity 帶來的效益</li>
+</ul>
+</li>
+</ul>
+<h2 id="multi-core-processor-scheduling"><a class="markdownIt-Anchor" href="#multi-core-processor-scheduling">#</a> Multi-core Processor Scheduling</h2>
+<h3 id="multi-core-processor"><a class="markdownIt-Anchor" href="#multi-core-processor">#</a> Multi-core Processor</h3>
+<ul>
+<li>更快且更少的 power 消耗</li>
+<li>memory stall: 當存取記憶體時，花費許多時間在等待資料 available (e.g. cache miss)</li>
+</ul>
+<h3 id="multi-threaded-multi-core-systems"><a class="markdownIt-Anchor" href="#multi-threaded-multi-core-systems">#</a> Multi-threaded multi-core systems</h3>
+<p><img data-src="https://i.imgur.com/YQyF2WO.png" alt=""></p>
+<ul>
+<li>兩個 (或更多) 的硬體 thread 被 assign 給每一個 core (i.e. Intel Hyper-threading)</li>
+<li>當一個 thread 在存取記憶體時，其他 thread 就可以執行 CPU 指令</li>
+<li>Two ways to multithread a processor
+<ul>
+<li>-grained: 當 memory stall 發生時切換到另一個 thread，因為 instruction pipeline 必須被 flush 所以成本很高</li>
+<li>fine-grained (interleaved): 把 pipeline 的狀態保留並切換到另一個 thread 執行，需要更多的 register 來保存資料</li>
+</ul>
+</li>
+<li>Scheduling for Multi-threaded multi-core systems
+<ul>
+<li>1st level：選某個 software thread 跑在每個 hardware thread（logical processor）<br>
+<img data-src="https://i.imgur.com/kj3lhGW.png" alt=""></li>
+<li>2nd level：每個 core 去決定在哪個 hardware thread 上跑</li>
+</ul>
+</li>
+</ul>
+<h2 id="real-time-scheduling"><a class="markdownIt-Anchor" href="#real-time-scheduling">#</a> Real-Time Scheduling</h2>
+<h3 id="fcfs-scheduling-algorithm-non-rts"><a class="markdownIt-Anchor" href="#fcfs-scheduling-algorithm-non-rts">#</a> FCFS scheduling algorithm – Non-RTS</h3>
+<ul>
+<li>T1 = (0, 4, 10) == (Ready, Execution, Period)</li>
+<li>T2 = (1, 2, 4)</li>
+</ul>
+<h3 id="rate-monotonic-rm-algorithm"><a class="markdownIt-Anchor" href="#rate-monotonic-rm-algorithm">#</a> Rate-Monotonic (RM) algorithm</h3>
+<p><img data-src="https://i.imgur.com/3MzhVdi.png" alt=""><br>
+依據頻率的大小來做排程</p>
+<ul>
+<li>更短的週期 (週期是固定的數值，在 run time 期間不會變動) –&gt; 更高的優先度</li>
+<li>Fixed-priority schedule
+<ul>
+<li>同一個 task 的所有 job 都有一樣的 priority</li>
+<li>task 的優先度是固定的</li>
+</ul>
+</li>
+</ul>
+<h3 id="earliest-deadline-first-edf-algorithm"><a class="markdownIt-Anchor" href="#earliest-deadline-first-edf-algorithm">#</a> Earliest-Deadline-First (EDF) algorithm</h3>
+<p><img data-src="https://i.imgur.com/7DI9wWT.png" alt=""><br>
+Dynamic-priority scheduler</p>
+<ul>
+<li>Task’s priority 不是 fixed，由 deadline 決定</li>
+</ul>
+<h1 id="operating-system-examples"><a class="markdownIt-Anchor" href="#operating-system-examples">#</a> Operating System Examples</h1>
+<h2 id="solaris-scheduler"><a class="markdownIt-Anchor" href="#solaris-scheduler">#</a> Solaris Scheduler</h2>
+<p><img data-src="https://www.cs.uic.edu/~jbell/CourseNotes/OperatingSystems/images/Chapter5/5_13_SolarisScheduling.jpg" alt=""></p>
+<ul>
+<li>Priority-based multilevel feedback queue scheduling</li>
+<li>Six classes of scheduling
+<ol>
+<li>real-time</li>
+<li>system</li>
+<li>time sharing</li>
+<li>interactive<br>
+Solaris 9 introduced two new scheduling classes: Fixed priority and fair share<br>
+ 每一個類有自己的 priority &amp; scheduling 演算法</li>
+</ol>
+</li>
+<li>Scheduler 會將類的優先度轉換為 global 的優先度</li>
+</ul>
+<h3 id="exampletime-sharing-interactive"><a class="markdownIt-Anchor" href="#exampletime-sharing-interactive">#</a> Example（time sharing, interactive）</h3>
+<p>優先度與 time slices 成反向關係，期望 CPU-bound 的 process 慢慢往下沉，I/O-bound 的 process 慢慢上浮</p>
+<ul>
+<li>Time quantum expired
+<ul>
+<li>process 的 priority 降低</li>
+<li>讓 CPU bound process 有機會執行</li>
+</ul>
+</li>
+<li>Return from sleep
+<ul>
+<li>process 的 priority 提高</li>
+<li>讓 i/o bound process 優先執行</li>
+</ul>
+</li>
+</ul>
+<h2 id="windows-xp-scheduler"><a class="markdownIt-Anchor" href="#windows-xp-scheduler">#</a> Windows XP Scheduler</h2>
+<p><img data-src="https://i.imgur.com/idoLeFL.png" alt=""></p>
+<ul>
+<li>Multilevel feedback queue scheduling</li>
+<li>排程：優先度分為 0~31，由優先度最高的 queue 開始排程
+<ul>
+<li>優先度最高的 thread 永遠在執行</li>
+<li>每一個 priority queue 使用 Round-robin</li>
+</ul>
+</li>
+<li>除了 Real-Time class，優先度在 run time 時期動態變更</li>
+</ul>
+<h2 id="linux-scheduler"><a class="markdownIt-Anchor" href="#linux-scheduler">#</a> Linux Scheduler</h2>
+<ul>
+<li>Preemptive priority based scheduling
+<ul>
+<li>只有 user mode processes 可以被 preempted</li>
+<li>兩個不一樣的 process priority ranges
+<ul>
+<li>值越低優先度越高</li>
+<li>TQ 較高者有更高的優先度</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>is a preemptive priority-based algorithm with two priority ranges
+<ul>
+<li>Real-time tasks（priority range 0~99）：靜態的優先度</li>
+<li>Other tasks（priority range 100~140）：依 task 執行狀況動態決定優先度</li>
+</ul>
+</li>
+<li>Scheduling algorithm<br>
+<img data-src="https://www.cs.uic.edu/~jbell/CourseNotes/OperatingSystems/images/Chapter5/5_16_TaskList.jpg" alt="">
+<ul>
+<li>若一個 task 還有剩餘的 TQ，都會保留在 active array，希望每一個 task 都能用完它的 TQ</li>
+<li>當 task 耗盡 TQ，則為 expired 且不應被執行，移到 expired array</li>
+<li>task expire 後，系統會決定新的優先度以及 TQ</li>
+</ul>
+</li>
+</ul>
+<h1 id="ref-notes"><a class="markdownIt-Anchor" href="#ref-notes">#</a> Ref Notes</h1>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vSVQ1ZzJ3SHpUZE90TVNEWFBWRXBPdw==">Kipper’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQENoYW5nLUNoaWEtQ2hpL09TL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGJTQwQ2hhbmctQ2hpYS1DaGklMkZPUy1DSDU=">Chang-Chia-Chi’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQFBsLWVRVDlDUWFTMGpoRXhLcUw4X3cvQmtoT1NSNGpXL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGcyUyRkIxNkY1dUtlTT90eXBlPWJvb2s=">陳品媛的筆記</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubXJvcGVuZ2F0ZS5jb20vMjAxNS8wMS9vcGVyYXRpbmctc3lzdGVtLWNoNS1jcHUtc2NoZWR1bGluZy5odG1s">Mr. Opengate. OS - Ch4</span></li>
+</ul>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新於</span>
+    <time title="修改時間：2026-01-14 14:54:29" itemprop="dateModified" datetime="2026-01-14T14:54:29+08:00">2026-01-14</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>作者： </strong>Maru <i class="ic i-at"><em>@</em></i>一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ
+  </li>
+  <li class="link">
+    <strong>文章連結：</strong>
+    <a href="https://marumarumarsh.github.io/2026/01/14/OS/6_Process_Scheduling/" title="Chapter 5. Process Scheduling">https://marumarumarsh.github.io/2026/01/14/OS/6_Process_Scheduling/</a>
+  </li>
+  <li class="license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2026/01/13/OS/5_Multithreaded_Programming/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;anihonetwallpaper.com&#x2F;image&#x2F;2024&#x2F;10&#x2F;202402203-ProjectSEKAI-AkiyamaMizuki.jpg" title="Chapter 4. Multithreaded Programming">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 4. Multithreaded Programming</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2026/01/15/OS/7_Process_Synchronization/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;anihonetwallpaper.com&#x2F;image&#x2F;2025&#x2F;10&#x2F;202501841-BanG_Dream-WakamiyaEve.jpg" title="Chapter 6. Process Synchronization">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 6. Process Synchronization</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目錄">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#basic-concepts"><span class="toc-number">1.</span> <span class="toc-text"> Basic Concepts</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#multiprogramming"><span class="toc-number">1.1.</span> <span class="toc-text"> Multiprogramming</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cpu-io-burst-cycle"><span class="toc-number">1.2.</span> <span class="toc-text"> CPU-I&#x2F;O Burst Cycle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cpu-%E6%8E%92%E7%A8%8B%E6%B1%BA%E5%AE%9A%E6%99%82%E6%A9%9F"><span class="toc-number">1.3.</span> <span class="toc-text"> CPU 排程決定時機</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#non-preemptive-%E8%88%87-preemptive-%E6%B3%95%E5%89%87"><span class="toc-number">1.3.1.</span> <span class="toc-text"> Non-preemptive 與 preemptive 法則</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#non-preemptive-scheduling-cooperative-scheduling"><span class="toc-number">1.3.1.1.</span> <span class="toc-text"> Non-preemptive scheduling &#x2F; Cooperative scheduling</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#preemptive-scheduling-%E4%B8%BB%E6%B5%81"><span class="toc-number">1.3.1.2.</span> <span class="toc-text"> Preemptive scheduling （主流）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dispatcher"><span class="toc-number">1.3.2.</span> <span class="toc-text"> Dispatcher</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#dispatcher-latency"><span class="toc-number">1.3.2.1.</span> <span class="toc-text"> Dispatcher Latency</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#scheduling-algorithms"><span class="toc-number">2.</span> <span class="toc-text"> Scheduling Algorithms</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#scheduling-criteria"><span class="toc-number">2.1.</span> <span class="toc-text"> Scheduling Criteria</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#algorithms"><span class="toc-number">2.2.</span> <span class="toc-text"> Algorithms</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#fcfs-first-come-first-served"><span class="toc-number">2.2.1.</span> <span class="toc-text"> FCFS ( First-Come, First-Served )</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sjf-shortest-job-first"><span class="toc-number">2.2.2.</span> <span class="toc-text"> SJF ( Shortest Job First )</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#determining-length-of-next-cpu-burst"><span class="toc-number">2.2.2.1.</span> <span class="toc-text"> Determining Length of Next CPU Burst</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#priority-method"><span class="toc-number">2.2.3.</span> <span class="toc-text"> Priority Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#round-robin"><span class="toc-number">2.2.4.</span> <span class="toc-text"> Round Robin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#multilevel-queues"><span class="toc-number">2.2.5.</span> <span class="toc-text"> Multilevel Queues</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#multilevel-feedback-queues"><span class="toc-number">2.2.6.</span> <span class="toc-text"> Multilevel Feedback Queues</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%84%E7%A8%AE%E6%8E%92%E7%A8%8B%E7%9A%84%E6%AF%94%E8%BC%83"><span class="toc-number">2.3.</span> <span class="toc-text"> 各種排程的比較</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#multi-processor-multi-core-processor-real-time"><span class="toc-number">3.</span> <span class="toc-text"> Multi-Processor &amp; Multi-Core Processor &amp; Real-Time</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#multi-processor-scheduling"><span class="toc-number">3.1.</span> <span class="toc-text"> Multi-Processor Scheduling</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#multi-processor-scheduling-2"><span class="toc-number">3.1.1.</span> <span class="toc-text"> Multi-Processor Scheduling</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#processor-affinity"><span class="toc-number">3.1.2.</span> <span class="toc-text"> Processor affinity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#numa-and-cpu-scheduling"><span class="toc-number">3.1.3.</span> <span class="toc-text"> NUMA and CPU Scheduling</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#multi-core-processor-scheduling"><span class="toc-number">3.2.</span> <span class="toc-text"> Multi-core Processor Scheduling</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#multi-core-processor"><span class="toc-number">3.2.1.</span> <span class="toc-text"> Multi-core Processor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#multi-threaded-multi-core-systems"><span class="toc-number">3.2.2.</span> <span class="toc-text"> Multi-threaded multi-core systems</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#real-time-scheduling"><span class="toc-number">3.3.</span> <span class="toc-text"> Real-Time Scheduling</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#fcfs-scheduling-algorithm-non-rts"><span class="toc-number">3.3.1.</span> <span class="toc-text"> FCFS scheduling algorithm – Non-RTS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rate-monotonic-rm-algorithm"><span class="toc-number">3.3.2.</span> <span class="toc-text"> Rate-Monotonic (RM) algorithm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#earliest-deadline-first-edf-algorithm"><span class="toc-number">3.3.3.</span> <span class="toc-text"> Earliest-Deadline-First (EDF) algorithm</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#operating-system-examples"><span class="toc-number">4.</span> <span class="toc-text"> Operating System Examples</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#solaris-scheduler"><span class="toc-number">4.1.</span> <span class="toc-text"> Solaris Scheduler</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#exampletime-sharing-interactive"><span class="toc-number">4.1.1.</span> <span class="toc-text"> Example（time sharing, interactive）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#windows-xp-scheduler"><span class="toc-number">4.2.</span> <span class="toc-text"> Windows XP Scheduler</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#linux-scheduler"><span class="toc-number">4.3.</span> <span class="toc-text"> Linux Scheduler</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ref-notes"><span class="toc-number">5.</span> <span class="toc-text"> Ref Notes</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="本站概要">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Maru"
+      data-src="/images/ava1.jpg">
+  <p class="name" itemprop="name">Maru</p>
+  <div class="description" itemprop="description">垮惹</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">21</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首頁</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2026/01/13/OS/5_Multithreaded_Programming/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2026/01/15/OS/7_Process_Synchronization/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>隨機文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/27/Intro/" title="练习题与答案（測試）">练习题与答案（測試）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Classification/" title="Classification">Classification</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/18/OS/9_Memory_Management/" title="Chapter 8. Memory Management">Chapter 8. Memory Management</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/15/OS/7_Process_Synchronization/" title="Chapter 6. Process Synchronization">Chapter 6. Process Synchronization</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/%E5%89%8D%E8%A8%80/" title="先備軟體介紹">先備軟體介紹</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Statistical%20Learning/" title="Statistical Learning">Statistical Learning</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/14/OS/6_Process_Scheduling/" title="Chapter 5. Process Scheduling">Chapter 5. Process Scheduling</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/20/OS/11_File_System_Interface/" title="Chapter 10. File System Interface">Chapter 10. File System Interface</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/09/OS/1_Historical_Prospective/" title="Chapter 0. Historical Prospective">Chapter 0. Historical Prospective</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/12/OS/4_Processes_Concept/" title="Chapter 3. Processes Concept">Chapter 3. Processes Concept</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新評論</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maru @ 棉花糖小窩</span>
+  </div>
+  <div class="powered-by">
+    基於 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2026/01/14/OS/6_Process_Scheduling/',
+    favicon: {
+      show: "（●´3｀●）復活成功",
+      hide: "(´Д｀)瀏覽器崩潰啦"
+    },
+    search : {
+      placeholder: "文章搜尋",
+      empty: "關於 「 ${query} 」 ，什麼也沒搜到",
+      stats: "${time} ms 內找到 ${hits} 條結果"
+    },
+    valine: true,copy_tex: true,
+    katex: true,fancybox: true,
+    copyright: '複製成功，轉載請遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 協議。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/sakiko.model.json"},"display":{"position":"left","width":280,"height":400,"hOffset":0,"vOffset":-50},"mobile":{"show":false},"react":{"opacity":1},"dialog":{"enable":false,"hitokoto":false},"log":false});</script></body>
+</html>

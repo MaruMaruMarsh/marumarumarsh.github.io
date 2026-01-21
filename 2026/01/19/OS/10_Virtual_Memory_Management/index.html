@@ -1,0 +1,644 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://marumarumarsh.github.io/2026/01/19/OS/10_Virtual_Memory_Management/">
+
+
+
+  <title>
+Chapter 9. Virtual Memory Management |
+棉花糖小窩 = 一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ = 棉花糖絕對不能烤！！</title>
+<meta name="generator" content="Hexo 8.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Chapter 9. Virtual Memory Management
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="創建時間：2026-01-19 11:31:00">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">發表於</span>
+    <time itemprop="dateCreated datePublished" datetime="2026-01-19T11:31:00+08:00">2026-01-19</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切換導航欄">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">棉花糖小窩</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res040014_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res021081_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://anihonetwallpaper.com/image/2025/10/202501842-BanG_Dream-MaruyamaAya.jpg"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036008_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res034040_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036007_rip/card_normal.png"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首頁</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-TW">
+  <link itemprop="mainEntityOfPage" href="https://marumarumarsh.github.io/2026/01/19/OS/10_Virtual_Memory_Management/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/ava1.jpg">
+    <meta itemprop="name" content="Maru">
+    <meta itemprop="description" content="棉花糖絕對不能烤！！, 垮惹">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="background"><a class="markdownIt-Anchor" href="#background">#</a> Background</h1>
+<p><img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiAKVmaUS2ivN4M6erqpG_lG1wJyXz-nZ7q9fYgLTudU1P45VVluK5bsllISnF8dLoJW7OPfycU7gPDyL71CWzZQWlceXR_9kdhMca6515urJmZsCt2BNkCIWjdNw6TifuDbX5IS7i41r4/s1600/9_01_VirtualMemoryLarger.jpg" alt=""></p>
+<p><strong>虛擬記憶體 (Virtual Memory)</strong> 會讓應用程式認為其擁有連續可用的記憶體（一個連續完整的位址空間），而實際上，其通常是被分隔成多個實體記憶體碎片，還有部分暫時儲存在外部磁碟記憶體上，需要時才進行資料交換</p>
+<p>優點：</p>
+<ol>
+<li>允許程式大小大於實體記憶體 (physical memory) 大小情況下，程式仍然能執行。</li>
+<li>OS 的負擔，程式設計師無負擔</li>
+<li>記憶體的各個小空間皆有機會被利用到，記憶體使用度上升</li>
+<li>提高 multiprogramming degree，提昇 CPU 使用度</li>
+<li>每一次的 I/O transfer time 下降，因為不用將整個程式的所有 page 載入。(然而載入整個程式很耗費 I/O transfer time，因為總傳輸次數變多)</li>
+</ol>
+<h1 id="實現-virtual-memory-方法"><a class="markdownIt-Anchor" href="#實現-virtual-memory-方法">#</a> 實現 Virtual Memory 方法</h1>
+<h2 id="demand-paging"><a class="markdownIt-Anchor" href="#demand-paging">#</a> Demand Paging</h2>
+<p><img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiy3TZPVemruYPEaLrbY4i_k7dcfqheZbGcyUm2LxdSesyODngTsYtgAxsvYe8HxJkDparLYMazk_1ytXJ3zjjYZhGpe1-dVrCcvX6kK4Ppvvhvr7OJoa00d6CY_anAU9w0W4HmYWBtIU7p/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7+2014-12-09+%E4%B8%8B%E5%8D%8811.10.18-17.png" alt=""><br>
+以 paging 為基礎，採用 lazy swapper 技巧，即程式執行之初不將全部的 pages 載入 memory，僅載入執行所須的 pages，如要處理 page fault 問題，由 OS 另行處理</p>
+<ul>
+<li>多加一個  <code>Valid/Invalid Bit</code>  欄位，用以指示 page 是否在 memory 中。</li>
+</ul>
+<h3 id="demand-paging-performance"><a class="markdownIt-Anchor" href="#demand-paging-performance">#</a> Demand Paging Performance</h3>
+<p>Effective Access Time (EAT) = (1 – p) x memory access + p</p>
+<blockquote>
+<p>p = (page fault overhead + swap page out + swap page in + restart overhead)</p>
+</blockquote>
+<ul>
+<li>存取時間會<strong>正比</strong>於 page fault time（因為 page fault time 所花時間大）</li>
+<li>program 通常都是 locality 的 reference（access 在附近的 memory）–-&gt; 一個 page fault 會帶進 4KB 的 memory content，降低 page fault 發生的機會</li>
+</ul>
+<h2 id="copy-on-write"><a class="markdownIt-Anchor" href="#copy-on-write">#</a> Copy-on-Write</h2>
+<p>copy-on-write (COW) 是一種最佳化策略，在 copy-on-write 策略中如果有多個呼叫者同時要求相同資源（如記憶體或磁碟上的資料儲存），則他們會共同取得相同的指標指向相同的資源，直到<strong>某個呼叫者試圖修改資源的內容時</strong>，系統才會真正<strong>複製一份專用副本給該呼叫者</strong>，而其他呼叫者所見到的最初的資源仍然保持不變</p>
+<h3 id="fork-使用-copy-on-write-的探討"><a class="markdownIt-Anchor" href="#fork-使用-copy-on-write-的探討">#</a> fork 使用 copy-on-write 的探討：</h3>
+<p><img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgIkBTGP5rg5ecoyl_LNVwJIx1y3RoJwGLA1QpNnRq2Uc3eNVX7JE2vwY8AoCiVRNdB5eicNHqYt2a6ukGBBD6lH0eUpsoWrOZcPIgRehu8HPoFvDdNIB9x4V3bBDSOPc7hMGQhIzRLn12p/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7+2014-12-09+%E4%B8%8B%E5%8D%8811.35.53-20.png" alt=""></p>
+<ul>
+<li>fork () 使用 copy-on-write
+<ul>
+<li>parent process 會和 child process concurrent 執行，要達到這種效果，CPU 要有 MMU 硬體支援</li>
+</ul>
+</li>
+<li>vfork () 不使用 copy-on-write
+<ul>
+<li>parent 和 child process 除了 stack 其他都共享</li>
+<li>vfork () 通常用於沒有 MMU 的 OS，此時 parent process 會被暫停，直到 child process 執行了 exec () 或 exit ()</li>
+</ul>
+</li>
+</ul>
+<h1 id="page-replacement"><a class="markdownIt-Anchor" href="#page-replacement">#</a> Page Replacement</h1>
+<p>當 page fault 發生且 memory 無可用 page 時，則 OS 必須執行 page replacement。</p>
+<ol>
+<li>OS 必須選擇一個 victim page，將其 swap out 到 disk 來空出一個可用 frame</li>
+<li>再將 lost page swap in 到此 frame</li>
+</ol>
+<ul>
+<li>swap out 和 swap in 分別是 2 個 disk I/O 的動作 (慢！)
+<ul>
+<li>swap in 是必要的，一定要將 lost page 置入到 memory 中</li>
+<li>swap out 不盡然是必要的！需視 victim page 是否曾被修改，利用 dirty bit 來判斷，節省不必要的 I/O 動作</li>
+</ul>
+</li>
+</ul>
+<h2 id="page-replacement-algorithms"><a class="markdownIt-Anchor" href="#page-replacement-algorithms">#</a> Page Replacement Algorithms</h2>
+<ol>
+<li><strong>FIFO：最先載入的 page 優先視為 victim page</strong>
+<ul>
+<li>簡單，易於實作</li>
+<li>效果挺差的，但不代表是最差的 (在 page replacement 沒有最差，因為無法預知未來)</li>
+<li>可能有 Belady 異常現象：當 Process 分配到較多的 Frame 數目其 Page Fault Ratio 不降反升</li>
+</ul>
+</li>
+<li><strong>OPT：以將來長期不會使用的 page 視為 victim Page</strong>
+<ul>
+<li>效果最佳</li>
+<li>不會有 Belady 異常現象</li>
+<li>不可能辦到，因為是看未來！不過可以知道 upper bound</li>
+</ul>
+</li>
+<li><strong>LRU：以最近不常使用的 page 視為 victim page</strong>
+<ul>
+<li>效果不錯 (Page fault ratio 尚可接受)</li>
+<li>不會有 Belady 異常現象</li>
+<li>製作成本高，需要大量硬體支援 (如：需要 Counter 或 Stack)</li>
+</ul>
+</li>
+<li><strong>LFU：參考次數最少的 page 作為 victim page</strong>
+<ul>
+<li>Need time to warm up and cool down (aging) a page</li>
+</ul>
+</li>
+</ol>
+<h2 id="lru-近似法則"><a class="markdownIt-Anchor" href="#lru-近似法則">#</a> LRU 近似法則</h2>
+<p>由於 LRU 製作成本過高，因此產生以下方法近似 LRU 效果。這些近似方法都有可能退化成 FIFO，會遇到 Belady 異常情況</p>
+<ul>
+<li>Second Chance：以 FIFO 法則為基礎，搭配 Reference Bit 使用
+<ol>
+<li>每個 page 的初始值 reference bit 值設為 1，每次被指到的 page 其 reference bit 值就改為 0，然後指下一個 page</li>
+<li>如果下一個被指到的 page 其 reference bit 值為 0 的話，則替換該 page</li>
+</ol>
+<ul>
+<li>如果 reference bit 值為 1 的話，則將其改為 0，然後指向下一個 page，重複步驟 2</li>
+</ul>
+</li>
+<li>Enhance Second Chance<br>
+ 這個改進 second chance 的方法是為了減少 I/O，使用 (Reference Bit, Modification Bit) 配對值作為挑選 Victim Page 的依據。下列情況越上面越容易成為 victim page :
+<ol>
+<li>(0,0)：最近沒被用到過也沒被修改過</li>
+<li>(0,1)：最近沒被用到過，但是有被修改過</li>
+<li>(1,0)：最近有被用到過，但是沒被修改過</li>
+<li>(1,1)：最近有被用到過，也有被修改過</li>
+</ol>
+</li>
+</ul>
+<h2 id="prepaging"><a class="markdownIt-Anchor" href="#prepaging">#</a> Prepaging</h2>
+<p>Prepaging 會事先猜測程式執行之初會使用哪些 page，並預先將這些 pages 載入</p>
+<ul>
+<li>優點：若猜得準確，則可以避免程式執行之初大量 Page Fault 發生</li>
+<li>缺點：若猜測錯誤，則先前載入 page 的 I/O 動作白白浪費</li>
+</ul>
+<p>而 pure demand paging 程式執行之初不預先載入任何 page，執行之初會產生大量的 page fault，由於載入的 page 皆是 process 所需的頁面，故後續的 page fault ratio 會下降至合理值 (趨於穩定)</p>
+<h1 id="allocation-of-frames"><a class="markdownIt-Anchor" href="#allocation-of-frames">#</a> Allocation of Frames</h1>
+<h2 id="frame-allocation"><a class="markdownIt-Anchor" href="#frame-allocation">#</a> Frame Allocation</h2>
+<ul>
+<li>Fixed allocation
+<ol>
+<li>Equal allocation：每個 process 配到的 frame 數目一樣</li>
+<li>Proportional allocation：配置數目依據 process 的大小做成長</li>
+</ol>
+</li>
+<li>Priority allocation
+<ul>
+<li>dynamic</li>
+<li>利用 Proportional allocation 基於優先權，而不是 size</li>
+<li>從優先權低的 process 拿走它的 frame 做替換</li>
+</ul>
+</li>
+<li>Local allocation
+<ul>
+<li>每個 process 從自己被配給到的 frame 做替換</li>
+</ul>
+</li>
+<li>Global allocation
+<ul>
+<li>process 從全部的 frame 挑選做替換<br>
+ eg. 允許高優先權的 process 拿走低優先權的 process 的 frame</li>
+<li>好的 performance，使用普遍</li>
+<li>每個 process 的一個最小的 frame 數目應該被維護以避免 Thrashing</li>
+</ul>
+</li>
+</ul>
+<h1 id="thrashing"><a class="markdownIt-Anchor" href="#thrashing">#</a> Thrashing</h1>
+<p><img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhwwO5izEU7BgQhnzGyZxUCl3sxz__13DjxBUUdQKgR54qyYz12P0238eWiVXul0f1UAaT3hIBzM6PBBnaJZ4YK8K_prRxqR8uuWG_DyegrV2CZih6j6nGPcLpWcResYpwpQbMKS5nYE5IC/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7+2014-12-10+%E4%B8%8A%E5%8D%8812.35.30-26.png" alt=""><br>
+一個 process 發生 thrashing 的狀況是在 <strong>paging 所花的時間比執行指令還要多</strong></p>
+<h2 id="thrashing-現象"><a class="markdownIt-Anchor" href="#thrashing-現象">#</a> Thrashing 現象：</h2>
+<ul>
+<li>若 Process 分配到的 frame 不足則會經常發生 page fault，此時必須執行 page replacement</li>
+<li>若採用 global replacement policy，則此 process 會替換其它 process 的 page 以空出 frame，造</li>
+<li>其它 process 也會發生 page fault，而這些 process 也會去搶其它 process 的 frame，造成所有 process 皆在處理 page fault。</li>
+<li>所有 process 皆忙於 swap in/out，造成 CPU idle。(CPU idle 時 OS 會企圖引進更多的 process 進入系統讓 Thrashing 現象更嚴重。)</li>
+</ul>
+<h2 id="thrashing的解決方法"><a class="markdownIt-Anchor" href="#thrashing的解決方法">#</a> Thrashing 的解決方法：</h2>
+<ol>
+<li>降低 multiprogramming degree</li>
+<li>利用 page fault ratio 控制來防止 thrashing<br>
+OS 規定合理的 page fault ratio 之上限與下限值，把 ratio 控制在一個合理範圍內
+<ul>
+<li>若某 process 的 page fault ratio &gt; 上限值，則 OS 應多分配額外的 frame 給該 process</li>
+<li>若某 process 的 page fault ratio &lt; 下限值，則 OS 應從該 process 取走多餘的 frame，以分配給其它有需要的 process</li>
+</ul>
+</li>
+<li>利用 working set model<br>
+ 預估各 process 在不同執行時期所需的 frame 數目，並依此提供足夠的 frame 以防止 thrashing<br>
+<img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjVOAf2BBdezj_XxrzW88cDIS8tp6o4tD1gbNRhk5OuJgfkY7OOc0gafR5w4AnYoGbr_N0GC323FJx3Ymjqvh1SdNdCr1Uzrhz_7SVbXxa2-N4HqIFsdTsgj3yxxRrF1FXFDqTcMFS60Lg/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7+2017-08-24+%25E4%25B8%258B%25E5%258D%25881.53.41.png" alt="">
+<ul>
+<li>作法：OS 設定一個 working set window size t，以 t 次記憶體存取中，所存取到的不同 Page 之集合稱為 working set。而 working set 中的 process 個數，稱為 working set size (WSS)<br>
+ 假設有 n 個 processes，令：
+<ul>
+<li>WSSi 為 process i 在某時期的 working set size</li>
+<li>D 為某時期所有 process 之 frame 總需求量，D 為所有 process 的 WSS 總和</li>
+<li>M 為 physical memory 大小 (可用 frame 總數)</li>
+</ul>
+<ol>
+<li>D ≤ M，OS 會依據 WSSi，分配足夠的 frame 給 process，可防止 thrashing。</li>
+<li>D &gt; M，則 OS 會選擇 process 暫停執行，直到 D ≤ M 為止，此時回到 1. 處理，等到未來 frame 足夠時再恢復原先暫停的 process</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>優點：可以防止 thrashing 產生，對於 prepaging 亦有幫助</li>
+<li>缺點：
+<ul>
+<li>以上一次的 working set 來預估下一次的 working set，不易制定精確的 working set</li>
+<li>若前後的 working set 內容差異太大，則 I/O transfer time 會拉長</li>
+</ul>
+</li>
+</ul>
+<h1 id="ref-notes"><a class="markdownIt-Anchor" href="#ref-notes">#</a> Ref Notes</h1>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8veWlyeFpGbjhSejJ3VDU2QUFSN1N4dw==">Kipper’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQENoYW5nLUNoaWEtQ2hpL09TL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGJTQwQ2hhbmctQ2hpYS1DaGklMkZPUy1DSDk=">Chang-Chia-Chi’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQFBsLWVRVDlDUWFTMGpoRXhLcUw4X3cvQmtoT1NSNGpXL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGcyUyRlNrdWlhOTNBWg==">陳品媛的筆記</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubXJvcGVuZ2F0ZS5jb20vMjAxNS8wMS9vcGVyYXRpbmctc3lzdGVtLWNoOS12aXJ0dWFsLW1lbW9yeS5odG1s">Mr. Opengate. OS - Ch9</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93YW5nd2lsbHkuZ2l0aHViLmlvL3dpbGx5d2FuZ2thYS8yMDE4LzA5LzEwL09wZXJhdGluZy1zeXN0ZW0tVmlydHVhbC1tZW1vcnkv">WillyWangkaa’s Note</span></li>
+</ul>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新於</span>
+    <time title="修改時間：2026-01-19 13:41:54" itemprop="dateModified" datetime="2026-01-19T13:41:54+08:00">2026-01-19</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>作者： </strong>Maru <i class="ic i-at"><em>@</em></i>一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ
+  </li>
+  <li class="link">
+    <strong>文章連結：</strong>
+    <a href="https://marumarumarsh.github.io/2026/01/19/OS/10_Virtual_Memory_Management/" title="Chapter 9. Virtual Memory Management">https://marumarumarsh.github.io/2026/01/19/OS/10_Virtual_Memory_Management/</a>
+  </li>
+  <li class="license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2026/01/18/OS/9_Memory_Management/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res021081_rip&#x2F;card_after_training.png" title="Chapter 8. Memory Management">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 8. Memory Management</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2026/01/20/OS/11_File_System_Interface/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;anihonetwallpaper.com&#x2F;image&#x2F;2025&#x2F;10&#x2F;202501843-BanG_Dream-MaruyamaAya.jpg" title="Chapter 10. File System Interface">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 10. File System Interface</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目錄">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#background"><span class="toc-number">1.</span> <span class="toc-text"> Background</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%A6%E7%8F%BE-virtual-memory-%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text"> 實現 Virtual Memory 方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#demand-paging"><span class="toc-number">2.1.</span> <span class="toc-text"> Demand Paging</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#demand-paging-performance"><span class="toc-number">2.1.1.</span> <span class="toc-text"> Demand Paging Performance</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#copy-on-write"><span class="toc-number">2.2.</span> <span class="toc-text"> Copy-on-Write</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#fork-%E4%BD%BF%E7%94%A8-copy-on-write-%E7%9A%84%E6%8E%A2%E8%A8%8E"><span class="toc-number">2.2.1.</span> <span class="toc-text"> fork 使用 copy-on-write 的探討：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#page-replacement"><span class="toc-number">3.</span> <span class="toc-text"> Page Replacement</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#page-replacement-algorithms"><span class="toc-number">3.1.</span> <span class="toc-text"> Page Replacement Algorithms</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lru-%E8%BF%91%E4%BC%BC%E6%B3%95%E5%89%87"><span class="toc-number">3.2.</span> <span class="toc-text"> LRU 近似法則</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#prepaging"><span class="toc-number">3.3.</span> <span class="toc-text"> Prepaging</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#allocation-of-frames"><span class="toc-number">4.</span> <span class="toc-text"> Allocation of Frames</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#frame-allocation"><span class="toc-number">4.1.</span> <span class="toc-text"> Frame Allocation</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#thrashing"><span class="toc-number">5.</span> <span class="toc-text"> Thrashing</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#thrashing-%E7%8F%BE%E8%B1%A1"><span class="toc-number">5.1.</span> <span class="toc-text"> Thrashing 現象：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#thrashing%E7%9A%84%E8%A7%A3%E6%B1%BA%E6%96%B9%E6%B3%95"><span class="toc-number">5.2.</span> <span class="toc-text"> Thrashing 的解決方法：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ref-notes"><span class="toc-number">6.</span> <span class="toc-text"> Ref Notes</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="本站概要">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Maru"
+      data-src="/images/ava1.jpg">
+  <p class="name" itemprop="name">Maru</p>
+  <div class="description" itemprop="description">垮惹</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">21</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首頁</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2026/01/18/OS/9_Memory_Management/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2026/01/20/OS/11_File_System_Interface/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>隨機文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/27/Intro/" title="练习题与答案（測試）">练习题与答案（測試）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/17/OS/8_%20Deadlocks/" title="Chapter 7. Deadlocks">Chapter 7. Deadlocks</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/15/OS/7_Process_Synchronization/" title="Chapter 6. Process Synchronization">Chapter 6. Process Synchronization</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/13/OS/5_Multithreaded_Programming/" title="Chapter 4. Multithreaded Programming">Chapter 4. Multithreaded Programming</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/09/OS/0_Start/" title="作業系統(Operating System)筆記版面介紹">作業系統(Operating System)筆記版面介紹</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/%E5%89%8D%E8%A8%80/" title="先備軟體介紹">先備軟體介紹</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/18/OS/9_Memory_Management/" title="Chapter 8. Memory Management">Chapter 8. Memory Management</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/21/OS/12_File_System_Implementation/" title="Chapter 11. File System Implementation">Chapter 11. File System Implementation</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Regression/" title="Regression">Regression</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/19/OS/10_Virtual_Memory_Management/" title="Chapter 9. Virtual Memory Management">Chapter 9. Virtual Memory Management</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新評論</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maru @ 棉花糖小窩</span>
+  </div>
+  <div class="powered-by">
+    基於 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2026/01/19/OS/10_Virtual_Memory_Management/',
+    favicon: {
+      show: "（●´3｀●）復活成功",
+      hide: "(´Д｀)瀏覽器崩潰啦"
+    },
+    search : {
+      placeholder: "文章搜尋",
+      empty: "關於 「 ${query} 」 ，什麼也沒搜到",
+      stats: "${time} ms 內找到 ${hits} 條結果"
+    },
+    valine: true,copy_tex: true,
+    katex: true,fancybox: true,
+    copyright: '複製成功，轉載請遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 協議。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/sakiko.model.json"},"display":{"position":"left","width":280,"height":400,"hOffset":0,"vOffset":-50},"mobile":{"show":false},"react":{"opacity":1},"dialog":{"enable":false,"hitokoto":false},"log":false});</script></body>
+</html>

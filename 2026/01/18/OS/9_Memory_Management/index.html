@@ -1,0 +1,892 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://marumarumarsh.github.io/2026/01/18/OS/9_Memory_Management/">
+
+
+
+  <title>
+Chapter 8. Memory Management |
+棉花糖小窩 = 一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ = 棉花糖絕對不能烤！！</title>
+<meta name="generator" content="Hexo 8.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Chapter 8. Memory Management
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="創建時間：2026-01-18 08:35:38">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">發表於</span>
+    <time itemprop="dateCreated datePublished" datetime="2026-01-18T08:35:38+08:00">2026-01-18</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切換導航欄">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">棉花糖小窩</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res028041_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036007_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res037014_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res040014_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://anihonetwallpaper.com/image/2025/10/202501843-BanG_Dream-MaruyamaAya.jpg"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036007_rip/card_normal.png"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首頁</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-TW">
+  <link itemprop="mainEntityOfPage" href="https://marumarumarsh.github.io/2026/01/18/OS/9_Memory_Management/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/ava1.jpg">
+    <meta itemprop="name" content="Maru">
+    <meta itemprop="description" content="棉花糖絕對不能烤！！, 垮惹">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="background"><a class="markdownIt-Anchor" href="#background">#</a> Background</h1>
+<ul>
+<li>CPU 可直接存取 register 和 memory，但不能直接存取 disk</li>
+<li>Process 等待 Loader 將程式從 disk 載入到 memory 中才能執行（執行期間可在 memory 和 disk 間移動）</li>
+<li>多個 process 被載入 memory 中以提升資源使用率和反應時間</li>
+</ul>
+<p>How to refer memory in a program?</p>
+<h2 id="address-binding"><a class="markdownIt-Anchor" href="#address-binding">#</a> address binding</h2>
+<ul>
+<li>Compile Time（還不知道地址，只給個變數（BASE））
+<ul>
+<li>program 改成 symbolic code</li>
+<li>地址：compiler 將 symbolic code 轉成 absolute code（絕對地址）</li>
+<li>想換起始位置必須要 <strong>recompile</strong></li>
+</ul>
+</li>
+<li>Load Time
+<ul>
+<li>compiler 將 symbolic code 轉成 relocatable code</li>
+<li>地址：給實際的值，其他是相對 BASE 的地址</li>
+<li>想換起始位置必須要 <strong>reload</strong></li>
+</ul>
+</li>
+<li>Execution Time
+<ul>
+<li>compiler 將 symbolic code 轉成 logical-address（i.e. virtual-address）code</li>
+<li>使用這種方式需要特別的硬體（ex: MMU）</li>
+<li>memory address translator，從 cpu 送到 memory 才做轉換</li>
+</ul>
+</li>
+</ul>
+<h3 id="memory-management-unit-mmu"><a class="markdownIt-Anchor" href="#memory-management-unit-mmu">#</a> Memory-Management Unit (MMU)</h3>
+<p><img data-src="https://i.imgur.com/OBzcNAa.png" alt=""></p>
+<ul>
+<li>使虛擬位址對應到實體位址</li>
+<li>每個由 user process 產生的：logical-addr. + relocation register = 實體地址</li>
+</ul>
+<h3 id="logical-vs-physical-address"><a class="markdownIt-Anchor" href="#logical-vs-physical-address">#</a> Logical vs. Physical Address</h3>
+<table>
+<thead>
+<tr>
+<th>Logical Address</th>
+<th>Physical Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Generated by CPU</td>
+<td>Address seen by memory unit</td>
+</tr>
+<tr>
+<td>Also referred to as virtual address</td>
+<td>Also referred to as real address</td>
+</tr>
+<tr>
+<td>Address generated in program</td>
+<td>Address after address translation</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>compile-time &amp; load-time address binding</strong> –-&gt; logical addr = physical addr</li>
+<li><strong>Execution-time address binding</strong> –-&gt; logical addr ≠ physical addr</li>
+</ul>
+<p>How to load a program into memory?</p>
+<h2 id="staticdynamic-loading-and-linking"><a class="markdownIt-Anchor" href="#staticdynamic-loading-and-linking">#</a> static/dynamic loading and linking</h2>
+<p>dynamic loading, static linking 和 dynamic linking 是複用其他軟體程式碼的三種機制。特性分別人如下：</p>
+<ul>
+<li>Static Linking<br>
+Compile 時 library 就加入程式碼
+<ul>
+<li>執行比較快但浪費記憶體空間</li>
+</ul>
+</li>
+<li>Dynamic Loading (Share library)<br>
+ 在程式執行期間，當某個模組被真正呼叫到時才將其載入到 main memory 中
+<ul>
+<li>需要 OS support</li>
+<li>節省 main memory 空間 (即是 dynamic 方法的目的)</li>
+<li>節省編譯、組譯、連結所花費的時間 (動態連結函式庫可以單獨重新編譯)</li>
+<li>常用於 library 導入</li>
+<li>需要 OS 支持，不同 OS 有不同的稱呼：
+<ul>
+<li>Windows .dll (Dynamic Linking Libraries)</li>
+<li>Linux .so (Shared Object)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Dynamic Linking<br>
+ 讓 programmer 在程式執行的過程中，動態決定要載入的 libraries
+<ul>
+<li>不能跨程式</li>
+<li>不會檢查其他程式是否已載入該 library，容易產生<strong>重複載入</strong></li>
+<li>不用特別的 OS 支持</li>
+<li>優點：
+<ul>
+<li>節省 main memory 空間</li>
+<li>讓 programmer 可以呼叫 loader，比 dynamic linking 更具有彈性，靈活度也更高</li>
+</ul>
+</li>
+<li>缺點：
+<ul>
+<li>programmer 的負擔，要 programmer 自己規劃而不是 OS 負責</li>
+<li>拖長執行時間</li>
+<li>dynamic loading 是古老的方法，e.g. MS-DOS Overlay files</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="swapping"><a class="markdownIt-Anchor" href="#swapping">#</a> Swapping</h1>
+<p>How to move a program between mem. &amp; disk? Swapping!</p>
+<ul>
+<li>midterm scheduling：process 從 memory swap out 至 backing store (disk)，稍後又 swap in memory 繼續執行（不同於 context switch）</li>
+<li>Backing store：獨立於 file system，提供 memory image 直接的存取</li>
+<li>swap 的目的：
+<ul>
+<li>釋放 memory</li>
+<li>Roll out, roll in: 將低優先權的換出，換優先權高的進來</li>
+</ul>
+</li>
+</ul>
+<h2 id="swap-back-memory-location"><a class="markdownIt-Anchor" href="#swap-back-memory-location">#</a> Swap back memory location</h2>
+<p>If binding is done at</p>
+<ul>
+<li>compile/load time –-&gt; 換回來的 memory addr. 必須一樣</li>
+<li>execution time –-&gt; 換回來的 memory addr. 可以不一樣</li>
+</ul>
+<h2 id="a-process-to-be-swapped-must-be-idle"><a class="markdownIt-Anchor" href="#a-process-to-be-swapped-must-be-idle">#</a> A process to be swapped == must be idle</h2>
+<ul>
+<li>狀況：Imagine a process that is waiting for I/O is swapped</li>
+<li>解法：
+<ul>
+<li>不去 swap 一個 process 等待未決的 I/O</li>
+<li>做完的 I/O 先 copy 到 os buffer（memory space 不屬於任何 user process），就能把 user swap 掉，wake up 程式，再將 os buffer data 還給他</li>
+</ul>
+</li>
+<li>大部分的 swap time 落在 tranfer time，transfer time 正比於 memory 被交換的數量</li>
+</ul>
+<h1 id="contiguous-memory-allocation"><a class="markdownIt-Anchor" href="#contiguous-memory-allocation">#</a> Contiguous Memory Allocation</h1>
+<h2 id="fixed-partition-allocation"><a class="markdownIt-Anchor" href="#fixed-partition-allocation">#</a> Fixed-partition allocation</h2>
+<ul>
+<li>每個 process 載入 one partition of fixed-size</li>
+<li>multi-programming 的程度被 partition 的數量所限</li>
+</ul>
+<h2 id="variable-size-partitionmultiple-partition"><a class="markdownIt-Anchor" href="#variable-size-partitionmultiple-partition">#</a> Variable-size partition（Multiple Partition）</h2>
+<p><img data-src="https://i.imgur.com/Ml0Kqya.png" alt=""></p>
+<ul>
+<li>多個不同大小的 hole（一塊連續記憶體）分散在記憶體</li>
+<li>當一個 process 抵達，他會被分配在足夠容納他的 hole 中</li>
+<li>OS 維護 in-use, free hole 的資訊</li>
+<li>被釋放的 hole 能與其他的 hole 做合併形成更大的 hole</li>
+</ul>
+<h2 id="dynamic-storage-allocation-problem"><a class="markdownIt-Anchor" href="#dynamic-storage-allocation-problem">#</a> Dynamic Storage Allocation Problem</h2>
+<p>問題：如何從一個 list 的 hole 滿足要求 size n?<br>
+ 解法：</p>
+<ul>
+<li>First-fit：分配在第一個合適的 hole</li>
+<li>Best-fit：分配在最小且合適的 hole（必須整個 list 都尋找過）</li>
+<li>Worst-fit：分配在最大的 hole（必須整個 list 都尋找過）</li>
+</ul>
+<blockquote>
+<p>First-fit 和 Best-fit 比 Worst-fit 在速度與資源的使用好</p>
+</blockquote>
+<h2 id="fragmentation"><a class="markdownIt-Anchor" href="#fragmentation">#</a> Fragmentation</h2>
+<h3 id="external-fragmentation發生在-variable-size-allocation"><a class="markdownIt-Anchor" href="#external-fragmentation發生在-variable-size-allocation">#</a> External fragmentation（發生在 variable-size allocation）</h3>
+<p>系統中，所有可用空間總和大於某個 process 所需要，但因為這些空間不連續所以無法配給該 process 使用，造成 memory 空間閒置</p>
+<ul>
+<li>解法：
+<ul>
+<li>compaction：移動執行中的 process，使不連續的 free blocks 得以聚集成一塊夠大的連續可用空間
+<ul>
+<li>很難在短時間內決定一個最佳的壓縮策略</li>
+<li>process 必須是 dynamic binding 才可以支援</li>
+</ul>
+</li>
+<li>Page memory management</li>
+</ul>
+</li>
+</ul>
+<h3 id="internal-fragmentation發生在fixed-partition-allocation"><a class="markdownIt-Anchor" href="#internal-fragmentation發生在fixed-partition-allocation">#</a> Internal fragmentation（發生在 fixed-partition allocation）</h3>
+<p><img data-src="https://i.imgur.com/ayu0vAa.png" alt=""><br>
+作業系統配置給 process 的 memory 空間大於 process 真正所需的空間，這些多出來的空間該 process 用不到，而且也沒辦法供其他 process 使用，形成浪費</p>
+<ul>
+<li>Reducing the page size can alleviate Internal Fragmentation</li>
+<li>Enlarging the page size helps to reduce the size of the page table</li>
+</ul>
+<h1 id="non-contiguous-memory-allocation"><a class="markdownIt-Anchor" href="#non-contiguous-memory-allocation">#</a> Non-Contiguous Memory Allocation</h1>
+<h2 id="paging"><a class="markdownIt-Anchor" href="#paging">#</a> Paging</h2>
+<p>OS 會將 disk 中的資料分割成固定大小的區塊，稱為頁（pages）</p>
+<ul>
+<li>不需要時，將分頁由 memory 移到 disk ；當需要時再將資料取回載入 memory 中</li>
+<li>分頁是磁碟和記憶體間傳輸資料塊的最小單位</li>
+<li>一個 process 有一個 page table
+<ul>
+<li>page table 每個 entry 存在 physical memory 的 base address of a page</li>
+<li>執行時用 page table 的資訊來把 logical address 轉成 physical address</li>
+<li>每一個 process 都會有一個 page table 由 OS 所維護</li>
+</ul>
+</li>
+</ul>
+<h3 id="logical-address"><a class="markdownIt-Anchor" href="#logical-address">#</a> Logical address</h3>
+<ul>
+<li>頁數 (page number): 當作指向分頁表 (page table) 的索引</li>
+<li>頁偏移量 (page offset)<br>
+<img data-src="https://i.imgur.com/osKF6CY.png" alt=""></li>
+<li>若邏輯位址空間為 2ᵐ，而頁的大小為 2ⁿ，則
+<ul>
+<li>page number = m - n</li>
+<li>page offset = n</li>
+</ul>
+</li>
+<li>分欄表 (frame table)：紀錄欄是否可用或已被配置<br>
+<img data-src="https://i.imgur.com/bLzsRim.png" alt=""></li>
+</ul>
+<h3 id="效益"><a class="markdownIt-Anchor" href="#效益">#</a> 效益</h3>
+<ol>
+<li>允許程式的 physical-address space 可以不連續</li>
+<li>避免 external fragmentation 但無法避免 internal fragmentation</li>
+<li>提供和共享 memory /pages</li>
+</ol>
+<h3 id="address-translation-scheme"><a class="markdownIt-Anchor" href="#address-translation-scheme">#</a> Address Translation Scheme</h3>
+<p><strong>Physical addr = page base addr + page offset</strong><br>
+Logical address 被分成兩部分</p>
+<ol>
+<li>page number（p）
+<ul>
+<li>page table 的 index</li>
+<li>n bits 表示一個 process 能 allocate 至多 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>N</mi></msup></mrow><annotation encoding="application/x-tex">2^N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span></span></span></span></span></span></span></span> 個 pages</li>
+</ul>
+</li>
+<li>page offset（d）
+<ul>
+<li>與 base address 結合定義 physical memory address</li>
+<li>n bits 表示 page size 為 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>N</mi></msup></mrow><annotation encoding="application/x-tex">2^N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span></span></span></span></span></span></span></span></li>
+</ul>
+</li>
+</ol>
+<h3 id="example"><a class="markdownIt-Anchor" href="#example">#</a> Example</h3>
+<ul>
+<li 10="">如果 page size = 1KB = 2^</li>
+<li>Page 2 對應到 frame 5</li>
+<li>13-bit logical address (p=2, d=20)</li>
+<li>Physical address = frame number * frame size + offset = 5 * (1KB) + 20 = 5120 + 20 = 5140</li>
+</ul>
+<h3 id="address-translation"><a class="markdownIt-Anchor" href="#address-translation">#</a> Address Translation</h3>
+<p>page 不需要與 frame 的數量一樣，4KB/8KB 最常使用（32bit -&gt; 4KB；64bit -&gt; 8KB）</p>
+<ul>
+<li>page 數量：決定於一個 process 的 logical memory 大小<br>
+但越大的 page size 越容易造成 Internal fragmentation</li>
+<li>frame 數量：決定於系統的 physical memory 大小</li>
+<li>增加的好處
+<ul>
+<li>memory, process, dataset 能變更大</li>
+<li>更好的 I/O（during page fault）</li>
+<li>page table 變小</li>
+</ul>
+</li>
+</ul>
+<h2 id="page-table-的製作"><a class="markdownIt-Anchor" href="#page-table-的製作">#</a> Page Table 的製作</h2>
+<ul>
+<li>法 1：使用 register 保存分頁表每個項目的內容
+<ul>
+<li>優點：速度快</li>
+<li>缺點：僅適用於 page table 大小較小的情況，太大的 page table 則不適用</li>
+</ul>
+</li>
+<li>法 2：page table 保存在 memory 中，
+<ul>
+<li>OS 利用 PTBR (Page Table Base Register) 記錄起始位址</li>
+<li>PRLR (Page-table length register) 紀錄 page table 的大小</li>
+<li>優點：適用於 page table size 較大之情況</li>
+<li>缺點：速度慢。因為需要存取兩次 memory (一次用於存取 page table、一次用於真正的資料存取)</li>
+</ul>
+</li>
+<li>法 3：用 TLB (Transaction Lookaside Buffer) 保存部份常用的 page table
+<ul>
+<li>完整的 page table 在 memory 中</li>
+<li>TLB 是 full associate cache。</li>
+<li>流程：到 TLB 查詢有無對應的 Page Number 存在
+<ul>
+<li>若 Hit，則輸出 Frame 的起始位址，只存取記憶體 1 次</li>
+<li>若 Miss，則到記憶體中取出 page table 查詢，存取記憶體 2 次</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="structure-of-page-table"><a class="markdownIt-Anchor" href="#structure-of-page-table">#</a> Structure of Page Table</h3>
+<p>目的：page table size 太大太稀疏的解決方法</p>
+<ul>
+<li>
+<p><strong>[法一] Multilevel paging (多層的分頁)</strong><br>
+<img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEidM0Q2f5579vWbIFHSBHbr0bHmWiAP9uXvPD9M4wo8s8_86Y63ySolMMtOjKOkbsMiKBwooUbqSOfuZZzRLrHo4QMsOHQn_OA7KpK26xwu3uf0PRtzRRaaNfO1XlWAGsjtQyxmtHuy7dfv/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7+2014-12-09+%E4%B8%8A%E5%8D%888.26.01-45.png" alt=""></p>
+<ul>
+<li>問題：分頁表太大，不希望連續的放在記憶體內，也稱向前對映分頁表 (forward-mapped page table)</li>
+<li>解：將 page table 再予以分頁，透過 paging page table，只抓所需的 page table 進 memory。只需 1 個 level 1 和 1 個 level 2 在 memory 就可執行
+<ul>
+<li>一頁 4kb，32 位元系統<br>
+<img data-src="https://i.imgur.com/2GszVZ2.png" alt=""></li>
+<li>64 位元的系統，不適合階層式架構，因為必須分很多層，導致轉換困難<br>
+<img data-src="https://i.imgur.com/B84cNOr.png" alt=""></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>[法二] Hashing Page Table (雜湊)</strong><br>
+<img data-src="https://i.imgur.com/Vj2weD5.png" alt=""></p>
+<ul>
+<li>邏輯位址被雜湊到雜湊表中比對</li>
+<li>位址空間大於 32 位元可使用</li>
+<li>使用列結串列 (linked list) 處理碰撞
+<blockquote>
+<p>碰撞 (collision): 雜湊到相同位置</p>
+</blockquote>
+</li>
+<li>hash function collision 的次數等同於 TLB miss 時需要存取記憶體的次數</li>
+<li>解
+<ul>
+<li>logical address 中的 p (page#) 經由 hashing function 計算取得 hashing table (page table) 的 bucket address</li>
+<li>每個 bucket 中皆以 linked list 串連相同 hashing address 的 page number 及對應的 frame number</li>
+<li>去 linked list 中搜尋符合的 page number 之節點。取得 f，然後與 d 相加得出 physical address</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>[法三] Invert Page Table (反轉分頁表)</strong><br>
+<img data-src="https://i.imgur.com/47aoB4L.png" alt=""><br>
+ 以 physical memory 為對象，建立一個 global page table 給所有 process (若有 m 個 frames，table entry 有 m 格)</p>
+<ul>
+<li>每個 entry 記錄此頁框被哪個 process 的哪個 page 所佔用以 &lt;Process id, Page No&gt;</li>
+<li>優點：大幅降低 page table size</li>
+<li>缺點：
+<ul>
+<li>searching invert page table 耗時，可用 hash 增加搜尋速度</li>
+<li>無法支援 memory sharing</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="segmentation"><a class="markdownIt-Anchor" href="#segmentation">#</a> Segmentation</h2>
+<p>分段 (Segmentation) 使得記憶體的 logical 配置的看法與使用者一致，配置方式為單一段之間連續配置。<br>
+OS 會替每個 process 準備 segment table :</p>
+<p>segment 個數不多，OS 內約 10 幾個，segment 數目很少增減，為靜態配置</p>
+<ul>
+<li>優點：
+<ul>
+<li>無 internal fragmentation</li>
+<li>支援 memory sharing 和 protection，且比 paging 容易實施 (有的 Page 可能會涵蓋到不同需求的程式片段)</li>
+<li>可支援 dynamic loading 及 virtual memory 的製作</li>
+<li>segmentation 和 page 為兩獨立觀念，可同時使用</li>
+</ul>
+</li>
+<li>缺點：
+<ul>
+<li>external fragmentation (但 segments 很少 allocated/de-allocated 所以還好)</li>
+<li>記憶體存取時間較長</li>
+<li>需要額外硬體的支援</li>
+</ul>
+</li>
+</ul>
+<h3 id="segmentation-table"><a class="markdownIt-Anchor" href="#segmentation-table">#</a> Segmentation Table</h3>
+<ul>
+<li>mapping 到 physical addr.</li>
+<li>logical addr. = (seg#, offset) offset 的長度與 physical 長度一樣</li>
+<li>每個 entry 有<strong> BASE（4 Bytes）<strong>和</strong> LIMIT（4 Bytes）</strong></li>
+<li>用 Segment-table length register (STLR) 記錄各段的大小 (Limit)</li>
+<li>用 Segment-table base register (STBR) 紀錄各段載入記憶體的起始位址 (Base)</li>
+</ul>
+<h3 id="segmentation-hardware"><a class="markdownIt-Anchor" href="#segmentation-hardware">#</a> Segmentation Hardware</h3>
+<p><img data-src="https://i.imgur.com/Yd7w9IQ.png" alt=""></p>
+<ul>
+<li>limit register 檢查 offset 有沒有超過範圍</li>
+<li>MMU 用指派一個合適的 base addr. 給 segment 以分配 memory</li>
+</ul>
+<h3 id="paging-vs-segmentation"><a class="markdownIt-Anchor" href="#paging-vs-segmentation">#</a> Paging vs. Segmentation</h3>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>Paging</th>
+<th>Segmentation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Table entry</td>
+<td>(frame base addr.)</td>
+<td>(segment base addr. , limit )</td>
+</tr>
+<tr>
+<td>base addr</td>
+<td>frame number * page size</td>
+<td>可以是隨意的</td>
+</tr>
+<tr>
+<td>length of “offset”</td>
+<td>與 page size 一樣</td>
+<td>與 physical memory size 一樣</td>
+</tr>
+</tbody>
+</table>
+<h2 id="segmentation-with-paging"><a class="markdownIt-Anchor" href="#segmentation-with-paging">#</a> Segmentation with Paging</h2>
+<ul>
+<li>segmentation 應用在 logical addr. space</li>
+<li>paging 應用在 physical addr. space</li>
+</ul>
+<h3 id="address-translation-2"><a class="markdownIt-Anchor" href="#address-translation-2">#</a> Address Translation</h3>
+<ul>
+<li>logical address 給 segmentation unit 產生 linear address</li>
+<li>linear address 給 paging unit 產生 physical address</li>
+<li>CPU generates logical address<br>
+<img data-src="https://i.imgur.com/ZP9L5GX.png" alt="">
+<ul>
+<li>logical address 給 segmentation unit 產生 linear address</li>
+<li>linear address 給 paging unit 產生 physical address</li>
+</ul>
+</li>
+</ul>
+<h3 id="example-the-intel-pentium"><a class="markdownIt-Anchor" href="#example-the-intel-pentium">#</a> Example: The Intel Pentium</h3>
+<p>Logical-address space 被分成 2 部分</p>
+<ol>
+<li>segments (private), local descriptor table</li>
+<li>segments (shared), global descriptor table</li>
+</ol>
+<ul>
+<li 32="">Logical address<br>
+<img data-src="https://i.imgur.com/cPxe8uX.png" alt="">
+<ul>
+<li 14="">max # of segments per process = 2^</li>
+<li>size of a segment ≤ 2^</li>
+</ul>
+</li>
+<li>Segmentation<br>
+<img data-src="https://i.imgur.com/EFZ5Uxe.png" alt=""></li>
+<li>Paging(2 level)<br>
+<img data-src="https://i.imgur.com/7ViuAPW.png" alt=""></li>
+</ul>
+<h1 id="ref-notes"><a class="markdownIt-Anchor" href="#ref-notes">#</a> Ref Notes</h1>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vNEtTX3lQa0JRekdaZkhEaXNQY2lvZw==">Kipper’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQENoYW5nLUNoaWEtQ2hpL09TL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGJTQwQ2hhbmctQ2hpYS1DaGklMkZPUy1DSDg=">Chang-Chia-Chi’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQFBsLWVRVDlDUWFTMGpoRXhLcUw4X3cvQmtoT1NSNGpXL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGcyUyRlNrOWcwNkZUVw==">陳品媛的筆記</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubXJvcGVuZ2F0ZS5jb20vMjAxNS8wMS9vcGVyYXRpbmctc3lzdGVtLWNoOC1tZW1vcnktbWFuYWdlbWVudC5odG1s">Mr. Opengate. OS - Ch7</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93YW5nd2lsbHkuZ2l0aHViLmlvL3dpbGx5d2FuZ2thYS8yMDE4LzA5LzA4L09wZXJhdGluZy1TeXN0ZW0tTWVtb3J5LU1hbmFnZW1lbnQv">WillyWangkaa’s Note</span></li>
+</ul>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新於</span>
+    <time title="修改時間：2026-01-18 16:23:35" itemprop="dateModified" datetime="2026-01-18T16:23:35+08:00">2026-01-18</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>作者： </strong>Maru <i class="ic i-at"><em>@</em></i>一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ
+  </li>
+  <li class="link">
+    <strong>文章連結：</strong>
+    <a href="https://marumarumarsh.github.io/2026/01/18/OS/9_Memory_Management/" title="Chapter 8. Memory Management">https://marumarumarsh.github.io/2026/01/18/OS/9_Memory_Management/</a>
+  </li>
+  <li class="license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2026/01/17/OS/8_%20Deadlocks/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res039007_rip&#x2F;card_after_training.png" title="Chapter 7. Deadlocks">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 7. Deadlocks</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2026/01/19/OS/10_Virtual_Memory_Management/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res037015_rip&#x2F;card_after_training.png" title="Chapter 9. Virtual Memory Management">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 9. Virtual Memory Management</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目錄">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#background"><span class="toc-number">1.</span> <span class="toc-text"> Background</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#address-binding"><span class="toc-number">1.1.</span> <span class="toc-text"> address binding</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#memory-management-unit-mmu"><span class="toc-number">1.1.1.</span> <span class="toc-text"> Memory-Management Unit (MMU)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#logical-vs-physical-address"><span class="toc-number">1.1.2.</span> <span class="toc-text"> Logical vs. Physical Address</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#staticdynamic-loading-and-linking"><span class="toc-number">1.2.</span> <span class="toc-text"> static&#x2F;dynamic loading and linking</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#swapping"><span class="toc-number">2.</span> <span class="toc-text"> Swapping</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#swap-back-memory-location"><span class="toc-number">2.1.</span> <span class="toc-text"> Swap back memory location</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#a-process-to-be-swapped-must-be-idle"><span class="toc-number">2.2.</span> <span class="toc-text"> A process to be swapped &#x3D;&#x3D; must be idle</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#contiguous-memory-allocation"><span class="toc-number">3.</span> <span class="toc-text"> Contiguous Memory Allocation</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#fixed-partition-allocation"><span class="toc-number">3.1.</span> <span class="toc-text"> Fixed-partition allocation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#variable-size-partitionmultiple-partition"><span class="toc-number">3.2.</span> <span class="toc-text"> Variable-size partition（Multiple Partition）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dynamic-storage-allocation-problem"><span class="toc-number">3.3.</span> <span class="toc-text"> Dynamic Storage Allocation Problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fragmentation"><span class="toc-number">3.4.</span> <span class="toc-text"> Fragmentation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#external-fragmentation%E7%99%BC%E7%94%9F%E5%9C%A8-variable-size-allocation"><span class="toc-number">3.4.1.</span> <span class="toc-text"> External fragmentation（發生在 variable-size allocation）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#internal-fragmentation%E7%99%BC%E7%94%9F%E5%9C%A8fixed-partition-allocation"><span class="toc-number">3.4.2.</span> <span class="toc-text"> Internal fragmentation（發生在 fixed-partition allocation）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#non-contiguous-memory-allocation"><span class="toc-number">4.</span> <span class="toc-text"> Non-Contiguous Memory Allocation</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#paging"><span class="toc-number">4.1.</span> <span class="toc-text"> Paging</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#logical-address"><span class="toc-number">4.1.1.</span> <span class="toc-text"> Logical address</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%88%E7%9B%8A"><span class="toc-number">4.1.2.</span> <span class="toc-text"> 效益</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#address-translation-scheme"><span class="toc-number">4.1.3.</span> <span class="toc-text"> Address Translation Scheme</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#example"><span class="toc-number">4.1.4.</span> <span class="toc-text"> Example</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#address-translation"><span class="toc-number">4.1.5.</span> <span class="toc-text"> Address Translation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#page-table-%E7%9A%84%E8%A3%BD%E4%BD%9C"><span class="toc-number">4.2.</span> <span class="toc-text"> Page Table 的製作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#structure-of-page-table"><span class="toc-number">4.2.1.</span> <span class="toc-text"> Structure of Page Table</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#segmentation"><span class="toc-number">4.3.</span> <span class="toc-text"> Segmentation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#segmentation-table"><span class="toc-number">4.3.1.</span> <span class="toc-text"> Segmentation Table</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#segmentation-hardware"><span class="toc-number">4.3.2.</span> <span class="toc-text"> Segmentation Hardware</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#paging-vs-segmentation"><span class="toc-number">4.3.3.</span> <span class="toc-text"> Paging vs. Segmentation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#segmentation-with-paging"><span class="toc-number">4.4.</span> <span class="toc-text"> Segmentation with Paging</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#address-translation-2"><span class="toc-number">4.4.1.</span> <span class="toc-text"> Address Translation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#example-the-intel-pentium"><span class="toc-number">4.4.2.</span> <span class="toc-text"> Example: The Intel Pentium</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ref-notes"><span class="toc-number">5.</span> <span class="toc-text"> Ref Notes</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="本站概要">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Maru"
+      data-src="/images/ava1.jpg">
+  <p class="name" itemprop="name">Maru</p>
+  <div class="description" itemprop="description">垮惹</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">21</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首頁</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2026/01/17/OS/8_%20Deadlocks/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2026/01/19/OS/10_Virtual_Memory_Management/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>隨機文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/18/OS/9_Memory_Management/" title="Chapter 8. Memory Management">Chapter 8. Memory Management</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/12/OS/4_Processes_Concept/" title="Chapter 3. Processes Concept">Chapter 3. Processes Concept</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/17/OS/8_%20Deadlocks/" title="Chapter 7. Deadlocks">Chapter 7. Deadlocks</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/11/10/%E6%97%A5%E6%96%87/%E6%97%A5%E6%9C%AC%E8%AA%9E%E3%81%AE%E6%A3%AE/" title="【一冊で合格する】Ｎ1  - 錯題集">【一冊で合格する】Ｎ1  - 錯題集</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/13/OS/5_Multithreaded_Programming/" title="Chapter 4. Multithreaded Programming">Chapter 4. Multithreaded Programming</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/14/OS/6_Process_Scheduling/" title="Chapter 5. Process Scheduling">Chapter 5. Process Scheduling</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/15/OS/7_Process_Synchronization/" title="Chapter 6. Process Synchronization">Chapter 6. Process Synchronization</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Regression/" title="Regression">Regression</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/09/OS/0_Start/" title="作業系統(Operating System)筆記版面介紹">作業系統(Operating System)筆記版面介紹</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/11/OS/3_OS_Structure/" title="Chapter 2. OS Structure">Chapter 2. OS Structure</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新評論</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maru @ 棉花糖小窩</span>
+  </div>
+  <div class="powered-by">
+    基於 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2026/01/18/OS/9_Memory_Management/',
+    favicon: {
+      show: "（●´3｀●）復活成功",
+      hide: "(´Д｀)瀏覽器崩潰啦"
+    },
+    search : {
+      placeholder: "文章搜尋",
+      empty: "關於 「 ${query} 」 ，什麼也沒搜到",
+      stats: "${time} ms 內找到 ${hits} 條結果"
+    },
+    valine: true,copy_tex: true,
+    katex: true,fancybox: true,
+    copyright: '複製成功，轉載請遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 協議。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/sakiko.model.json"},"display":{"position":"left","width":280,"height":400,"hOffset":0,"vOffset":-50},"mobile":{"show":false},"react":{"opacity":1},"dialog":{"enable":false,"hitokoto":false},"log":false});</script></body>
+</html>

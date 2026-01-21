@@ -1,0 +1,903 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://marumarumarsh.github.io/2026/01/15/OS/7_Process_Synchronization/">
+
+
+
+  <title>
+Chapter 6. Process Synchronization |
+棉花糖小窩 = 一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ = 棉花糖絕對不能烤！！</title>
+<meta name="generator" content="Hexo 8.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Chapter 6. Process Synchronization
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="創建時間：2026-01-15 09:43:36">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">發表於</span>
+    <time itemprop="dateCreated datePublished" datetime="2026-01-15T09:43:36+08:00">2026-01-15</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切換導航欄">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">棉花糖小窩</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res037011_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res021081_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036009_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res021082_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res037009_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036011_rip/card_normal.png"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首頁</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-TW">
+  <link itemprop="mainEntityOfPage" href="https://marumarumarsh.github.io/2026/01/15/OS/7_Process_Synchronization/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/ava1.jpg">
+    <meta itemprop="name" content="Maru">
+    <meta itemprop="description" content="棉花糖絕對不能烤！！, 垮惹">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="background"><a class="markdownIt-Anchor" href="#background">#</a> Background</h1>
+<p>共享的資料同時被不同 Process /threads 存取時可能導致 data 的<strong>不一致性 (inconsistency)</strong>。為了維持 data 的一致性，需要有機制去確保合作的 process 的執行的順序</p>
+<h2 id="consumer-producer-problem"><a class="markdownIt-Anchor" href="#consumer-producer-problem">#</a> Consumer &amp; Producer Problem</h2>
+<p><img data-src="https://i.imgur.com/VWaN4nN.png" alt=""></p>
+<ul>
+<li>之前使用  <code>in, out position</code> ，現在使用  <code>count value</code></li>
+</ul>
+<h3 id="concurrent-operations-on-counter"><a class="markdownIt-Anchor" href="#concurrent-operations-on-counter">#</a> Concurrent Operations on counter</h3>
+<ul>
+<li>除了 Buffer 之外 Counter 也是 share variable</li>
+<li>instruction level 其實有三道指令
+<ul>
+<li>counter++ 要先將 counter 從記憶體中移到 register，加上 1 之後，再存回記憶體<br>
+ <code>counter++</code>  in machine language<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">move ax, counter</span><br><span class="line">add ax, 1</span><br><span class="line">move counter, ax</span><br></pre></td></tr></table></figure>
+</li>
+<li><code>counter--</code>  in machine language<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">move bx, counter</span><br><span class="line">sub bx, 1</span><br><span class="line">move counter, bx</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="instruction-interleaving"><a class="markdownIt-Anchor" href="#instruction-interleaving">#</a> Instruction Interleaving</h3>
+<p>Context switch, Preemptive scheduling 等因素可能不是一次執行完成，導致執行結果不符合預期<br>
+<img data-src="https://i.imgur.com/JtMxJDP.png" alt=""></p>
+<ul>
+<li>問題：這樣的穿插情形 counter 可能 4、5、6，但實際上要是 5</li>
+<li>解：如果把 cpu burst 做完，就不會有這種情況</li>
+</ul>
+<h2 id="race-condition"><a class="markdownIt-Anchor" href="#race-condition">#</a> Race Condition</h2>
+<p>有多個 process 在同時競爭（相同）的資源，結果與存取資源的順序性有關連時 race condition 就會發生</p>
+<ul>
+<li>通常將每一個 Process 存取 shared data 的 code segment 稱作 Critical Section</li>
+<li>shared data 的值會由<strong>最後一個執行的 process</strong> 所決定</li>
+<li>single-processor machine 要達成同步可透過 disable interrupt 或 Non-preemptive scheduling，但在 <strong>User Program 中不可能使用</strong>，會影響整個系統的運作</li>
+<li>解法：<strong>同步化 concurrent processes</strong></li>
+</ul>
+<h1 id="critical-section"><a class="markdownIt-Anchor" href="#critical-section">#</a> Critical Section</h1>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+<th>著重於</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>高階 (位於函式庫中)</td>
+<td>Monitor</td>
+<td>同步問題之解決</td>
+<td>-</td>
+</tr>
+<tr>
+<td>中階 (通常於 System call)</td>
+<td>Semaphore</td>
+<td>同步問題之解決</td>
+<td>-</td>
+</tr>
+<tr>
+<td>基礎建設 (作業系統核心製作)</td>
+<td>Software solutions、Hardware instrustions support</td>
+<td>C.S. 設計的正確與否</td>
+<td>Disable interrupt 也在基礎建設</td>
+</tr>
+</tbody>
+</table>
+<h2 id="critical-section-problem"><a class="markdownIt-Anchor" href="#critical-section-problem">#</a> Critical-Section Problem</h2>
+<ul>
+<li>目的：建立 Processes 之間合作的 protocol</li>
+<li>Problem description
+<ul>
+<li>N 個 Processes 競爭使用 shared data</li>
+<li>每個 process 有一個 code segment 稱為 critical section，也是 shared data 被存取的區域</li>
+<li>需要確保 mutually exclusive</li>
+</ul>
+</li>
+<li>一般常見 critical section 的架構如下<br>
+<img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgBUeuRd5ib3hPRDyWrNIyOX_J7Yh6dKnXYba06FRxnXAGEigFfS-vQw-KFH3Jgewm1QUJ2LNTHquZIeKbIMlahs6VIMnbc5cC6bNzSe0UY_ps5ZeH-O2qFl6jaLXTdV6kvK35o72ygHs8/s640/critical-section-problem.png" alt=""></li>
+</ul>
+<h2 id="critical-section-requirements"><a class="markdownIt-Anchor" href="#critical-section-requirements">#</a> Critical Section Requirements</h2>
+<ol>
+<li>Mutually exclusive：任一時間點，只允許一個 process 進入他自已的 critical section 內活動</li>
+<li>Progress：必須同時滿足（tips: 有空位時讓「想進的人」「馬上」進入）
+<ul>
+<li>不想進入 critical section 的 process 不能擋其它 process 進入，即不可參與進入 critical section 的決策過程</li>
+<li>必須在有限的時間從想進入 critical section 的 process 中，挑選其中一個 process 進入，隱含<strong> No Deadlock</strong></li>
+</ul>
+</li>
+<li>Bounded Waiting：自 process 提出進入 critical section 的申請到獲准進入 critical section 的等待時間是有限的。即若有 n 個 processes 想進入，則任一 process 至多等待 n-1 次即可進入，隱含 <strong>No starvation</strong></li>
+</ol>
+<h1 id="critical-section-solution-synchronization"><a class="markdownIt-Anchor" href="#critical-section-solution-synchronization">#</a> Critical-Section Solution &amp; Synchronization</h1>
+<h2 id="algorithm-for-two-processes"><a class="markdownIt-Anchor" href="#algorithm-for-two-processes">#</a> Algorithm for Two Processes</h2>
+<p><img data-src="https://i.imgur.com/6pHp8pY.png" alt=""></p>
+<ul>
+<li>Shared variables
+<ul>
+<li>int turn</li>
+<li>turn = i (Pi 可進入 critical section)</li>
+</ul>
+</li>
+<li>Requirement
+<ul>
+<li>mutual exclusive - YES
+<blockquote>
+<p>因為 turn 值只會為 0 或 1 之其中一個值，所以只有一個可進入 C.S.</p>
+</blockquote>
+</li>
+<li>progress - NO
+<blockquote>
+<p>假設目前 P0 在 R.S. (且 P0 不想進入 C.S.)，而目前的 turn = 0 且 P1 欲進入 C.S.，但是因為 P0 仍在 R.S. 無法交付 turn ，所以被 P0 阻礙進入</p>
+</blockquote>
+</li>
+<li>bounded wait - YES
+<blockquote>
+<p>證明 P0 無法連續兩次進入 C.S 之中：</p>
+<ol>
+<li>假設目前 turn = 0，且 P0 已先早於 P1 進入 C.S. 使 P1 開始等待</li>
+<li>若 P0 離開後又想立刻想再次進入，但因為 P0 離開時會將 turn = 1，使得 P0 無法再度比 P1 早進入 C.S.</li>
+<li>這一次 P1 必定先進入之，所以 P1 最多等一次後即可進入</li>
+</ol>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p>以上的程式碼其實並不完美，這個程式要能順利運作的前提是<strong>兩個 Process 必須輪流執行</strong>，但 while loop <strong>不保證</strong>執行順序</p>
+<h3 id="petersons-solution-for-two-processes"><a class="markdownIt-Anchor" href="#petersons-solution-for-two-processes">#</a> Peterson’s Solution for Two Processes</h3>
+<p>為了解決上述 Progress 的問題，我們引入另一個變數  <code>flag</code>  ，用來表示 Process <strong>是否想要進入</strong> critical section 中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line"> flag[i] = TRUE; <span class="comment">//代表 Pi 已經準備好要進入 critical section</span></span><br><span class="line"> turn = j; <span class="comment">//代表把 key 交給別人，禮讓的概念</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">while</span> ( flag[j] &amp;&amp; turn == j); <span class="comment">//檢查其他 Process 是否可進入 critical section，確認沒有其他 Process 要進入 critical section 後自己再進入 critical section</span></span><br><span class="line"></span><br><span class="line"> [CRITICAL SECTION]</span><br><span class="line"></span><br><span class="line"> flag[i] = FALSE;</span><br><span class="line"></span><br><span class="line"> [REMAINDER SECTION]</span><br><span class="line"></span><br><span class="line">&#125; <span class="keyword">while</span> (TRUE);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Shared variables
+<ul>
+<li>int turn = 0 (initially)</li>
+<li>turn = i ⇒ Pi can enter its critical section (key)</li>
+<li>boolean flag[2] (initially flag [0] = flag [1] = false)</li>
+<li>flag [i] = true ⇒ Pi ready to enter its critical section</li>
+</ul>
+</li>
+<li>Requirement
+<ul>
+<li>mutual exclusive - YES
+<blockquote>
+<p>兩個 process 都要等對方的 flag 變 false 才能進入 CS</p>
+</blockquote>
+</li>
+<li>progress - YES
+<blockquote>
+<ul>
+<li>當一個 process 不想進入 CS 時，另一個 process 可以直接進入 CS</li>
+<li>當兩個 process 都想進入 CS 時，會看 turn 的值決定誰先進入 CS</li>
+</ul>
+</blockquote>
+</li>
+<li>bounded wait - YES
+<blockquote>
+<p>當一個 process 想要進入 CS 時，最多只需要等另一個 process 一次就可以進入 CS</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="bakery-algorithm-n-processes"><a class="markdownIt-Anchor" href="#bakery-algorithm-n-processes">#</a> Bakery Algorithm (n processes)</h2>
+<p><img data-src="https://i.imgur.com/xdZ3dJo.png" alt=""></p>
+<ul>
+<li>每個行程進入 C.S. 之前，會抽號碼牌<br>
+產生號碼的方法會產生 non-decreasing order 的序列</li>
+<li>有最小號碼的行程先執行他的 C.S.<br>
+ 號碼牌的比較方式：
+<ol>
+<li>比較號碼大小，號碼小的先進入 C.S.</li>
+<li>號碼相同時，比較行程編號，編號小的先進入 C.S.</li>
+</ol>
+</li>
+</ul>
+<h2 id="hardware-support"><a class="markdownIt-Anchor" href="#hardware-support">#</a> Hardware Support</h2>
+<p>Critical Section Problem 的發生是因為 shared variable 的修正<strong>可能被打斷</strong>，若某些指令我們可以一行完成就可以避免 race condition 的問題<br>
+前面都是在說軟體上的支援，若硬體可以將指令變成 atomic instructions ，就沒有同步的問題</p>
+<ul>
+<li>atomic : 無法中斷執行的最小單元</li>
+<li>hardware solution 缺點 (特指 TAS 和 SWAP)
+<ul>
+<li>只有 kernel mode 能用</li>
+<li>need time</li>
+<li>多處理機上會失效，單處理機上不好 (busy waiting)</li>
+<li>starvation</li>
+</ul>
+</li>
+<li>例如 : TestAndSet (var), Swap (a,b)</li>
+</ul>
+<h3 id="atomic-test-and-set"><a class="markdownIt-Anchor" href="#atomic-test-and-set">#</a> Atomic Test And Set()</h3>
+<p><img data-src="https://i.imgur.com/1XwdpaJ.png" alt=""><br>
+檢查並設置是一種不可中斷的基本 (原子) 運算 (atomically)，它會寫值到某個記憶體位置並傳回其舊值</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">boolean <span class="title function_">TestAndSet</span> <span class="params">(<span class="type">bool</span> &amp;lock)</span> &#123;</span><br><span class="line">    <span class="type">bool</span> value = lock ;</span><br><span class="line">    lock = TRUE ;</span><br><span class="line">    <span class="keyword">return</span> value ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Requirement
+<ul>
+<li>Mutual exclusion - Yes</li>
+<li>Progress - Yes</li>
+<li>Bounded-Wait - No</li>
+</ul>
+</li>
+</ul>
+<h3 id="atomic-swap"><a class="markdownIt-Anchor" href="#atomic-swap">#</a> Atomic Swap()</h3>
+<p><img data-src="https://i.imgur.com/fsmHFHs.png" alt=""></p>
+<ul>
+<li>想法：a, b 兩值互換</li>
+<li>多個 procress 也行得通</li>
+<li>key 可表示是否想進去</li>
+<li>搶到 lock 的人才能進去</li>
+<li>Requirement
+<ul>
+<li>Mutual exclusion - Yes</li>
+<li>Progress - Yes</li>
+<li>Bounded-Wait - No</li>
+</ul>
+</li>
+</ul>
+<h2 id="synchronization-tools"><a class="markdownIt-Anchor" href="#synchronization-tools">#</a> Synchronization Tools</h2>
+<h3 id="semaphores"><a class="markdownIt-Anchor" href="#semaphores">#</a> Semaphores</h3>
+<p>Semaphore 是一個同步物件，用於保持在 0 至指定最大值之間的一個計數值。(Semaphore do not require busy waiting, using waiting queue)</p>
+<ul>
+<li>記錄一個特定的資源有多少 unit 是 available
+<ul>
+<li>#record = 1 –-&gt; binary semaphore, mutex lock</li>
+<li>#record &gt; 1 –-&gt; counting semaphore</li>
+</ul>
+</li>
+<li>利用兩個 atomic operations wait &amp; signal 來存取 (注意與 critical section 的 wait &amp; signal 不同)</li>
+</ul>
+<h4 id="non-busy-waiting-implementation"><a class="markdownIt-Anchor" href="#non-busy-waiting-implementation">#</a> Non-busy waiting Implementation</h4>
+<ul>
+<li>想法：當 Process 因為同步事件 (Synchronization event) 被長時間卡住，則可以<strong>使用 Block system call 將該 Process 送入 Blocked state</strong>，所以不會與其他 Process 競爭 CPU ，直到該事件觸動了，才會喚醒 (Wake up system call) 該 Process 移至 Ready state</li>
+<li>優點：等待中的 Process 不會與其他 Process 不會浪費 CPU time</li>
+<li>缺點：需額外付出「Context switching time」</li>
+</ul>
+<blockquote>
+<p>system call 要考慮 context switch、re-scheduing 的影響，成本比 while 來得高。一般來說，等待時間很短的會用 busy waiting，反之則使用 non-busy waiting</p>
+</blockquote>
+<h4 id="cooperation-synchronization"><a class="markdownIt-Anchor" href="#cooperation-synchronization">#</a> Cooperation Synchronization</h4>
+<ul>
+<li>解決：有些情況我們關心不同 Process 間的執行順序，考慮兩個 thread P1 &amp; P2 分別執行 S1 &amp; S2，S2 必須在 S1 完成後才可執行</li>
+</ul>
+<h1 id="monitors"><a class="markdownIt-Anchor" href="#monitors">#</a> Monitors</h1>
+<p>Monitors 是一個用來解決同步問題的高階資料結構 (物件導向)(Semaphore and monitor have the same power in solving synchronization problem.)</p>
+<ul>
+<li>Monitors 的組成
+<ul>
+<li>共享變數宣告區</li>
+<li>一組程序</li>
+<li>初始區</li>
+</ul>
+</li>
+<li>特色：
+<ul>
+<li>宣告在 monitor 的變數只有 monitor 的 procedure 可以存取 (類似 class 中的 private 區)</li>
+<li>monitor 中有 condition 型態的變數，提供 programmer 設計同步問題之用 (for sync policy)</li>
+<li>monitor 直接保障 monitor 中變數和程序的互斥性質 (mutex, not sync policy)，不可有多個 process 呼叫 monitor 的某個程序 (在 semaphore 中要多加許多 mutex 保護變數)</li>
+</ul>
+</li>
+</ul>
+<h2 id="monitor-condition-variables"><a class="markdownIt-Anchor" href="#monitor-condition-variables">#</a> Monitor Condition Variables</h2>
+<p><img data-src="https://i.imgur.com/OE9Se7J.png" alt=""></p>
+<ul>
+<li>為了允許行程在 monitor 做等待，需要一個 condition</li>
+<li>Condition variable 只能被 wait () and signal () 使用</li>
+<li>Operations on condition variables
+<ul>
+<li><code>x.wait();</code>
+<ul>
+<li>process invoking this operation 被中斷直到另一個 process 調用完</li>
+</ul>
+</li>
+<li><code>x.signal();</code>
+<ul>
+<li>繼續一個先前被中斷的行程</li>
+<li>如果沒有行程被中斷，則 signal operation 沒有影響</li>
+<li>相反的，signal 不斷改變 semaphore 的 state</li>
+</ul>
+</li>
+<li>單純就是 linked list 的 queue
+<ul>
+<li>wait –-&gt; enqueue</li>
+<li>signal –-&gt; dequeue</li>
+<li>是 queue 不是 counter</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="classical-problems-of-synchronization"><a class="markdownIt-Anchor" href="#classical-problems-of-synchronization">#</a> Classical Problems of Synchronization</h1>
+<p>常見的問題如下：</p>
+<ol>
+<li>Bounded-Buffer (Producer-Consumer) Problem</li>
+<li>Reader-Writers Problem</li>
+<li>Dining-Philosopher Problem</li>
+</ol>
+<h2 id="bounded-buffer-producer-consumer-problem"><a class="markdownIt-Anchor" href="#bounded-buffer-producer-consumer-problem">#</a> Bounded-Buffer (Producer-Consumer) Problem</h2>
+<ul>
+<li>背景：N 個 buffers，Producer 製造項目，Consumer 消耗項目</li>
+<li>Shared variables
+<ul>
+<li>N Buffer initial mutex = 1 ：互斥鎖，避免同時複寫</li>
+<li>initial full = 0：producer signal，consumer wait</li>
+<li>initial empty = N：producer wait，consumer signal</li>
+</ul>
+</li>
+<li>Producer
+<ul>
+<li>取一個空的 buffer</li>
+<li>放置一個 item 進 buffer</li>
+<li>如果沒有空的 buffer，則等待</li>
+</ul>
+</li>
+<li>Consumer
+<ul>
+<li>取一個 buffer 並拿出 item</li>
+<li>將 buffer 放到 free pool</li>
+<li>如果所有的 buffers 都空的，則等待</li>
+</ul>
+</li>
+</ul>
+<h2 id="reader-writers-problem"><a class="markdownIt-Anchor" href="#reader-writers-problem">#</a> Reader-Writers Problem</h2>
+<ul>
+<li>問題：如何設計一個同步機制，使得多個 process 可以同時讀取資料庫，但在寫入資料庫時，必須確保沒有其他 process 在讀取或寫入資料庫</li>
+<li>A group of processes
+<ul>
+<li>reader：只會讀取</li>
+<li>writer：可讀可寫</li>
+<li>writer 對 shared object 有獨佔權</li>
+</ul>
+</li>
+<li>種類
+<ul>
+<li>First readers-writers problem：不會讓 reader 等待，可能導致 writer 飢餓</li>
+<li>Second readers-writers problem：不會讓 writer 等待，可能導致 reader 飢餓</li>
+</ul>
+</li>
+</ul>
+<h2 id="dining-philosopher-problem"><a class="markdownIt-Anchor" href="#dining-philosopher-problem">#</a> Dining-Philosopher Problem</h2>
+<p><img data-src="https://i.imgur.com/XJrTY9w.png" alt=""></p>
+<ul>
+<li>介紹：五個哲學家圍著一張圓桌坐著，他們的生活方式是思考和吃飯。桌子中央有一碗米飯，旁邊有五根筷子。每個哲學家在吃飯時需要使用他們左邊和右邊的筷子</li>
+<li>問題：是如何設計一個同步機制，使得哲學家們能夠在不發生死鎖或飢餓的情況下進行思考和吃飯</li>
+<li>每個哲學家有 3 種狀態：
+<ul>
+<li>thinking — 不想吃飯，思考中。</li>
+<li>hungry — 想吃飯。</li>
+<li>eating — 取得左右筷子，可吃飯。</li>
+</ul>
+</li>
+<li>Shared variables：
+<ul>
+<li>data set</li>
+<li>chopstick[0…4] of semaphore</li>
+</ul>
+</li>
+</ul>
+<h1 id="thread-programming"><a class="markdownIt-Anchor" href="#thread-programming">#</a> Thread Programming</h1>
+<h2 id="pthread-lockmutex-routines"><a class="markdownIt-Anchor" href="#pthread-lockmutex-routines">#</a> Pthread Lock/Mutex Routines</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> “pthread.h”</span></span><br><span class="line">pthread_mutex mutex;</span><br><span class="line">pthread_mutex_init(&amp;mutex, <span class="literal">NULL</span>);</span><br><span class="line">pthread_mutex_lock(&amp;mutex);<span class="comment">// enter critical section</span></span><br><span class="line">    Critical Section;</span><br><span class="line">pthread_mutex_unlock(&amp;mutex);<span class="comment">// leave critical section</span></span><br><span class="line">pthread_mutex_destory(&amp;mutex);</span><br></pre></td></tr></table></figure>
+<p>use mutex</p>
+<ul>
+<li>declare：pthread_mutex_t</li>
+<li>initialize：pthread_mutex_init()</li>
+<li>destroy：pthread_mutex_destory()</li>
+<li>CS be protected：pthread_mutex_lock() and pthread_mutex_unlock()</li>
+</ul>
+<h2 id="condition-variables-cv"><a class="markdownIt-Anchor" href="#condition-variables-cv">#</a> Condition Variables (CV)</h2>
+<p>CV 代表一些條件讓 thread 可以</p>
+<ul>
+<li>等待直到條件發生</li>
+<li>通知其他正在等待的 thread，條件已經發生了</li>
+<li>operations on condition variables
+<ul>
+<li><code>wait()</code> <br>
+ Block 直到另一個 thread calls signal () or broadcast () on the CV</li>
+<li><code>signal()</code> <br>
+Wake up one thread waiting on the CV</li>
+<li><code>broadcast()</code> <br>
+Wake up all threads waiting on the CV</li>
+</ul>
+</li>
+<li>Pthread</li>
+<li>Example：所有的 condition variable operation MUST be performed while a mutex is locked</li>
+</ul>
+<h2 id="threadpool-implementation"><a class="markdownIt-Anchor" href="#threadpool-implementation">#</a> ThreadPool Implementation</h2>
+<p>很多個 thread 去 queue 中搶 task，queue 空了之後，等到有東西之後繼續搶。是 critical section 保護 dequeue 的動作</p>
+<h2 id="synchronized-tools-in-java"><a class="markdownIt-Anchor" href="#synchronized-tools-in-java">#</a> Synchronized Tools in JAVA</h2>
+<ul>
+<li>Synchronized Methods (Monitor)</li>
+<li>Synchronized Statement (Mutex Lock)</li>
+</ul>
+<h1 id="atomic-transactions"><a class="markdownIt-Anchor" href="#atomic-transactions">#</a> Atomic Transactions</h1>
+<h2 id="system-model"><a class="markdownIt-Anchor" href="#system-model">#</a> System Model</h2>
+<ul>
+<li>Transaction
+<ul>
+<li>執行一個單一邏輯 function 的一個指令集合</li>
+</ul>
+</li>
+<li>Atomic Transaction
+<ul>
+<li>執行一個單一邏輯 function，要馬全部執行，要不就全部不執行（all or nothing）</li>
+<li>Atomic transaction 在 database system 是個重要的議題（讀寫）</li>
+</ul>
+</li>
+</ul>
+<h2 id="file-io-example"><a class="markdownIt-Anchor" href="#file-io-example">#</a> File I/O Example</h2>
+<p>Transaction 是一連串的讀寫 operations</p>
+<ul>
+<li>透過 commit 以及 abort 來確認動作完成
+<ul>
+<li>transaction 成功 : commit –&gt; terminated</li>
+<li>transaction 失敗 : abort –&gt; roll back</li>
+</ul>
+</li>
+<li>abort 的 transaction 必須回溯，取消所有做過的改變，這個性質的確保為 system 的責任</li>
+</ul>
+<h2 id="log-based-recovery"><a class="markdownIt-Anchor" href="#log-based-recovery">#</a> Log-Based Recovery</h2>
+<p>紀錄所有 transaction 的步驟及做過的改變</p>
+<ul>
+<li>Write-ahead logging : 基本上 log 紀錄需包含以下資訊
+<ul>
+<li>Transaction name</li>
+<li>Data item name</li>
+<li>Old &amp; new values</li>
+<li>Special events: (Ti starts), (Ti commits)</li>
+</ul>
+</li>
+<li>Log 用來重建被改動資料的原始狀態
+<ul>
+<li>利用 undo (Ti) 及 redo (Ti) 來復原資料</li>
+</ul>
+</li>
+</ul>
+<h2 id="checkpoints"><a class="markdownIt-Anchor" href="#checkpoints">#</a> Checkpoints</h2>
+<ul>
+<li>問題：Logging 沒有時間觀念，從系統打開到系統崩潰為止一直紀錄，因此需要 checkpoint 留存系統還原點</li>
+<li>例如：強制關機時 word 沒有存檔，重開後系統會問你是否要還原至關機瞬間的狀態</li>
+<li>當 failure 發生時，必須查看 log 來確認哪些 transactions 要重新執行
+<ul>
+<li>搜尋 process 很花時間</li>
+<li>並非所有 transactions 都需要重新執行</li>
+</ul>
+</li>
+<li>checkpoints 減少上述 overhead 達到 stable storage
+<ul>
+<li>輸出所有 log 紀錄</li>
+<li>輸出所有被更動的資料</li>
+<li>輸出紀錄 checkpoint 的 log</li>
+</ul>
+</li>
+</ul>
+<h1 id="ref-notes"><a class="markdownIt-Anchor" href="#ref-notes">#</a> Ref Notes</h1>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vcnYtUE5lM0VTeGkwOFBFbHlVVGM0USMlRTclOUIlQTMlRTclOUQlQTMlRTclQTglOEIlRTUlQkMlOEZNb25pdG9ycw==">Kipper’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQENoYW5nLUNoaWEtQ2hpL09TL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGJTQwQ2hhbmctQ2hpYS1DaGklMkZPUy1DSDY=">Chang-Chia-Chi’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQFBsLWVRVDlDUWFTMGpoRXhLcUw4X3cvQmtoT1NSNGpXL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGcyUyRnIxZXZZR3VaZg==">陳品媛的筆記</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubXJvcGVuZ2F0ZS5jb20vMjAxNS8wMS9vcGVyYXRpbmctc3lzdGVtLWNoNi1zeW5jaHJvbml6YXRpb24uaHRtbA==">Mr. Opengate. OS - Ch6</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQGZyYWt3L1MxaEZVMFZkdA==">Sheng-Hao Liao</span></li>
+</ul>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新於</span>
+    <time title="修改時間：2026-01-17 09:36:48" itemprop="dateModified" datetime="2026-01-17T09:36:48+08:00">2026-01-17</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>作者： </strong>Maru <i class="ic i-at"><em>@</em></i>一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ
+  </li>
+  <li class="link">
+    <strong>文章連結：</strong>
+    <a href="https://marumarumarsh.github.io/2026/01/15/OS/7_Process_Synchronization/" title="Chapter 6. Process Synchronization">https://marumarumarsh.github.io/2026/01/15/OS/7_Process_Synchronization/</a>
+  </li>
+  <li class="license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2026/01/14/OS/6_Process_Scheduling/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res037015_rip&#x2F;card_normal.png" title="Chapter 5. Process Scheduling">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 5. Process Scheduling</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2026/01/17/OS/8_%20Deadlocks/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res040014_rip&#x2F;card_normal.png" title="Chapter 7. Deadlocks">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 7. Deadlocks</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目錄">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#background"><span class="toc-number">1.</span> <span class="toc-text"> Background</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#consumer-producer-problem"><span class="toc-number">1.1.</span> <span class="toc-text"> Consumer &amp; Producer Problem</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#concurrent-operations-on-counter"><span class="toc-number">1.1.1.</span> <span class="toc-text"> Concurrent Operations on counter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#instruction-interleaving"><span class="toc-number">1.1.2.</span> <span class="toc-text"> Instruction Interleaving</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#race-condition"><span class="toc-number">1.2.</span> <span class="toc-text"> Race Condition</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#critical-section"><span class="toc-number">2.</span> <span class="toc-text"> Critical Section</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#critical-section-problem"><span class="toc-number">2.1.</span> <span class="toc-text"> Critical-Section Problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#critical-section-requirements"><span class="toc-number">2.2.</span> <span class="toc-text"> Critical Section Requirements</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#critical-section-solution-synchronization"><span class="toc-number">3.</span> <span class="toc-text"> Critical-Section Solution &amp; Synchronization</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#algorithm-for-two-processes"><span class="toc-number">3.1.</span> <span class="toc-text"> Algorithm for Two Processes</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#petersons-solution-for-two-processes"><span class="toc-number">3.1.1.</span> <span class="toc-text"> Peterson’s Solution for Two Processes</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bakery-algorithm-n-processes"><span class="toc-number">3.2.</span> <span class="toc-text"> Bakery Algorithm (n processes)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hardware-support"><span class="toc-number">3.3.</span> <span class="toc-text"> Hardware Support</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#atomic-test-and-set"><span class="toc-number">3.3.1.</span> <span class="toc-text"> Atomic Test And Set()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#atomic-swap"><span class="toc-number">3.3.2.</span> <span class="toc-text"> Atomic Swap()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#synchronization-tools"><span class="toc-number">3.4.</span> <span class="toc-text"> Synchronization Tools</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#semaphores"><span class="toc-number">3.4.1.</span> <span class="toc-text"> Semaphores</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#non-busy-waiting-implementation"><span class="toc-number">3.4.1.1.</span> <span class="toc-text"> Non-busy waiting Implementation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cooperation-synchronization"><span class="toc-number">3.4.1.2.</span> <span class="toc-text"> Cooperation Synchronization</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#monitors"><span class="toc-number">4.</span> <span class="toc-text"> Monitors</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#monitor-condition-variables"><span class="toc-number">4.1.</span> <span class="toc-text"> Monitor Condition Variables</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#classical-problems-of-synchronization"><span class="toc-number">5.</span> <span class="toc-text"> Classical Problems of Synchronization</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#bounded-buffer-producer-consumer-problem"><span class="toc-number">5.1.</span> <span class="toc-text"> Bounded-Buffer (Producer-Consumer) Problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reader-writers-problem"><span class="toc-number">5.2.</span> <span class="toc-text"> Reader-Writers Problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dining-philosopher-problem"><span class="toc-number">5.3.</span> <span class="toc-text"> Dining-Philosopher Problem</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#thread-programming"><span class="toc-number">6.</span> <span class="toc-text"> Thread Programming</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#pthread-lockmutex-routines"><span class="toc-number">6.1.</span> <span class="toc-text"> Pthread Lock&#x2F;Mutex Routines</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#condition-variables-cv"><span class="toc-number">6.2.</span> <span class="toc-text"> Condition Variables (CV)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#threadpool-implementation"><span class="toc-number">6.3.</span> <span class="toc-text"> ThreadPool Implementation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#synchronized-tools-in-java"><span class="toc-number">6.4.</span> <span class="toc-text"> Synchronized Tools in JAVA</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#atomic-transactions"><span class="toc-number">7.</span> <span class="toc-text"> Atomic Transactions</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#system-model"><span class="toc-number">7.1.</span> <span class="toc-text"> System Model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#file-io-example"><span class="toc-number">7.2.</span> <span class="toc-text"> File I&#x2F;O Example</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#log-based-recovery"><span class="toc-number">7.3.</span> <span class="toc-text"> Log-Based Recovery</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#checkpoints"><span class="toc-number">7.4.</span> <span class="toc-text"> Checkpoints</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ref-notes"><span class="toc-number">8.</span> <span class="toc-text"> Ref Notes</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="本站概要">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Maru"
+      data-src="/images/ava1.jpg">
+  <p class="name" itemprop="name">Maru</p>
+  <div class="description" itemprop="description">垮惹</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">21</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首頁</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2026/01/14/OS/6_Process_Scheduling/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2026/01/17/OS/8_%20Deadlocks/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>隨機文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/21/OS/12_File_System_Implementation/" title="Chapter 11. File System Implementation">Chapter 11. File System Implementation</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/20/OS/11_File_System_Interface/" title="Chapter 10. File System Interface">Chapter 10. File System Interface</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/11/10/%E6%97%A5%E6%96%87/%E6%97%A5%E6%9C%AC%E8%AA%9E%E3%81%AE%E6%A3%AE/" title="【一冊で合格する】Ｎ1  - 錯題集">【一冊で合格する】Ｎ1  - 錯題集</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Linear%20model%20selection%20and%20regularization/" title="Linear model selection and regularization">Linear model selection and regularization</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/14/OS/6_Process_Scheduling/" title="Chapter 5. Process Scheduling">Chapter 5. Process Scheduling</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/12/OS/4_Processes_Concept/" title="Chapter 3. Processes Concept">Chapter 3. Processes Concept</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/11/OS/3_OS_Structure/" title="Chapter 2. OS Structure">Chapter 2. OS Structure</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Resampling%20Methods/" title="Resampling Methods">Resampling Methods</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/%E5%89%8D%E8%A8%80/" title="先備軟體介紹">先備軟體介紹</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Classification/" title="Classification">Classification</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新評論</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maru @ 棉花糖小窩</span>
+  </div>
+  <div class="powered-by">
+    基於 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2026/01/15/OS/7_Process_Synchronization/',
+    favicon: {
+      show: "（●´3｀●）復活成功",
+      hide: "(´Д｀)瀏覽器崩潰啦"
+    },
+    search : {
+      placeholder: "文章搜尋",
+      empty: "關於 「 ${query} 」 ，什麼也沒搜到",
+      stats: "${time} ms 內找到 ${hits} 條結果"
+    },
+    valine: true,copy_tex: true,
+    katex: true,fancybox: true,
+    copyright: '複製成功，轉載請遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 協議。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/sakiko.model.json"},"display":{"position":"left","width":280,"height":400,"hOffset":0,"vOffset":-50},"mobile":{"show":false},"react":{"opacity":1},"dialog":{"enable":false,"hitokoto":false},"log":false});</script></body>
+</html>

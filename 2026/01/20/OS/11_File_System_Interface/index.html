@@ -1,0 +1,688 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://marumarumarsh.github.io/2026/01/20/OS/11_File_System_Interface/">
+
+
+
+  <title>
+Chapter 10. File System Interface |
+棉花糖小窩 = 一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ = 棉花糖絕對不能烤！！</title>
+<meta name="generator" content="Hexo 8.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Chapter 10. File System Interface
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="創建時間：2026-01-20 09:27:19">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">發表於</span>
+    <time itemprop="dateCreated datePublished" datetime="2026-01-20T09:27:19+08:00">2026-01-20</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切換導航欄">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">棉花糖小窩</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res038010_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res027042_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036005_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res039014_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res021082_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res029039_rip/card_after_training.png"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首頁</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-TW">
+  <link itemprop="mainEntityOfPage" href="https://marumarumarsh.github.io/2026/01/20/OS/11_File_System_Interface/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/ava1.jpg">
+    <meta itemprop="name" content="Maru">
+    <meta itemprop="description" content="棉花糖絕對不能烤！！, 垮惹">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="file-system-interface"><a class="markdownIt-Anchor" href="#file-system-interface">#</a> File System Interface</h1>
+<p>檔案系統是一套實現了資料的儲存、分級組織、存取和取得等操作的抽象資料類型（Abstract data type）</p>
+<p>檔案系統使用檔案和樹形目錄的抽象邏輯概念代替了硬碟和光碟等物理裝置使用資料塊的概念，用戶使用檔案系統來儲存資料不必關心資料實際儲存在硬碟（或者光碟）的位址為多少的資料塊上，只需要記住這個檔案的所屬目錄和檔案名</p>
+<p>一個好的檔案系統須具有：</p>
+<ul>
+<li>良好的空間管理</li>
+<li>有效的資料存取</li>
+<li>好的容錯能力</li>
+</ul>
+<p>完整的檔案系統包含三個部分：</p>
+<ul>
+<li>檔案</li>
+<li>目錄結構：檔案分門別類地儲存於硬碟<br>
+系統通常會有兩個獨立的目錄結構，邏輯目錄可以指向實體目錄的項目
+<ol>
+<li>實體目錄（Physical Directory）：每個實體設備皆有，以描述該設備上所有檔案的實體特性<br>
+如：檔案位在哪裡、有多長、採用何種配置等</li>
+<li>邏輯目錄（Logical Directory）：設備中檔案的邏輯結構，專門記錄檔案的邏輯特性<br>
+如：名稱、檔案型態、擁有者、保護存取代碼等</li>
+</ol>
+</li>
+<li>分割：將一個實體硬碟分成數個邏輯上的硬碟</li>
+</ul>
+<h2 id="檔案屬性-metadata檔案儲存於硬碟中系統同時儲存跟檔案相關的資料稱為檔案屬性值"><a class="markdownIt-Anchor" href="#檔案屬性-metadata檔案儲存於硬碟中系統同時儲存跟檔案相關的資料稱為檔案屬性值">#</a> 檔案屬性 (Metadata)：檔案儲存於硬碟中，系統同時儲存跟檔案相關的資料稱為檔案屬性值</h2>
+<ul>
+<li>檔案名稱：給人看</li>
+<li>ID：給機器看</li>
+<li>型態：以辨識不同資料型態的檔案，包含目錄、裝置、普通檔案</li>
+<li>位置：指向硬碟實體儲存位置的指標</li>
+<li>大小：儲存於硬碟中的儲存空間</li>
+<li>保護：安全上的考量</li>
+<li>擁有者</li>
+<li>日期資訊：檔案建立、修改的日期時間</li>
+</ul>
+<h2 id="file-operations"><a class="markdownIt-Anchor" href="#file-operations">#</a> File Operations</h2>
+<ul>
+<li>建立檔案 (Create)</li>
+<li>寫入檔案 (Write): 必須更新寫入指標 (write pointer) 到檔案的位置</li>
+<li>讀取檔案 (Read): 必須更新讀出指標 (read pointer) 到檔案的位置<br>
+目前檔案位置指標 (current-file-position pointer): 通常一個行程只會讀取或寫入一個檔案，因此讀和寫使用共同的指標，能減省目錄空間</li>
+<li>重置檔案 (Reposition within file): 搜尋目錄以找到相關的進入點，也稱為搜尋 (seek)</li>
+<li>刪除檔案 (Delete)</li>
+<li>縮減檔案 (Truncate): 將檔案長度重置，並將檔案空間釋放</li>
+</ul>
+<h2 id="open-file-tables"><a class="markdownIt-Anchor" href="#open-file-tables">#</a> Open-File Tables</h2>
+<p>當檔案第一次被使用時，作業系統必須到磁碟的「Physical directory」找出檔案的配置資訊，接著將此資訊複製到作業系統的記憶體空間之中的一個表格稱為「Open file table」。將來對這個檔案進行任何操作之前，作業系統只需要到此表格搜尋取得檔案的配置資訊即可</p>
+<p>由於「Open file table」中的檔案很少 (E.g., 20 個)，搜尋的時間可以大幅降低，此表格位於記憶體中，所以可以節省可觀的 I/O time (次數)</p>
+<p>因為檔案可以被多個 Process 共用，「Open file table 」分為：</p>
+<h3 id="per-process-table"><a class="markdownIt-Anchor" href="#per-process-table">#</a> Per-process table</h3>
+<ul>
+<li>Tracking 所有被這個 process 打開的 files</li>
+<li>Current file pointer for each opened file</li>
+<li>存取權限和 accounting information：CPU 數量，真實使用的時間，時間限制，帳戶數量，行程數量</li>
+</ul>
+<h3 id="system-wide-table"><a class="markdownIt-Anchor" href="#system-wide-table">#</a> System-wide table</h3>
+<p><img data-src="https://i.imgur.com/bCcJnK6.png" alt=""></p>
+<ul>
+<li>每個在 per-process table 的 entry 指到這個 table</li>
+<li>Process-independent information：disk location, access dates, file size</li>
+<li>Open count
+<ul>
+<li>有幾個 file pointer 指在上面意指現階段有多少讀寫者 access 到此檔案上</li>
+<li>都存取 a，資料一致性，避免 duplicate</li>
+</ul>
+</li>
+</ul>
+<h2 id="open-file-attributes"><a class="markdownIt-Anchor" href="#open-file-attributes">#</a> Open File Attributes</h2>
+<ul>
+<li>Open-file attributes (metadata)
+<ul>
+<li>File pointer (per-process)<br>
+ 為程式讀寫檔的讀寫頭，落在讀寫檔結束的當下</li>
+<li>File open count (system table)</li>
+<li>Disk location (system table)</li>
+<li>Access rights (per-process)</li>
+</ul>
+</li>
+<li>File types
+<ul>
+<li>.exe, .com, .obj, .cc, .mov, etc</li>
+<li>Hint for OS to operate file in a reasonable way</li>
+</ul>
+</li>
+</ul>
+<h1 id="存取方式access-methods"><a class="markdownIt-Anchor" href="#存取方式access-methods">#</a> 存取方式 (Access Methods)</h1>
+<p>可看 programmer 需要哪種讀取，在看提供哪種 api，還有硬碟的讀取特性</p>
+<h2 id="循序存取sequential-access"><a class="markdownIt-Anchor" href="#循序存取sequential-access">#</a> 循序存取 (Sequential Access)</h2>
+<p><img data-src="https://i.imgur.com/R2aecRJ.png" alt=""></p>
+<ul>
+<li>依照記錄次序一一存取區段，可以向前或向後 n 個紀錄</li>
+<li>因為磁頭的關係，若是 random，移動磁頭花時間</li>
+<li>邏輯上連續，但檔案儲存實體硬碟位置不一定要連續</li>
+<li>Reset：重置 file pointer 到 file 的起始點</li>
+</ul>
+<h2 id="直接存取direct-access"><a class="markdownIt-Anchor" href="#直接存取direct-access">#</a> 直接存取 (Direct Access)</h2>
+<p><img data-src="https://i.imgur.com/zk7mEvP.png" alt=""></p>
+<ul>
+<li>可以 access 在任意位置的 element</li>
+<li>File operations 需要 block #作為參數</li>
+<li>檔案由多個<strong>大小固定的區塊所組成</strong>，可直接將檔案指標移動到某個特定的區塊並一次讀取整個區塊</li>
+</ul>
+<h2 id="索引存取index-access"><a class="markdownIt-Anchor" href="#索引存取index-access">#</a> 索引存取 (Index Access)</h2>
+<p><img data-src="https://i.imgur.com/nvgdf4T.png" alt=""></p>
+<ul>
+<li>Index：包含 pointers to blocks of a file</li>
+<li>To find a record in a file:
+<ul>
+<li>搜尋 index file -&gt; 找到 pointer</li>
+<li>使用 pointer 去直接存取 record</li>
+</ul>
+</li>
+<li>若是一個 large file -&gt; index 可能會變很大</li>
+</ul>
+<h1 id="目錄和磁碟結構disk-structure-and-directory-structure"><a class="markdownIt-Anchor" href="#目錄和磁碟結構disk-structure-and-directory-structure">#</a> 目錄和磁碟結構 (Disk Structure and Directory Structure)</h1>
+<p><img data-src="https://i.imgur.com/gMbMhew.png" alt=""></p>
+<ul>
+<li>磁碟可被分割成多個檔案系統
+<ul>
+<li>卷 (volume): 每個包含一個檔案系統的實體</li>
+<li>每個檔案系統將系統中的檔案資訊存放在裝置目錄 (device directory) 或卷表內容 (volume table of content)</li>
+</ul>
+</li>
+<li>目錄概觀
+<ul>
+<li>目錄可視為把檔名轉換成目錄進入點的符號表</li>
+<li>目錄操作
+<ul>
+<li>搜尋</li>
+<li>建檔</li>
+<li>刪除</li>
+<li>列出目錄</li>
+<li>更改檔名</li>
+<li>追蹤檔案系統</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="單層目錄single-level-directory"><a class="markdownIt-Anchor" href="#單層目錄single-level-directory">#</a> 單層目錄 (Single-Level Directory)</h2>
+<p><img data-src="https://i.imgur.com/Q3WXDM2.png" alt=""></p>
+<ul>
+<li>所有的 file 都在同一個 directory，是最簡單的目錄結構</li>
+<li>當檔案增加，追蹤變得困難</li>
+<li>檔案名稱必須要<strong>唯一</strong>（不同使用者也是）</li>
+</ul>
+<h2 id="雙層目錄two-level-directory"><a class="markdownIt-Anchor" href="#雙層目錄two-level-directory">#</a> 雙層目錄 (Two-Level Directory)</h2>
+<p><img data-src="https://i.imgur.com/wcE6JB5.png" alt=""></p>
+<ul>
+<li>directory 被分給每個使用者</li>
+<li>path = user name + file name</li>
+<li>single-level dir 的問題依然存在在每個使用者</li>
+<li>缺點：不同使用者不能共享檔案與目錄</li>
+</ul>
+<h2 id="樹狀目錄"><a class="markdownIt-Anchor" href="#樹狀目錄">#</a> 樹狀目錄</h2>
+<p><img data-src="https://i.imgur.com/ylFwAEc.png" alt=""></p>
+<ul>
+<li>現用目錄 (currrent directory): 包含使用者目前最感興趣的大部分檔案</li>
+<li>如果要指定一個檔案，以上圖 first 來說
+<ul>
+<li>絕對路徑名稱 (absolute path name):root/spell/mail/ptr/first（從 root 開始</li>
+<li>相對路徑名稱 (relative path name):/ptr/first (目前目錄為 root/spell/mail)（從 directory 開始</li>
+</ul>
+</li>
+</ul>
+<h2 id="非循環圖形目錄acyclic-graph-directories"><a class="markdownIt-Anchor" href="#非循環圖形目錄acyclic-graph-directories">#</a> 非循環圖形目錄 (Acyclic-Graph Directories)</h2>
+<p><img data-src="https://i.imgur.com/x3t8PTT.png" alt=""></p>
+<ul>
+<li>使用 links（指向其他檔案或目錄的指標） 去分享 files 或 directories</li>
+<li>允許共用的子目錄或檔案共享</li>
+<li>不會有循環，但要避免循環的代價高</li>
+</ul>
+<h2 id="一般圖形目錄general-graph-directory"><a class="markdownIt-Anchor" href="#一般圖形目錄general-graph-directory">#</a> 一般圖形目錄 (General Graph Directory)</h2>
+<p><img data-src="https://i.imgur.com/K9RCO73.png" alt=""></p>
+<ul>
+<li>會有循環，可能導致搜尋時無限迴圈（解決：限制目錄被存取的次數）</li>
+<li>廢置空間收集法 (garbage collection)：判斷資料何時被刪除及磁碟空間可否重新分配</li>
+</ul>
+<h1 id="檔案系統安裝file-system-mounting"><a class="markdownIt-Anchor" href="#檔案系統安裝file-system-mounting">#</a> 檔案系統安裝 (File System Mounting)</h1>
+<p><img data-src="https://i.imgur.com/f5U5Hw7.png" alt=""><br>
+檔案系統必須先安裝才可以被系統的行程取得</p>
+<ul>
+<li>安裝點 (mount point)：系統和連結上此檔案系統的檔案結構中的位置<br>
+<img data-src="https://i.imgur.com/G0NLM2I.png" alt=""></li>
+</ul>
+<h1 id="檔案分享file-sharing"><a class="markdownIt-Anchor" href="#檔案分享file-sharing">#</a> 檔案分享 (File Sharing)</h1>
+<ul>
+<li>多位使用者 每個 user：(userID, groupID)
+<ul>
+<li>一個 user 可以屬於多個 group</li>
+<li>系統必須對分享製作保護</li>
+<li>檔案或目錄的
+<ul>
+<li>擁有者 (owner)/ 使用者 (user): 可以更改屬性、授予存取權利、最大控制權的使用者</li>
+<li>群組 (group): 可以分享檔案的一小組使用者</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>遠端檔案系統<br>
+遠端檔案分享的方法：
+<ul>
+<li>使用檔案傳輸協定 (FTP,File Transfer Protocol)：在機器間傳輸</li>
+<li>分散式的檔案系統 (DFS,distributed file system)：讓遠端的目錄在本地端能被發現</li>
+<li>全球資訊網 (World Wide Web)：網頁瀏覽器用來取得遠端檔案的存取權</li>
+</ul>
+</li>
+<li>匿名存取 (anonymous access): 允許使用者在遠端系統上沒有帳號就可以傳輸</li>
+<li>客戶 - 伺服器模型 (Client-server model)
+<ul>
+<li>客戶端 (client)：包含檔案</li>
+<li>伺服器 (server)：希望存取檔案</li>
+<li>認證客戶較難，辨識符號 (IP 等等) 可以偽造</li>
+</ul>
+</li>
+</ul>
+<h1 id="protection"><a class="markdownIt-Anchor" href="#protection">#</a> Protection</h1>
+<ul>
+<li>File 的擁有者或是創檔者必須能去控制
+<ul>
+<li>哪些事能被做</li>
+<li>被誰做</li>
+<li>Access control list（ACL）</li>
+</ul>
+</li>
+<li>Files should be kept from
+<ul>
+<li>物理損壞（reliability）: i.e. RAID</li>
+<li>不正確的存取（protection）: i.e. password</li>
+</ul>
+</li>
+<li>RAID（Redundant Array of Independent Disks，獨立磁碟備援陣列）
+<ul>
+<li>RAID 在實體上是多顆硬碟，在系統中被當作一顆硬碟使用，而在作業系統底下，也還是可以將它分割為單一或多個分割區。因此建立好的 RAID，使用起來跟單一硬碟是完全相同的，只是依組成方式的不同</li>
+<li>RAID 可以提供<strong>更大的容量、更高的讀寫效能，或是額外的「安全性」</strong><br>
+（這裡所說的「安全性」，是指硬碟損毀之後資料重建、回復的能力，與加密防駭等功能無關）</li>
+</ul>
+</li>
+</ul>
+<h1 id="ref-notes"><a class="markdownIt-Anchor" href="#ref-notes">#</a> Ref Notes</h1>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vYU5QV0tzRmhUbEdjLVdGZ1FfX0tSZw==">Kipper’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQENoYW5nLUNoaWEtQ2hpL09TL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGJTQwQ2hhbmctQ2hpYS1DaGklMkZPUy1DSDEx">Chang-Chia-Chi’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQFBsLWVRVDlDUWFTMGpoRXhLcUw4X3cvQmtoT1NSNGpXL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGcyUyRnJrUkZyOHRHTQ==">陳品媛的筆記</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubXJvcGVuZ2F0ZS5jb20vMjAxNS8wMS9vcGVyYXRpbmctc3lzdGVtLWNoMTAtZmlsZS1zeXN0ZW0uaHRtbA==">Mr. Opengate. OS - Ch10</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93YW5nd2lsbHkuZ2l0aHViLmlvL3dpbGx5d2FuZ2thYS8yMDE4LzA5LzEwL09wZXJhdGluZy1TeXN0ZW0tRmlsZS1NYW5hZ2VtZW50Lw==">WillyWangkaa’s Note</span></li>
+</ul>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新於</span>
+    <time title="修改時間：2026-01-20 21:50:45" itemprop="dateModified" datetime="2026-01-20T21:50:45+08:00">2026-01-20</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>作者： </strong>Maru <i class="ic i-at"><em>@</em></i>一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ
+  </li>
+  <li class="link">
+    <strong>文章連結：</strong>
+    <a href="https://marumarumarsh.github.io/2026/01/20/OS/11_File_System_Interface/" title="Chapter 10. File System Interface">https://marumarumarsh.github.io/2026/01/20/OS/11_File_System_Interface/</a>
+  </li>
+  <li class="license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2026/01/19/OS/10_Virtual_Memory_Management/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;anihonetwallpaper.com&#x2F;image&#x2F;2024&#x2F;10&#x2F;202402203-ProjectSEKAI-AkiyamaMizuki.jpg" title="Chapter 9. Virtual Memory Management">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 9. Virtual Memory Management</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2026/01/21/OS/12_File_System_Implementation/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res036010_rip&#x2F;card_after_training.png" title="Chapter 11. File System Implementation">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 11. File System Implementation</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目錄">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#file-system-interface"><span class="toc-number">1.</span> <span class="toc-text"> File System Interface</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AA%94%E6%A1%88%E5%B1%AC%E6%80%A7-metadata%E6%AA%94%E6%A1%88%E5%84%B2%E5%AD%98%E6%96%BC%E7%A1%AC%E7%A2%9F%E4%B8%AD%E7%B3%BB%E7%B5%B1%E5%90%8C%E6%99%82%E5%84%B2%E5%AD%98%E8%B7%9F%E6%AA%94%E6%A1%88%E7%9B%B8%E9%97%9C%E7%9A%84%E8%B3%87%E6%96%99%E7%A8%B1%E7%82%BA%E6%AA%94%E6%A1%88%E5%B1%AC%E6%80%A7%E5%80%BC"><span class="toc-number">1.1.</span> <span class="toc-text"> 檔案屬性 (Metadata)：檔案儲存於硬碟中，系統同時儲存跟檔案相關的資料稱為檔案屬性值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#file-operations"><span class="toc-number">1.2.</span> <span class="toc-text"> File Operations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#open-file-tables"><span class="toc-number">1.3.</span> <span class="toc-text"> Open-File Tables</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#per-process-table"><span class="toc-number">1.3.1.</span> <span class="toc-text"> Per-process table</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#system-wide-table"><span class="toc-number">1.3.2.</span> <span class="toc-text"> System-wide table</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#open-file-attributes"><span class="toc-number">1.4.</span> <span class="toc-text"> Open File Attributes</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%98%E5%8F%96%E6%96%B9%E5%BC%8Faccess-methods"><span class="toc-number">2.</span> <span class="toc-text"> 存取方式 (Access Methods)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AA%E5%BA%8F%E5%AD%98%E5%8F%96sequential-access"><span class="toc-number">2.1.</span> <span class="toc-text"> 循序存取 (Sequential Access)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E5%AD%98%E5%8F%96direct-access"><span class="toc-number">2.2.</span> <span class="toc-text"> 直接存取 (Direct Access)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E5%AD%98%E5%8F%96index-access"><span class="toc-number">2.3.</span> <span class="toc-text"> 索引存取 (Index Access)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%AE%E9%8C%84%E5%92%8C%E7%A3%81%E7%A2%9F%E7%B5%90%E6%A7%8Bdisk-structure-and-directory-structure"><span class="toc-number">3.</span> <span class="toc-text"> 目錄和磁碟結構 (Disk Structure and Directory Structure)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%96%AE%E5%B1%A4%E7%9B%AE%E9%8C%84single-level-directory"><span class="toc-number">3.1.</span> <span class="toc-text"> 單層目錄 (Single-Level Directory)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%99%E5%B1%A4%E7%9B%AE%E9%8C%84two-level-directory"><span class="toc-number">3.2.</span> <span class="toc-text"> 雙層目錄 (Two-Level Directory)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%B9%E7%8B%80%E7%9B%AE%E9%8C%84"><span class="toc-number">3.3.</span> <span class="toc-text"> 樹狀目錄</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E5%BE%AA%E7%92%B0%E5%9C%96%E5%BD%A2%E7%9B%AE%E9%8C%84acyclic-graph-directories"><span class="toc-number">3.4.</span> <span class="toc-text"> 非循環圖形目錄 (Acyclic-Graph Directories)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E8%88%AC%E5%9C%96%E5%BD%A2%E7%9B%AE%E9%8C%84general-graph-directory"><span class="toc-number">3.5.</span> <span class="toc-text"> 一般圖形目錄 (General Graph Directory)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AA%94%E6%A1%88%E7%B3%BB%E7%B5%B1%E5%AE%89%E8%A3%9Dfile-system-mounting"><span class="toc-number">4.</span> <span class="toc-text"> 檔案系統安裝 (File System Mounting)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AA%94%E6%A1%88%E5%88%86%E4%BA%ABfile-sharing"><span class="toc-number">5.</span> <span class="toc-text"> 檔案分享 (File Sharing)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#protection"><span class="toc-number">6.</span> <span class="toc-text"> Protection</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ref-notes"><span class="toc-number">7.</span> <span class="toc-text"> Ref Notes</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="本站概要">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Maru"
+      data-src="/images/ava1.jpg">
+  <p class="name" itemprop="name">Maru</p>
+  <div class="description" itemprop="description">垮惹</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">21</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首頁</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2026/01/19/OS/10_Virtual_Memory_Management/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2026/01/21/OS/12_File_System_Implementation/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>隨機文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/%E5%89%8D%E8%A8%80/" title="先備軟體介紹">先備軟體介紹</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/15/OS/7_Process_Synchronization/" title="Chapter 6. Process Synchronization">Chapter 6. Process Synchronization</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/17/OS/8_%20Deadlocks/" title="Chapter 7. Deadlocks">Chapter 7. Deadlocks</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Resampling%20Methods/" title="Resampling Methods">Resampling Methods</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Classification/" title="Classification">Classification</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/10/OS/2_Introduction/" title="Chapter 1. Introduction">Chapter 1. Introduction</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/09/OS/1_Historical_Prospective/" title="Chapter 0. Historical Prospective">Chapter 0. Historical Prospective</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/27/Intro/" title="练习题与答案（測試）">练习题与答案（測試）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/14/OS/6_Process_Scheduling/" title="Chapter 5. Process Scheduling">Chapter 5. Process Scheduling</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Statistical%20Learning/" title="Statistical Learning">Statistical Learning</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新評論</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maru @ 棉花糖小窩</span>
+  </div>
+  <div class="powered-by">
+    基於 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2026/01/20/OS/11_File_System_Interface/',
+    favicon: {
+      show: "（●´3｀●）復活成功",
+      hide: "(´Д｀)瀏覽器崩潰啦"
+    },
+    search : {
+      placeholder: "文章搜尋",
+      empty: "關於 「 ${query} 」 ，什麼也沒搜到",
+      stats: "${time} ms 內找到 ${hits} 條結果"
+    },
+    valine: true,copy_tex: true,
+    katex: true,fancybox: true,
+    copyright: '複製成功，轉載請遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 協議。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/sakiko.model.json"},"display":{"position":"left","width":280,"height":400,"hOffset":0,"vOffset":-50},"mobile":{"show":false},"react":{"opacity":1},"dialog":{"enable":false,"hitokoto":false},"log":false});</script></body>
+</html>

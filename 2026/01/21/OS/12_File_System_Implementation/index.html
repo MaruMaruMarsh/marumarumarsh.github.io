@@ -1,0 +1,680 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://marumarumarsh.github.io/2026/01/21/OS/12_File_System_Implementation/">
+
+
+
+  <title>
+Chapter 11. File System Implementation |
+棉花糖小窩 = 一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ = 棉花糖絕對不能烤！！</title>
+<meta name="generator" content="Hexo 8.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Chapter 11. File System Implementation
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="創建時間：2026-01-21 13:55:31">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">發表於</span>
+    <time itemprop="dateCreated datePublished" datetime="2026-01-21T13:55:31+08:00">2026-01-21</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切換導航欄">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">棉花糖小窩</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res040014_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res037011_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res037013_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res037008_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://anihonetwallpaper.com/image/2024/10/202402203-ProjectSEKAI-AkiyamaMizuki.jpg"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036007_rip/card_normal.png"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首頁</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-TW">
+  <link itemprop="mainEntityOfPage" href="https://marumarumarsh.github.io/2026/01/21/OS/12_File_System_Implementation/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/ava1.jpg">
+    <meta itemprop="name" content="Maru">
+    <meta itemprop="description" content="棉花糖絕對不能烤！！, 垮惹">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="file-system-structure"><a class="markdownIt-Anchor" href="#file-system-structure">#</a> File-System Structure</h1>
+<p><img data-src="https://i.imgur.com/wYDaQdS.png" alt=""></p>
+<ul>
+<li>I/O 在 memory 和 disk 之間的轉移以 block 為單位
+<ul>
+<li>一個 block 由一個或多個 sector 組成</li>
+<li>一個 sector 通常 512 bytes</li>
+</ul>
+</li>
+<li>2 個 design problems in FS
+<ul>
+<li>interface to user programs（上層）</li>
+<li>interface to physical storage （disk）（下層）</li>
+</ul>
+</li>
+<li>一個 OS 能支援多個 FS type
+<ul>
+<li>NTFS, FAT32</li>
+</ul>
+</li>
+</ul>
+<h1 id="file-system-implementation"><a class="markdownIt-Anchor" href="#file-system-implementation">#</a> File System Implementation</h1>
+<h2 id="on-disk-structure"><a class="markdownIt-Anchor" href="#on-disk-structure">#</a> On-Disk Structure</h2>
+<p><img data-src="https://i.imgur.com/0YeD6XE.png" alt=""></p>
+<ul>
+<li>Boot control block：開啟 OS 所需要的資訊
+<ul>
+<li>每個 partition 都有，位於 partition 的第一個 block（空的表示沒有 OS）</li>
+<li>UFS（Unix File Sys.）：boot block</li>
+<li>NTFS：partition boot sector</li>
+</ul>
+</li>
+<li>Partition control block：partition details
+<ul>
+<li>每個 partition 都有</li>
+<li>details：blocks 數量、block 大小、free-block-list、free FCB pointers</li>
+<li>UFS：superblock</li>
+<li>NTFS：Master File Table</li>
+</ul>
+</li>
+<li>File control block：file details
+<ul>
+<li>每個 file 都有</li>
+<li>details：權限、大小、location of data blocks（存在 physical 的哪裡）</li>
+<li>UFS：inode</li>
+<li>NTFS：stored in MFT (relational database)</li>
+</ul>
+</li>
+<li>Directory structure：organize files
+<ul>
+<li>每個 file system 都有</li>
+</ul>
+</li>
+</ul>
+<h2 id="in-memory-structure"><a class="markdownIt-Anchor" href="#in-memory-structure">#</a> In-Memory Structure</h2>
+<ul>
+<li>in-memory partition table：每個被掛載的 partition 的資訊</li>
+<li>in-memory directory structure：最近被存取的 directories 的資訊</li>
+<li>system-wide open-file table：opened file’s FCB copy</li>
+<li>per-process open-file table：pointer（file handler/descriptor）指到 system-wide open-file table 對應的 entry</li>
+</ul>
+<h2 id="file-operation-step"><a class="markdownIt-Anchor" href="#file-operation-step">#</a> File operation step</h2>
+<ul>
+<li>Create
+<ol>
+<li>OS allocate 一個新的 FCB</li>
+<li>更新 directory structure
+<ol>
+<li>OS 讀進對應的目錄到 memory，檢查有沒有一樣的名字</li>
+<li>更新 directory structure</li>
+<li>file 被 closed 之後 OS 將 directory structure 寫回 disk</li>
+</ol>
+</li>
+<li>file 出現在 user’s dir command</li>
+</ol>
+</li>
+<li>Open<br>
+<img data-src="https://i.imgur.com/vDV0FcW.png" alt="">
+<ol>
+<li>根據 path 去 traverse directory structure</li>
+<li>沒找到的話，on demand 去 disk load directory 進來，找到我們要的 leaf node，其指到該 fcb</li>
+</ol>
+</li>
+<li>Read<br>
+<img data-src="https://i.imgur.com/0jj3POV.png" alt="">
+<ol>
+<li>pass matadata 的 permission 後，per-process 會記目前的 pos</li>
+</ol>
+</li>
+</ul>
+<h2 id="directory-implementation"><a class="markdownIt-Anchor" href="#directory-implementation">#</a> Directory Implementation</h2>
+<ul>
+<li>Linear list - &lt;file name, pointer to data block&gt; 組成的 list</li>
+</ul>
+<ul>
+<li>簡單的實作，但是效能差</li>
+</ul>
+<ul>
+<li>Hash table – linear list w/ hash data structure
+<ul>
+<li>searching 常數時間</li>
+<li>linked list for collisions on a hash entry</li>
+<li>通常有固定大小的 entry 數</li>
+</ul>
+</li>
+</ul>
+<h1 id="disk-allocation-methods"><a class="markdownIt-Anchor" href="#disk-allocation-methods">#</a> Disk Allocation Methods</h1>
+<p>disk blocks 如何分配給 files？分配磁碟的三種方法：</p>
+<ul>
+<li>連續 (contiguous)</li>
+<li>鏈結 (linked)</li>
+<li>索引 (index)</li>
+</ul>
+<h2 id="連續性配置-contiguous-allocation"><a class="markdownIt-Anchor" href="#連續性配置-contiguous-allocation">#</a> 連續性配置 (Contiguous allocation)</h2>
+<p><img data-src="https://i.imgur.com/dt8quHd.png" alt=""><br>
+若檔案大小為 n 個 blocks，則 OS 必須在 disk 上找到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">\geq n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719400000000001em;vertical-align:-0.13597em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">n</span></span></span></span> 個連續 free blocks 才能配置</p>
+<ul>
+<li>記錄方式：File Name, Size, Starting Block #</li>
+<li>優點：
+<ul>
+<li>可支援 sequential access 及 random access</li>
+<li>seek time 通常較短 (檔案所佔的連續區塊大都會落在同一個 track 上)</li>
+</ul>
+</li>
+<li>缺點：
+<ul>
+<li>external fragmentation<br>
+ 解法 - compaction</li>
+<li>檔案大小無法任意增 / 刪<br>
+解法 - extend-based FS</li>
+<li>若檔案大小是緩慢增加的，將會有配置問題
+<ul>
+<li>原先配置固定大小</li>
+<li>配置額外的連續部分，與原位置鍊結</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="extent-based-fs"><a class="markdownIt-Anchor" href="#extent-based-fs">#</a> extent-based FS</h3>
+<p>這個方法用 extent 分配 disk blocks</p>
+<ul>
+<li>如果用完了給他的 extent，再給他另一個 extent，用 linked list 串起來</li>
+<li>許多新的 FS 使用 modified contiguous allocation scheme</li>
+<li>若跳開，需要讀前一個 extent 的最尾的 extent block 中的 extent pointer（放 pointer 的位置由 designer 決定）
+<ul>
+<li>加總要 access 2 次</li>
+</ul>
+</li>
+<li>extent：連續的 disks blocks<br>
+You can’t use ‘macro parameter character #’ in math mode</li>
+<li>缺點
+<ul>
+<li>隨機存取 costly</li>
+<li>可能會發生 internal &amp; external fragmentation</li>
+</ul>
+</li>
+</ul>
+<h2 id="連結配置-link-allocation"><a class="markdownIt-Anchor" href="#連結配置-link-allocation">#</a> 連結配置 (Link allocation)</h2>
+<p><img data-src="https://i.imgur.com/cQxiikU.png" alt=""><br>
+若檔案大小為 n 個區塊，則 OS 必須在 disk 上找到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">\geq n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719400000000001em;vertical-align:-0.13597em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">n</span></span></span></span> 個可用區塊即可配置 (不一定要連續)，各配置區塊之間以 link list 做串連</p>
+<ul>
+<li>記錄方式：File Name, Start Block #, End Block #</li>
+<li>優點：
+<ul>
+<li>沒有 external fragmentation</li>
+<li>檔案可任意增 / 刪空間建檔時無需事先宣告大小</li>
+</ul>
+</li>
+<li>缺點：
+<ul>
+<li>不支援 random access 只支援 sequential access，要讀某個檔案的某個區塊時需從頭找起</li>
+<li>seek time 比 contiguous 配置方式長，非連續性 blocks 可能散落在不同的 track</li>
+<li>Reliability 差，指標可能指錯，若連結斷裂則會資料丟失</li>
+</ul>
+</li>
+</ul>
+<h3 id="fat-file-allocation-table-file-system"><a class="markdownIt-Anchor" href="#fat-file-allocation-table-file-system">#</a> FAT (File Allocation Table) file system</h3>
+<p><img data-src="https://i.imgur.com/CKnb3cz.png" alt=""></p>
+<ul>
+<li>類似鏈結配置，表格為每個磁碟區段保有一份紀錄</li>
+<li>造成大量磁頭尋找 (FAT 一次、實際位置一次)</li>
+</ul>
+<h2 id="索引式配置-index-allocation"><a class="markdownIt-Anchor" href="#索引式配置-index-allocation">#</a> 索引式配置 (Index Allocation)</h2>
+<p><img data-src="https://i.imgur.com/kidnwka.png" alt=""><br>
+將指標全部放在索引區段 (index block)，每個檔案皆會多配置一些<strong>額外的 blocks</strong> 作為 index blocks 內含各配置的 data block 編號，採<strong>非連續</strong>性配置方式</p>
+<ul>
+<li>記錄方式：File Name, Index Block #</li>
+<li>優點：
+<ul>
+<li>沒有 external fragmentation（linked list 的優點）</li>
+<li>支援 random access 及 sequential access（contiguous 的優點）</li>
+<li>可任意增 / 刪空間</li>
+<li>建檔時無需事先宣告大小</li>
+</ul>
+</li>
+<li>缺點：
+<ul>
+<li>佔用額外空間：索引區塊佔用 free block 的空間</li>
+<li>index block 太小不夠存放一個檔案的所有 block 編號，太大又形成浪費</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>解決 index block 不夠大的三個方法：</p>
+<ul>
+<li>鏈結方式（linked scheme）：索引區段鍊結，提供更多空間<br>
+<img data-src="https://i.imgur.com/Ry8gRmH.png" alt="">
+<ul>
+<li>index block 裡面放 pointer 指向其他 index blocks</li>
+<li>缺點是資料區塊 IO 隨大小線性成長，無法 random access</li>
+</ul>
+</li>
+<li>多層索引（Multilevel index）：第一層索引再指向第二層索引<br>
+<img data-src="https://i.imgur.com/lhNsLG3.png" alt="">
+<ul>
+<li>僅適用大檔案，小檔案不適合 (似 2-level cache table)</li>
+<li>當存到小檔案時，有可能 index 的大小會大於檔案</li>
+</ul>
+</li>
+<li>組合方式（combined（inode in BSD UNIX））：直接指標 + 單一間接指標 + 雙重間接指標 + 三重間接指標<br>
+<img data-src="https://i.imgur.com/zXChngh.png" alt=""></li>
+</ul>
+</blockquote>
+<h1 id="free-space-management"><a class="markdownIt-Anchor" href="#free-space-management">#</a> Free-Space Management</h1>
+<ul>
+<li>可用空間串列 (free-space list)：紀錄可用磁碟空間</li>
+<li>位元映像 (bit map)/ 位元向量 (bit vector)<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bit[i] = 1// occupied</span><br><span class="line">bit[i] = 0// free</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Bit Vector（bitmap）: 每個 block 用一個 bit 表示</li>
+<li>優點：簡單、效率、硬體支援 bit-manipulation instruction</li>
+<li>缺點：bitmap 為了效能必須快取<br>
+ A 1-TB（4KB block） disk needs 32MB bitmap</li>
+</ul>
+</li>
+<li>鏈結串列：將所有可用連結區鍊結在一起<br>
+<img data-src="https://i.imgur.com/lH27P4p.png" alt=""></li>
+<li>組群 (Grouping)：將前 n 個可用區段的位址存放在第一個區段中，最後一個存放另外 n 個可用區段位址</li>
+<li>計數 (Counting)：利用一般情況下許多連續區段同時被分配或同時被釋放的事實，只需記住第一個的位址與後面 n 個連續區段的數量</li>
+</ul>
+<h1 id="ref-notes"><a class="markdownIt-Anchor" href="#ref-notes">#</a> Ref Notes</h1>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vYU5QV0tzRmhUbEdjLVdGZ1FfX0tSZw==">Kipper’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQENoYW5nLUNoaWEtQ2hpL09TL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGJTQwQ2hhbmctQ2hpYS1DaGklMkZPUy1DSDEx">Chang-Chia-Chi’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQFBsLWVRVDlDUWFTMGpoRXhLcUw4X3cvQmtoT1NSNGpXL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGcyUyRnJrUkZyOHRHTQ==">陳品媛的筆記</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubXJvcGVuZ2F0ZS5jb20vMjAxNS8wMS9vcGVyYXRpbmctc3lzdGVtLWNoMTAtZmlsZS1zeXN0ZW0uaHRtbA==">Mr. Opengate. OS - Ch10</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93YW5nd2lsbHkuZ2l0aHViLmlvL3dpbGx5d2FuZ2thYS8yMDE4LzA5LzEwL09wZXJhdGluZy1TeXN0ZW0tRmlsZS1NYW5hZ2VtZW50Lw==">WillyWangkaa’s Note</span></li>
+</ul>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新於</span>
+    <time title="修改時間：2026-01-21 15:52:53" itemprop="dateModified" datetime="2026-01-21T15:52:53+08:00">2026-01-21</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>作者： </strong>Maru <i class="ic i-at"><em>@</em></i>一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ
+  </li>
+  <li class="link">
+    <strong>文章連結：</strong>
+    <a href="https://marumarumarsh.github.io/2026/01/21/OS/12_File_System_Implementation/" title="Chapter 11. File System Implementation">https://marumarumarsh.github.io/2026/01/21/OS/12_File_System_Implementation/</a>
+  </li>
+  <li class="license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2026/01/20/OS/11_File_System_Interface/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res036010_rip&#x2F;card_after_training.png" title="Chapter 10. File System Interface">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 10. File System Interface</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目錄">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#file-system-structure"><span class="toc-number">1.</span> <span class="toc-text"> File-System Structure</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#file-system-implementation"><span class="toc-number">2.</span> <span class="toc-text"> File System Implementation</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#on-disk-structure"><span class="toc-number">2.1.</span> <span class="toc-text"> On-Disk Structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#in-memory-structure"><span class="toc-number">2.2.</span> <span class="toc-text"> In-Memory Structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#file-operation-step"><span class="toc-number">2.3.</span> <span class="toc-text"> File operation step</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#directory-implementation"><span class="toc-number">2.4.</span> <span class="toc-text"> Directory Implementation</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#disk-allocation-methods"><span class="toc-number">3.</span> <span class="toc-text"> Disk Allocation Methods</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%A3%E7%BA%8C%E6%80%A7%E9%85%8D%E7%BD%AE-contiguous-allocation"><span class="toc-number">3.1.</span> <span class="toc-text"> 連續性配置 (Contiguous allocation)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#extent-based-fs"><span class="toc-number">3.1.1.</span> <span class="toc-text"> extent-based FS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%A3%E7%B5%90%E9%85%8D%E7%BD%AE-link-allocation"><span class="toc-number">3.2.</span> <span class="toc-text"> 連結配置 (Link allocation)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#fat-file-allocation-table-file-system"><span class="toc-number">3.2.1.</span> <span class="toc-text"> FAT (File Allocation Table) file system</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E5%BC%8F%E9%85%8D%E7%BD%AE-index-allocation"><span class="toc-number">3.3.</span> <span class="toc-text"> 索引式配置 (Index Allocation)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#free-space-management"><span class="toc-number">4.</span> <span class="toc-text"> Free-Space Management</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ref-notes"><span class="toc-number">5.</span> <span class="toc-text"> Ref Notes</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="本站概要">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Maru"
+      data-src="/images/ava1.jpg">
+  <p class="name" itemprop="name">Maru</p>
+  <div class="description" itemprop="description">垮惹</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">21</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首頁</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>隨機文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Regression/" title="Regression">Regression</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/21/OS/12_File_System_Implementation/" title="Chapter 11. File System Implementation">Chapter 11. File System Implementation</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Resampling%20Methods/" title="Resampling Methods">Resampling Methods</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/15/OS/7_Process_Synchronization/" title="Chapter 6. Process Synchronization">Chapter 6. Process Synchronization</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/12/OS/4_Processes_Concept/" title="Chapter 3. Processes Concept">Chapter 3. Processes Concept</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Linear%20model%20selection%20and%20regularization/" title="Linear model selection and regularization">Linear model selection and regularization</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/17/OS/8_%20Deadlocks/" title="Chapter 7. Deadlocks">Chapter 7. Deadlocks</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/27/Intro/" title="练习题与答案（測試）">练习题与答案（測試）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/14/OS/6_Process_Scheduling/" title="Chapter 5. Process Scheduling">Chapter 5. Process Scheduling</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/11/10/%E6%97%A5%E6%96%87/%E6%97%A5%E6%9C%AC%E8%AA%9E%E3%81%AE%E6%A3%AE/" title="【一冊で合格する】Ｎ1  - 錯題集">【一冊で合格する】Ｎ1  - 錯題集</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新評論</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maru @ 棉花糖小窩</span>
+  </div>
+  <div class="powered-by">
+    基於 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2026/01/21/OS/12_File_System_Implementation/',
+    favicon: {
+      show: "（●´3｀●）復活成功",
+      hide: "(´Д｀)瀏覽器崩潰啦"
+    },
+    search : {
+      placeholder: "文章搜尋",
+      empty: "關於 「 ${query} 」 ，什麼也沒搜到",
+      stats: "${time} ms 內找到 ${hits} 條結果"
+    },
+    valine: true,copy_tex: true,
+    katex: true,fancybox: true,
+    copyright: '複製成功，轉載請遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 協議。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/sakiko.model.json"},"display":{"position":"left","width":280,"height":400,"hOffset":0,"vOffset":-50},"mobile":{"show":false},"react":{"opacity":1},"dialog":{"enable":false,"hitokoto":false},"log":false});</script></body>
+</html>

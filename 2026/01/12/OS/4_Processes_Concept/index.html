@@ -1,0 +1,788 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://marumarumarsh.github.io/2026/01/12/OS/4_Processes_Concept/">
+
+
+
+  <title>
+Chapter 3. Processes Concept |
+棉花糖小窩 = 一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ = 棉花糖絕對不能烤！！</title>
+<meta name="generator" content="Hexo 8.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Chapter 3. Processes Concept
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="創建時間：2026-01-12 15:01:03">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">發表於</span>
+    <time itemprop="dateCreated datePublished" datetime="2026-01-12T15:01:03+08:00">2026-01-12</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切換導航欄">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">棉花糖小窩</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://anihonetwallpaper.com/image/2024/10/202402203-ProjectSEKAI-AkiyamaMizuki.jpg"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036014_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res025077_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res034040_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res039014_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res037013_rip/card_normal.png"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首頁</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-TW">
+  <link itemprop="mainEntityOfPage" href="https://marumarumarsh.github.io/2026/01/12/OS/4_Processes_Concept/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/ava1.jpg">
+    <meta itemprop="name" content="Maru">
+    <meta itemprop="description" content="棉花糖絕對不能烤！！, 垮惹">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="process-concept"><a class="markdownIt-Anchor" href="#process-concept">#</a> Process Concept</h1>
+<h2 id="program-vs-process-vs-threads"><a class="markdownIt-Anchor" href="#program-vs-process-vs-threads">#</a> Program vs Process vs Threads</h2>
+<ul>
+<li>Program (Passive entity)<br>
+ 被動、儲存於 disk 中等待被執行的程式碼</li>
+<li>Process (Active entity)<br>
+ 主動、正在記憶體裡面執行的程式。包含：
+<ul>
+<li>Code Segment (text section)</li>
+<li>Data Section (global variables)</li>
+<li>Stack (暫時的 local variables 和 functions)</li>
+<li>Heap (動態分配的 variables 或 classes)</li>
+<li>Current Activity (program counter、register contents)</li>
+<li>其他相關的資源 (OS resources, e.g. open file handlers)</li>
+</ul>
+</li>
+<li>Threads
+<ul>
+<li>lightweight process
+<ul>
+<li>跟 Process 長的一樣，有些 Threads 可以共用 Memory 空間</li>
+<li>以 CPU 來說 thread 是執行的最基本單位</li>
+</ul>
+</li>
+<li>同一個 Process 底下的 Threads 共用
+<ul>
+<li>Code Section</li>
+<li>Data Section</li>
+<li>OS resources</li>
+</ul>
+</li>
+<li>每個 Thread 有自己的
+<ul>
+<li>Thread ID</li>
+<li>Program Counter</li>
+<li>Register Set</li>
+<li>Stack</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>因此，在寫 Multi-Thread 的時候可以用 Global Variables (Data Section) 來做溝通</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="process-states"><a class="markdownIt-Anchor" href="#process-states">#</a> Process States</h2>
+<p><img data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhjNKeAMEy1OYbkDQXt5JGgH1PJC0NLv59sKZ6l9qhIsxmQnwix3gkIMHoJDQn7cFNfibJn7m0uoq1Sc5BouKrPCeaT2gX-LieEbgTBVKUbDTU8hEyAR8w6PUae45f1x5esQKYqYCRVV2yD/s640/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7+2015-01-13+%E4%B8%8A%E5%8D%889.45.25-51.png" alt=""></p>
+<ul>
+<li><strong>New</strong>：行程新產生
+<ul>
+<li>Program 載入到 Memory，並初始化記憶體狀態 (Code Section、Data Section…)</li>
+<li>決定要分配多少給 Process</li>
+</ul>
+</li>
+<li><strong>Ready</strong>：排班中，等待 CPU
+<ul>
+<li>有一個 Queue 管理這些 Process</li>
+<li>等待被執行的階段會被放到佇列當中等 CPU 排程</li>
+</ul>
+</li>
+<li><strong>Running</strong>：在 Ready 中被選到執行的 Process
+<ul>
+<li>有時候會直接回到 Ready State，一段時間 (timer) 就會 interrupt (hardware signal)</li>
+</ul>
+</li>
+<li><strong>Waiting</strong>：等待某事發生，例如等待使用者輸入完成。亦稱 <strong>「阻塞」（blocked）</strong>
+<ul>
+<li>在做 IO 的時候<strong>不需要 CPU 參與</strong>，等到完成後會回到 Ready state</li>
+<li>也有一個 Queue 來儲存</li>
+</ul>
+</li>
+<li><strong>Terminated</strong>：完成執行
+<ul>
+<li>釋放所有分配給這 Process 的資源</li>
+</ul>
+</li>
+</ul>
+<h2 id="process-control-blockpcb"><a class="markdownIt-Anchor" href="#process-control-blockpcb">#</a> Process Control Block（PCB）</h2>
+<p>定義：OS 要管理每個 Process，會在 kernel memory 中替每個 process 各自準備一個 block 紀錄 process 之所有相關的資訊</p>
+<ul>
+<li>PCB 中的 pointer 是 process 串聯 queue 的，該個 pointer 會指到下個 process 的 PCB</li>
+<li>把 Process 放進 Queue 其實是個抽象的概念，實際上是放進 PCB</li>
+<li>PCB 裡面包含
+<ul>
+<li>Process No. (ID)：是唯一的</li>
+<li>Process State：有 「ready」、「running」、「wait」…</li>
+<li>Program Counter（PC）</li>
+<li>CPU Registers：accumulator, psw, stack top…</li>
+<li>CPU Scheduling Information：優先權值、process arrival time (FIFO)</li>
+<li>Memory-Management Information：隨作業系統記憶體管理方式不同記錄不同的資訊<br>
+如：Base/limit register, page table 或 segememt table</li>
+<li>I/O Status Information：Process 已發出多少 I/O-request？完成狀態如何？目前占用哪些 I/O 資源？</li>
+<li>Accounting Information：Process 已使用多少 CPU time？還剩多少資源？系統管理員依據此資訊用以調校效能</li>
+</ul>
+</li>
+</ul>
+<h2 id="context-switch"><a class="markdownIt-Anchor" href="#context-switch">#</a> Context Switch</h2>
+<p><img data-src="https://i.imgur.com/1UuHI1E.png" alt=""></p>
+<ul>
+<li>藉由 Interrupt，把原來的 Process 替換成另一個 Process
+<ul>
+<li>會把舊 Process 的資料存到 PCB 裡，把新 Process 的資料 Load 到 PCB 裡</li>
+</ul>
+</li>
+<li>Context Switch Time
+<ul>
+<li>為 Overhead</li>
+<li>這期間兩個 Process 都在 Idle，為了 Time-Sharing 這是無法避免的</li>
+<li>基於
+<ul>
+<li>Memory Speed</li>
+<li>Register 數量</li>
+<li>用特殊的 Instruction，像是某個 Instruction 可以一次 Load 所有 Register</li>
+</ul>
+</li>
+<li>Hardware Support：CPU 包含很多 Sets of Registers，一次去記很多程式的 狀態，在 Context Switch 得時候就不用寫到 Memory</li>
+<li>根據硬體資源和指令而做調整</li>
+</ul>
+</li>
+</ul>
+<h1 id="process-scheduling"><a class="markdownIt-Anchor" href="#process-scheduling">#</a> Process Scheduling</h1>
+<h2 id="process-scheduling-queues"><a class="markdownIt-Anchor" href="#process-scheduling-queues">#</a> Process Scheduling Queues</h2>
+<p>process 在不同的 queue 做切換（在 state 的切換）</p>
+<ul>
+<li>Job queue（New state） – set of all processes in the system</li>
+<li>Ready queue（Ready State） – set of all processes 在主記憶體等待執行</li>
+<li>Device queue（Wait State） – set of processes 等待 I/O</li>
+</ul>
+<h2 id="schedulers"><a class="markdownIt-Anchor" href="#schedulers">#</a> Schedulers</h2>
+<ul>
+<li>Long-term scheduler / Job scheduler [new → ready]
+<ul>
+<li>從 job queue 中挑選合適的 jobs，並將之載入到記憶體內準備執行</li>
+<li>通常適用於 Batch System (大型機房)，但不適用於 Time-Sharing System</li>
+<li>可調控 Multiprogramming Degree</li>
+<li>可調合 CPU-Bound 與 I/O Bound processes 之混合比例</li>
+<li>執行頻率最低</li>
+</ul>
+</li>
+<li>Short-term scheduler [ready → running]
+<ul>
+<li>從 Ready Queue 挑選高優先度的 Process，使之獲得 CPU 控制權執行</li>
+<li>Batch System 和 Time-Sharing 均需要</li>
+<li>執行頻率最高</li>
+</ul>
+</li>
+<li>Medium-term scheduler [running → ready/wait]
+<ul>
+<li>當記憶體空間不足，且又有其它 Process 欲進入記憶體執行，此時該 Scheduler 必須
+<ul>
+<li>挑選某些 Process Swap Out 到磁碟中以空出記憶體空間</li>
+<li>待記憶體有足夠空間再將其 swap in 記憶體中繼續執行</li>
+</ul>
+</li>
+<li>通常用在 Time Sharing System。</li>
+<li>減少 Multiprogramming Degree</li>
+<li>可調合 I/O Bound 與 CPU Bound 的比例</li>
+</ul>
+</li>
+</ul>
+<h1 id="operations-on-processes"><a class="markdownIt-Anchor" href="#operations-on-processes">#</a> Operations on Processes</h1>
+<h2 id="tree-of-processes"><a class="markdownIt-Anchor" href="#tree-of-processes">#</a> Tree of Processes</h2>
+<p><img data-src="https://i.imgur.com/bFQpqNe.png" alt=""><br>
+parent process 會建立 children processes，children processes 又可以成為 parent processes 建立其他 processes 而形成樹狀結構<br>
+ Each process has a unique PID, Some special PIDs :</p>
+<ul>
+<li>0 : scheduler</li>
+<li>1 : init</li>
+<li>2 : pageout</li>
+</ul>
+<h2 id="process-creation"><a class="markdownIt-Anchor" href="#process-creation">#</a> Process Creation</h2>
+<ul>
+<li>工作類型：與父行程相同、不同</li>
+<li>資源分享的模式（父行程對子行程）：全部分享、部分分享、全部不分享</li>
+<li>執行方式：同時執行、等 child 終止才執行</li>
+<li>位址空間
+<ul>
+<li>Child 為 Parent 的複製
+<ul>
+<li>與 Parent 相同：執行碼、counter</li>
+<li>與 Parent 不同：memory address</li>
+<li>透過 sharing variable 溝通</li>
+</ul>
+</li>
+<li>將特定的 program 丟進 Child 的 code section 並重設 counter，讓 Child 變成完全不同狀態的 Process，透過 message passing 溝通</li>
+</ul>
+</li>
+</ul>
+<h2 id="unixlinux-process-creation"><a class="markdownIt-Anchor" href="#unixlinux-process-creation">#</a> UNIX/Linux Process Creation</h2>
+<p>Process 操作有關的 system calls：</p>
+<ul>
+<li>fork ()： 用以建立 child process<br>
+child process 與 parent 占用不同的記憶體，但最初 child 的 code section、data section 內容均自 parent copy</li>
+<li>exit ()：用以終止 process
+<ul>
+<li>釋放 process 所佔用的資源</li>
+<li>傳回結束狀態 (exit status) 給 parent process</li>
+</ul>
+</li>
+<li>exec ()：用以載入特定的 Binary code file 讓 process 執行，即 process 之 code section 為此 Binary code content
+<ul>
+<li>exec 有多種變體 (execl, execp, execv, etc.)，用來處理不同的參數傳遞方式</li>
+<li>exec 不會產生新的行程，而是取代目前的行程</li>
+</ul>
+</li>
+<li>wait ()：父行程等待子行程結束
+<ul>
+<li>wait 會阻塞父行程，直到有一個子行程結束</li>
+<li>wait 可以取得子行程的結束狀態 (exit status)</li>
+</ul>
+</li>
+</ul>
+<h2 id="process-termination"><a class="markdownIt-Anchor" href="#process-termination">#</a> Process Termination</h2>
+<ul>
+<li>當最後一行指令結束或是  <code>exit()</code> ，所有的資源會被 deallocated by the OS</li>
+<li>父行程中斷（abort）子行程用 pid<br>
+ 可能原因：子行程超用資源、被配給子行程的工作不被需要</li>
+<li>連帶終止，父行程結束子行程不能繼續執行</li>
+</ul>
+<h1 id="interprocess-communicationipc"><a class="markdownIt-Anchor" href="#interprocess-communicationipc">#</a> Interprocess Communication（IPC）</h1>
+<h2 id="independent-process-vs-cooperating-process"><a class="markdownIt-Anchor" href="#independent-process-vs-cooperating-process">#</a> Independent process vs. Cooperating process</h2>
+<ul>
+<li>Independent process：不能（被）影響的行程</li>
+<li>Cooperating process：能被影響且影響其他行程，且能與其他行程共用資料</li>
+</ul>
+<h2 id="communication-methods"><a class="markdownIt-Anchor" href="#communication-methods">#</a> Communication Methods</h2>
+<p><img data-src="https://i.imgur.com/4w6SVHZ.png" alt=""></p>
+<h3 id="shared-memory"><a class="markdownIt-Anchor" href="#shared-memory">#</a> Shared memory</h3>
+<ul>
+<li>介紹：兩個 Process 共享同一塊 memory，這樣他們就可以利用這塊 memory 溝通（也是需要透過 system call 先跟 OS 講</li>
+<li>需要仔細注意使用者的<strong>同步化</strong></li>
+<li>優點：memory addr. access data，速度較快，因為不需要複製資料</li>
+<li>缺點：
+<ul>
+<li>Synchronization：需要額外的機制來確保兩個 Process 不會同時修改共享記憶體，導致資料不一致</li>
+<li>Protection：需要確保只有授權的 Process 能存取共享記憶體，避免未授權存取</li>
+</ul>
+<blockquote>
+<p>Consumer &amp; Producer Problem<br>
+Sol.：允許至多 B-1 個資料在 array，否則無法決定 buffer 是空或是滿的<br>
+<img data-src="https://i.imgur.com/ZI6C70Z.png" alt=""></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="message-passing"><a class="markdownIt-Anchor" href="#message-passing">#</a> Message passing</h3>
+<ul>
+<li>介紹：簡單來講就是 memory copy，但不是直接複製過去的而是先到 kernel 繞了一圈<br>
+例如說 Process A 要傳東西給 Process B
+<ol>
+<li>Process A 把 message 複製到 kernel (OS 的 memory)</li>
+<li>Process B 從 kernel 複製 message 到自己的 memory</li>
+<li>Process B 讀取 message</li>
+</ol>
+</li>
+<li>需要建一個 communication link，藉由 Send/Receive 交換資訊</li>
+<li>考量：
+<ul>
+<li>Protection：如果直接複製會越界，因此需要透過 system call 來處理</li>
+<li>Synchronization：需要確保 Process B 在讀取 message 時，Process A 已經完成寫入</li>
+<li>Efficiency：複製資料會有額外的時間和資源消耗</li>
+<li>Reliability：透過 OS 進行傳輸，可以增加錯誤檢測和恢復的機制</li>
+</ul>
+</li>
+<li>優點：不會有衝突，對於小資料有效率</li>
+<li>缺點：用 <strong>system call</strong> 實作，速度較慢</li>
+</ul>
+<h4 id="communication-link的實作"><a class="markdownIt-Anchor" href="#communication-link的實作">#</a> communication link 的實作</h4>
+<ul>
+<li>physical：shared memory, HW bus, or network</li>
+<li>logical：Direct or indirect communication、Blocking or non-blocking
+<ul>
+<li>Direct vs Indirect communication
+<ul>
+<li>Direct communication
+<ol>
+<li>明確講出對方名稱</li>
+<li>Send (P, message)、Receive (Q, message)</li>
+<li>Link 會自動建立，且一對一</li>
+</ol>
+</li>
+<li>Indirect communication
+<ol>
+<li>透過 mailbox (port) 溝通而不是直接寄到別人手上</li>
+<li>Send (A, message)、Receive (A, message)</li>
+<li>Link 不會自動建立，可以一對多或多對多</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>Synchronization
+<ul>
+<li>Blocking (synchronous) ：等到 func 全部執行完才 return
+<ul>
+<li>Send: sender 等到 message 被收到才繼續</li>
+<li>Receive: receiver 等到 message 到才繼續</li>
+</ul>
+</li>
+<li>Non-blocking (asynchronous)：只會知道有做這件事但不會等到他完成之後才 return
+<ul>
+<li>Send: sender 發送完就繼續</li>
+<li>Receive: receiver 若無 message 就繼續</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Buffer
+<ul>
+<li>Zero-capacity link：send/receive 都是 blocking</li>
+<li>Bounded-capacity link：有限 buffer，滿的話 sender 會被 block 住</li>
+<li>Unbounded-capacity link：sender 永不會被 block 住</li>
+</ul>
+</li>
+<li>收送同步化問題解決方法
+<ul>
+<li>link 的連結至多兩個 process</li>
+<li>一個時間內只允許一個 process 執行 receive 的動作</li>
+<li>系統隨意選單一個 receiver，sender 被通知是誰拿到</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="sockets"><a class="markdownIt-Anchor" href="#sockets">#</a> Sockets</h3>
+<p><img data-src="https://i.imgur.com/al8WY5n.png" alt=""></p>
+<ul>
+<li>透過 IP &amp; Port 來 identify 使用者（port number 指 process）</li>
+<li>藉由 <strong>unstructured stream of bytes</strong> 來溝通 (low level)(傳訊息)</li>
+<li>data 的 parsing 是依據 client/server application</li>
+</ul>
+<h3 id="remote-procedure-calls"><a class="markdownIt-Anchor" href="#remote-procedure-calls">#</a> Remote Procedure Calls</h3>
+<p><img data-src="https://i.imgur.com/btCZOl7.png" alt=""></p>
+<ul>
+<li>跨電腦 rpc，call function</li>
+<li>允許 client 呼叫 server 的 procedure</li>
+<li>Stubs – client-side proxy for the actual procedure on the server</li>
+</ul>
+<h1 id="ref-notes"><a class="markdownIt-Anchor" href="#ref-notes">#</a> Ref Notes</h1>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vSE9xTi1pUTNSSUtJQy1OQjlRakJJUQ==">Kipper’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQENoYW5nLUNoaWEtQ2hpL09TL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGJTQwQ2hhbmctQ2hpYS1DaGklMkZPUy1DSDM=">Chang-Chia-Chi’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQFBsLWVRVDlDUWFTMGpoRXhLcUw4X3cvQmtoT1NSNGpXL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGcyUyRkhKMkVYTDluYj90eXBlPWJvb2s=">陳品媛的筆記</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubXJvcGVuZ2F0ZS5jb20vMjAxNS8wMS9vcGVyYXRpbmctc3lzdGVtLWNoNC1tdWx0aXRocmVhZC5odG1s">Mr. Opengate. OS - Ch4</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQFpZdUMyMDAyL09Tbm90ZV9PQ1cjQ2g0LU11bHRpdGhyZWFkZWQtUHJvZ3JhbW1pbmc=">ZYuC’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93YW5nd2lsbHkuZ2l0aHViLmlvL3dpbGx5d2FuZ2thYS8yMDE4LzA3LzEwL09wZXJhdGluZy1TeXN0ZW0tUHJvY2Vzcy1NYW5hZ2VtZW50LWFuZC1UaHJlYWQtTWFuYWdlbWVudC8=">WillyWangkaa’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQE1lcy9PUy9odHRwcyUzQSUyRiUyRmhhY2ttZC5pbyUyRiU0ME1lcyUyRlByb2Nlc3NfY29uY2VwdA==">Mes’s Note</span></li>
+</ul>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新於</span>
+    <time title="修改時間：2026-01-13 15:42:34" itemprop="dateModified" datetime="2026-01-13T15:42:34+08:00">2026-01-13</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>作者： </strong>Maru <i class="ic i-at"><em>@</em></i>一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ
+  </li>
+  <li class="link">
+    <strong>文章連結：</strong>
+    <a href="https://marumarumarsh.github.io/2026/01/12/OS/4_Processes_Concept/" title="Chapter 3. Processes Concept">https://marumarumarsh.github.io/2026/01/12/OS/4_Processes_Concept/</a>
+  </li>
+  <li class="license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2026/01/11/OS/3_OS_Structure/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res036012_rip&#x2F;card_after_training.png" title="Chapter 2. OS Structure">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 2. OS Structure</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2026/01/13/OS/5_Multithreaded_Programming/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res037008_rip&#x2F;card_after_training.png" title="Chapter 4. Multithreaded Programming">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 4. Multithreaded Programming</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目錄">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#process-concept"><span class="toc-number">1.</span> <span class="toc-text"> Process Concept</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#program-vs-process-vs-threads"><span class="toc-number">1.1.</span> <span class="toc-text"> Program vs Process vs Threads</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#process-states"><span class="toc-number">1.2.</span> <span class="toc-text"> Process States</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#process-control-blockpcb"><span class="toc-number">1.3.</span> <span class="toc-text"> Process Control Block（PCB）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#context-switch"><span class="toc-number">1.4.</span> <span class="toc-text"> Context Switch</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#process-scheduling"><span class="toc-number">2.</span> <span class="toc-text"> Process Scheduling</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#process-scheduling-queues"><span class="toc-number">2.1.</span> <span class="toc-text"> Process Scheduling Queues</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#schedulers"><span class="toc-number">2.2.</span> <span class="toc-text"> Schedulers</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#operations-on-processes"><span class="toc-number">3.</span> <span class="toc-text"> Operations on Processes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#tree-of-processes"><span class="toc-number">3.1.</span> <span class="toc-text"> Tree of Processes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#process-creation"><span class="toc-number">3.2.</span> <span class="toc-text"> Process Creation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unixlinux-process-creation"><span class="toc-number">3.3.</span> <span class="toc-text"> UNIX&#x2F;Linux Process Creation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#process-termination"><span class="toc-number">3.4.</span> <span class="toc-text"> Process Termination</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#interprocess-communicationipc"><span class="toc-number">4.</span> <span class="toc-text"> Interprocess Communication（IPC）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#independent-process-vs-cooperating-process"><span class="toc-number">4.1.</span> <span class="toc-text"> Independent process vs. Cooperating process</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#communication-methods"><span class="toc-number">4.2.</span> <span class="toc-text"> Communication Methods</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#shared-memory"><span class="toc-number">4.2.1.</span> <span class="toc-text"> Shared memory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#message-passing"><span class="toc-number">4.2.2.</span> <span class="toc-text"> Message passing</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#communication-link%E7%9A%84%E5%AF%A6%E4%BD%9C"><span class="toc-number">4.2.2.1.</span> <span class="toc-text"> communication link 的實作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sockets"><span class="toc-number">4.2.3.</span> <span class="toc-text"> Sockets</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#remote-procedure-calls"><span class="toc-number">4.2.4.</span> <span class="toc-text"> Remote Procedure Calls</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ref-notes"><span class="toc-number">5.</span> <span class="toc-text"> Ref Notes</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="本站概要">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Maru"
+      data-src="/images/ava1.jpg">
+  <p class="name" itemprop="name">Maru</p>
+  <div class="description" itemprop="description">垮惹</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">21</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首頁</a>
+  </li>
+
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2026/01/11/OS/3_OS_Structure/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2026/01/13/OS/5_Multithreaded_Programming/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>隨機文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/14/OS/6_Process_Scheduling/" title="Chapter 5. Process Scheduling">Chapter 5. Process Scheduling</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Classification/" title="Classification">Classification</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/12/OS/4_Processes_Concept/" title="Chapter 3. Processes Concept">Chapter 3. Processes Concept</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Regression/" title="Regression">Regression</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/19/OS/10_Virtual_Memory_Management/" title="Chapter 9. Virtual Memory Management">Chapter 9. Virtual Memory Management</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/10/OS/2_Introduction/" title="Chapter 1. Introduction">Chapter 1. Introduction</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Resampling%20Methods/" title="Resampling Methods">Resampling Methods</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/13/OS/5_Multithreaded_Programming/" title="Chapter 4. Multithreaded Programming">Chapter 4. Multithreaded Programming</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/09/OS/1_Historical_Prospective/" title="Chapter 0. Historical Prospective">Chapter 0. Historical Prospective</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/20/OS/11_File_System_Interface/" title="Chapter 10. File System Interface">Chapter 10. File System Interface</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新評論</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2010 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maru @ 棉花糖小窩</span>
+  </div>
+  <div class="powered-by">
+    基於 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2026/01/12/OS/4_Processes_Concept/',
+    favicon: {
+      show: "（●´3｀●）復活成功",
+      hide: "(´Д｀)瀏覽器崩潰啦"
+    },
+    search : {
+      placeholder: "文章搜尋",
+      empty: "關於 「 ${query} 」 ，什麼也沒搜到",
+      stats: "${time} ms 內找到 ${hits} 條結果"
+    },
+    valine: true,copy_tex: true,
+    katex: true,fancybox: true,
+    copyright: '複製成功，轉載請遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 協議。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/sakiko.model.json"},"display":{"position":"left","width":280,"height":400,"hOffset":0,"vOffset":-50},"mobile":{"show":false},"react":{"opacity":1},"dialog":{"enable":false,"hitokoto":false},"log":false});</script></body>
+</html>
