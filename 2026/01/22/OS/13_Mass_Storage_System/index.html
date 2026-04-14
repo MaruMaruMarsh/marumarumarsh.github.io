@@ -1,0 +1,872 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.gif">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://marumarumarsh.github.io/2026/01/22/OS/13_Mass_Storage_System/">
+
+
+
+  <title>
+Chapter 12. Mass Storage System |
+棉花糖小窩 = 一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ = 棉花糖絕對不能烤！！</title>
+<meta name="generator" content="Hexo 8.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Chapter 12. Mass Storage System
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="創建時間：2026-01-22 13:25:40">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">發表於</span>
+    <time itemprop="dateCreated datePublished" datetime="2026-01-22T13:25:40+08:00">2026-01-22</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切換導航欄">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">棉花糖小窩</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res039012_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res038011_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res026048_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res037009_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res034040_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res037014_rip/card_after_training.png"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首頁</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-TW">
+  <link itemprop="mainEntityOfPage" href="https://marumarumarsh.github.io/2026/01/22/OS/13_Mass_Storage_System/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/ava1.jpg">
+    <meta itemprop="name" content="Maru">
+    <meta itemprop="description" content="棉花糖絕對不能烤！！, 垮惹">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="disk-簡介"><a class="markdownIt-Anchor" href="#disk-簡介">#</a> Disk 簡介</h1>
+<h2 id="disk-structure"><a class="markdownIt-Anchor" href="#disk-structure">#</a> Disk Structure</h2>
+<p>以一個大型邏輯區段 (logical block) 的一維陣列來定址</p>
+<ul>
+<li>以低階格式化 (low-level formatted) 的方式來選擇不同邏輯區段大小</li>
+<li>對映的困難
+<ul>
+<li>大部分的磁碟會有一些損壞的磁區，但是對映會用磁碟上別處的替代備用磁區</li>
+<li>有些磁碟上每一個磁軌的磁區數並不是常數</li>
+</ul>
+</li>
+<li>Sectors per Track
+<ul>
+<li><strong>Constant linear velocity（CLV）</strong>
+<ul>
+<li>在 track 上的 bit 密度平均分佈</li>
+<li>在 track 上外圈的 cylinder 有更多的 sector</li>
+<li>保持一樣的 data rate</li>
+<li>應用：CD-ROM 和 DVD-ROM</li>
+</ul>
+</li>
+<li><strong>Constant angular velocity（CAV）</strong>
+<ul>
+<li>保持<strong>一樣轉速</strong></li>
+<li>保持一樣的 data rate</li>
+<li>內圈的 track 的 bit 密度高</li>
+<li>應用：hard disks</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="磁碟連結disk-attachment"><a class="markdownIt-Anchor" href="#磁碟連結disk-attachment">#</a> 磁碟連結 (Disk Attachment)</h2>
+<p>以兩種方式存取磁碟儲存裝置</p>
+<ul>
+<li>I/O 阜 / 主機連結儲存裝置 (host-attached storage)
+<ul>
+<li>可使用 IDE、ATA、SATA、SCSI、fibre channel 等 I/O 匯流排架構</li>
+<li>光纖通道 (FC,fibre channel) 有兩種變形的架構
+<ul>
+<li>儲存體區域網路 (SAN,storage-area network)<br>
+<img data-src="https://i.imgur.com/GgdVv6M.png" alt=""></li>
+<li>仲裁迴路 (FC-AL,arbitrated loop)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>網路連結儲存裝置 (network-attached storage)<br>
+<img data-src="https://i.imgur.com/M8KXuvY.png" alt="">
+<ul>
+<li>客戶經由遠端程序呼叫的介面存取網路連結儲存體</li>
+<li>iSCSI 使用網路 IP 協定來實現 SCSI 協定</li>
+</ul>
+</li>
+</ul>
+<h2 id="disk-system"><a class="markdownIt-Anchor" href="#disk-system">#</a> Disk system</h2>
+<p><img data-src="https://i.imgur.com/sYA6DVl.png" alt=""><br>
+硬碟系統由多片「Disk」(磁片) 組成，每片磁片通常雙面都可存取資料。</p>
+<ul>
+<li>Disk 結構：
+<ul>
+<li>讀寫頭 (Read/Write head)</li>
+<li>磁柱 (cylinder) : 不同面之相同「Track no.」組成之集合叫做「Cyclinder」</li>
+<li>磁軌 (track) ：每一面劃分為多個同心圓軌道，稱為「Track」</li>
+<li>磁區 (sector)：每條「Track」由多個「Sector」組成</li>
+</ul>
+</li>
+<li>描述磁碟幾何狀況 (C, H, S)
+<ul>
+<li>C (cylinder) : 幾圈</li>
+<li>H (head) : 幾面（一片有兩面、最上最下面不算）</li>
+<li>S (sector) : 一圈幾格</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Ex：<br>
+Disk system 有 10 片磁片，每片皆雙面存取，每面有 2048 條磁軌，每條磁軌有 4096 個磁區。每個磁區可以存 16 kB 資料。求 Disk system 可存放大小？<br>
+解：(10 片) x (2 面 / 片) x (2048 軌 / 面) x (4096 區 / 軌) x (16 kB / 區) = 2.5 TB</p>
+</blockquote>
+<h2 id="disk-access-time"><a class="markdownIt-Anchor" href="#disk-access-time">#</a> Disk access time</h2>
+<ul>
+<li>Seek time：將磁頭移至欲存取的磁軌上方所花的時間；三者中以 seek time 耗時最多，與 head 移動距離成正比，因為是機械動作</li>
+<li>Latency time (or Rotation time)：將欲存取之磁區轉到磁頭下方所花的時間</li>
+<li>Transfer time：資料在磁碟與記憶體之間傳輸的時間，與傳輸量呈正比關係</li>
+</ul>
+<h3 id="ex1"><a class="markdownIt-Anchor" href="#ex1">#</a> Ex1：</h3>
+<p>Disk 轉速為 7200 rpm，求平均 latency time？<br>
+解：平均 latency time = (1/2) x (60 秒 / 7200 轉) = 1/240 秒</p>
+<h3 id="ex2"><a class="markdownIt-Anchor" href="#ex2">#</a> Ex2：</h3>
+<p>system 有 3 片磁片，雙面可存，每面有 1024 條磁軌，每條磁軌有 4096 個磁區，每個磁區可存 32 kB，轉速 6000 RPM。求 Transfer rate (每秒可傳輸多少量的資料)＜Note＞ 每轉一圈可傳輸一個磁柱的容量<br>
+解：<br>
+Transfer rate = (3 片) x (2 面 / 片) x (4096 區 / 軌) x (32 kB / 區) x (6000 轉 / 分鐘) x (1 分鐘 / 60 秒)</p>
+<h3 id="ex3"><a class="markdownIt-Anchor" href="#ex3">#</a> Ex3：</h3>
+<p>Disk system 有 3 片磁片雙面可存，每面有 1024 條磁軌，每條磁軌有 4096 個磁區每個磁區可存 32 kB，轉速 6000 RPM，磁碟的平均「Seek time」 = 10 ms。讀取一個大小為 2 MB 的檔案，要花多少 I/O time？<br>
+解：</p>
+<ul>
+<li>Latency time = (1/2) x (60 秒 / 6000 轉) = 5 ms</li>
+<li>Transfer time = (2 MB) / [ (3 片) x (2 面 / 片) x (4096 區 / 軌) x (32 kB / 區) x (6000 轉 / 分鐘) x (1 分鐘 / 60 秒) ] = 5.46 ms</li>
+</ul>
+<p>I/O time = Seek time + Latency time + Transfer time = 10 ms + 5 ms + 5.46 ms</p>
+<h1 id="disk-scheduling-algorithm"><a class="markdownIt-Anchor" href="#disk-scheduling-algorithm">#</a> Disk Scheduling Algorithm</h1>
+<p>目的：最小化 seek time（Seek time ≈ seek distance</p>
+<ul>
+<li>磁碟排班演算法的選擇：
+<ul>
+<li>取決於要求的多寡與型態（只有一個要求的話，每種排班演算法都看起來像 FCFS）</li>
+<li>受檔案配置方式的影響（檔案在磁碟上的位置是連續或鏈結等等）</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>一些 disk scheduling algorithm 常識：</p>
+<ul>
+<li>Either SSTF or LOOK is a reasonable choice for the default algorithm.</li>
+<li>Disk scheduling problem is inherently NP-hard. There is no optimal solution! Heuristics may be taken.</li>
+<li>Modern disks impose nearly the same overheads on seek and rotation.</li>
+</ul>
+</blockquote>
+<h2 id="fcfs-演算法-first-come-first-serve"><a class="markdownIt-Anchor" href="#fcfs-演算法-first-come-first-serve">#</a> FCFS 演算法 (first-come, first-serve)</h2>
+<p><img data-src="https://i.imgur.com/duvbDWa.png" alt=""><br>
+先到達的請求優先服務，簡單、公平、效率不佳</p>
+<h2 id="sstf-演算法-short-seek-time-first"><a class="markdownIt-Anchor" href="#sstf-演算法-short-seek-time-first">#</a> SSTF 演算法 (short-seek time first)</h2>
+<p><img data-src="https://i.imgur.com/Tc6RbWb.png" alt=""><br>
+距離目前 R/W Head 最近的 track 優先服務</p>
+<ul>
+<li>並非最佳 (平均移動的 track 總數量無法保証為最少)</li>
+<li>不公平，可能會發生 starvation（多數偏左，有一個在右邊，所以右邊的會飢餓）</li>
+</ul>
+<h2 id="scan-演算法aka-elevator-algorithm"><a class="markdownIt-Anchor" href="#scan-演算法aka-elevator-algorithm">#</a> SCAN 演算法（A.k.a. elevator algorithm）</h2>
+<p><img data-src="https://i.imgur.com/ol9tw8O.png" alt=""><br>
+讀寫頭來回不停地掃描，若有 track 請求則服務</p>
+<ul>
+<li>提供雙向服務</li>
+<li>遇到起頭與尾端的 track 才折返</li>
+<li>因為要碰到起頭或尾端才會折返，會有一些不必要的磁軌移動產生相對不公平，但不會發生 starvation</li>
+</ul>
+<h2 id="c-scan-演算法"><a class="markdownIt-Anchor" href="#c-scan-演算法">#</a> C-SCAN 演算法</h2>
+<p><img data-src="https://i.imgur.com/y7ywiic.png" alt=""><br>
+讀寫頭來回不停地掃描，若有 track 請求則服務</p>
+<ul>
+<li>提供單向服務</li>
+<li>遇到起頭與尾端的 track 才折返</li>
+</ul>
+<h2 id="look-演算法-c-look-演算法"><a class="markdownIt-Anchor" href="#look-演算法-c-look-演算法">#</a> LOOK 演算法、C-LOOK 演算法</h2>
+<p><img data-src="https://i.imgur.com/Ge1v60q.png" alt=""><br>
+與 SCAN 極相似。唯一不同在於處理完某方向的最後一個 track 請求即折返，不需遇到 track 起頭與尾端才折返</p>
+<h1 id="disk-management"><a class="markdownIt-Anchor" href="#disk-management">#</a> Disk Management</h1>
+<h2 id="磁碟格式化"><a class="markdownIt-Anchor" href="#磁碟格式化">#</a> 磁碟格式化</h2>
+<ul>
+<li>低階格式化 (low-level formatting)/ 實體格式化 (physical formatting)</li>
+<li>對磁碟的每一個磁區填入一種特定的資料結構
+<ul>
+<li>通常由標頭、資料區 (通常 512Byte，但可選擇)、結尾所組成</li>
+<li>包含錯誤更正碼 (ECC,error-correcting code)</li>
+</ul>
+</li>
+<li>作業系統需要紀錄它自己在磁碟上的資料結構，使用兩步驟來完成
+<ul>
+<li>** 分割 (partition)** 成一個或多個磁柱群，作業系統視每一個分割為一個分離的磁碟</li>
+<li><strong>邏輯格式化 (logical formatting)</strong>：製作一個檔案系統</li>
+</ul>
+</li>
+</ul>
+<h2 id="啟動區段boot-block"><a class="markdownIt-Anchor" href="#啟動區段boot-block">#</a> 啟動區段 (boot block)</h2>
+<p><img data-src="https://i.imgur.com/nGfvZVD.png" alt=""></p>
+<ul>
+<li>作業系統核心由<strong>唯讀記憶體 (ROM,read-only memory) 上的靴帶式程式</strong>載入
+<ul>
+<li>改靴帶式程式碼時需要更改 ROM 的晶片，所以 ROM 上靴帶式程式改為從硬碟上載入完整的靴帶式程式</li>
+</ul>
+</li>
+<li>完整的靴帶式程式存放在磁碟上的位置稱為啟動區段，該磁碟稱為<strong>啟動磁碟 (boot disk)/ 系統磁碟 (system disk)</strong>
+<ul>
+<li>Windows 上 ROM 上的程式指示讀取<strong>主要啟動磁區 (MBR,master boot record)</strong>，MBR 指示系統由哪一個分割啟動</li>
+</ul>
+</li>
+</ul>
+<h2 id="毀損區段bad-block"><a class="markdownIt-Anchor" href="#毀損區段bad-block">#</a> 毀損區段 (bad block)</h2>
+<ul>
+<li>Simple disks like IDE disks
+<ul>
+<li>人工使用格式化程式去對 bad block 對應在 FAT 的 entry 做標記</li>
+<li>Bad blocks are locked away from allocation</li>
+</ul>
+</li>
+<li>Sophisticated disks like SCSI disks
+<ul>
+<li>disk controllers 維持一個 bad block 的 list</li>
+<li>List is updated over the life of the disk</li>
+<li>或許，disk controller 修復 sector，sector 修復後，之後還能用。data 修復，與 ecc 有關</li>
+</ul>
+</li>
+<li>Sector sparing（forwarding）：remap bad block 到一個備用的
+<ul>
+<li>可能影響 disk-scheduling performance，會跳來跳去</li>
+<li>有些備用的 spare sectors 在每個 cylinder during formatting</li>
+</ul>
+</li>
+<li>Sector slipping：ships sectors all down one spot，shift 一格，shift 時間久</li>
+</ul>
+<h2 id="置換空間管理swap-space-management"><a class="markdownIt-Anchor" href="#置換空間管理swap-space-management">#</a> 置換空間管理 (Swap-Space Management)</h2>
+<p>使用硬碟的置換空間作為記憶體的延伸</p>
+<ul>
+<li>置換空間的大小取決於備份時所需要的量
+<ul>
+<li>太大，浪費硬碟空間</li>
+<li>太小，行程不夠備份</li>
+</ul>
+</li>
+<li>置換空間的位置
+<ul>
+<li>放在檔案系統中，視為一個大型檔案
+<ul>
+<li>沒有效率，因為檔案系統的搜尋需要時間</li>
+<li>檔案系統還要多於的磁碟存取</li>
+</ul>
+</li>
+<li>放在原始磁碟分割 (raw disk)</li>
+</ul>
+</li>
+<li>Linux 系統中置換的資料結構
+<ul>
+<li>每個置換區域由一系列 **4KB 分頁槽 (page slot)** 組成</li>
+<li><strong>置換對映圖 (swap map)</strong>：連結每一個置換區域的整數計數器陣列</li>
+<li>計數器數值表示置換分頁對映到的行程</li>
+</ul>
+</li>
+</ul>
+<h1 id="raid"><a class="markdownIt-Anchor" href="#raid">#</a> RAID</h1>
+<p>獨立磁碟冗餘陣列 (RAID, Redundant Array of Independent Disks) 簡稱磁碟陣列，由多顆磁碟機組成一個陣列，將資料以分段 (striping) 的方式同時對不同的磁碟做讀寫的動作。 使用 RAID 有以下目的：</p>
+<ul>
+<li>
+<p>提升可靠度：provides reliability via redundancy.</p>
+</li>
+<li>
+<p>增進效能：improving performance by means of parallelism.</p>
+</li>
+<li>
+<p>RAID 的兩個重要特性</p>
+<ul>
+<li><strong>不昂貴 (I,inexpensive)</strong>：以前 RAID 由小型便宜的磁碟機組成，被視為大型昂貴磁碟機的替代品</li>
+<li><strong>獨立 (I,independent)</strong>：現在 RAID 被使用是因為他們的高可靠度和較高的資料傳送速率</li>
+</ul>
+</li>
+<li>
+<p>藉由 ** 重複 (redundancy)** 改進可靠度</p>
+<ul>
+<li>假設一台磁碟機的平均失效時間 (mean time to failure) 為 100000 小時，100 台磁碟機陣列中某一台磁碟機的平均失效時間 100000/100 = 1000 小時</li>
+<li>鏡射 (mirrored volume)
+<ul>
+<li>複製磁碟</li>
+<li>每次寫入都會在兩台磁碟機一起執行，兩台同時壞掉資料才會遺失</li>
+<li>假設一台的修復時間為 10 小時，平均資料遺失時間為 (100000)²/(2* 10)</li>
+</ul>
+</li>
+<li>加入 ** 非揮發性 RAM (NVRAM,nonvolatile RAM)** 快取到 RAID 陣列，在電源失效時保護資料遺失</li>
+</ul>
+</li>
+<li>
+<p>透過<strong>平行化</strong>提昇效能</p>
+<ul>
+<li>資料分割 (data striping) 的最簡單格式是將每一個位元組分成為源分散在許多台磁碟機，這種分割稱為<strong>位元層次的分割 (bit-level striping)</strong>
+<ul>
+<li>將檔案第 i 個位元寫到第 i 個磁碟機中</li>
+<li>有 i 台磁碟機，則視為 i 被大小且 i 被存取速率的磁碟機</li>
+</ul>
+</li>
+<li>也可在<strong>區段層次分割 (block-level striping)</strong>
+<ul>
+<li>將第 n 個區段放在第 n 台磁碟機</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="raid-level"><a class="markdownIt-Anchor" href="#raid-level">#</a> RAID level</h2>
+<p>RAID 把多個硬碟組合成為一個邏輯磁區，因此 OS 只會把它當作一個硬碟。<br>
+RAID 被排成不同的 level</p>
+<ul>
+<li>Striping</li>
+<li>Mirror（Replication 複製）</li>
+<li>Error-correcting code（ECC） &amp; Parity bit</li>
+</ul>
+<p>RAID Level 高低不完全代表系統效能或可靠度的高低，端視管理員的需求</p>
+<h3 id="raid-0stripingspan"><a class="markdownIt-Anchor" href="#raid-0stripingspan">#</a> RAID 0：Striping/Span</h3>
+<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/RAID_0.svg/150px-RAID_0.svg.png" alt=""><br>
+兩個以上的磁碟並聯起來成為一個大容量的磁碟，將資料切割存放到多部硬碟中且不會重複存放</p>
+<ul>
+<li>non-redundant striping</li>
+<li>優點：效能改善，可進行<strong>平行讀寫</strong>，適用於具有高效能需求的系統
+<blockquote>
+<p>理論上，硬碟越多效能就等於 [單一硬碟效能]×[硬碟數]。事實上受限於匯流排 I/O 瓶頸及其它硬體因素的影響，RAID 效能會隨邊際遞減。</p>
+</blockquote>
+</li>
+<li>缺點：完全沒有容錯能力</li>
+</ul>
+<h3 id="raid-1mirroring"><a class="markdownIt-Anchor" href="#raid-1mirroring">#</a> RAID 1：Mirroring</h3>
+<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/RAID_1.svg/150px-RAID_1.svg.png" alt=""><br>
+RAID 1 會將資料同時寫入兩個或多個磁碟，形成「鏡像」。每個磁碟都保存完整的資料副本</p>
+<ul>
+<li>讀取效能會提升。系統可以同時從多顆磁碟讀取資料</li>
+<li>寫入效能不會提升。因為每次寫入都必須同步到所有鏡像磁碟，速度受限於單一磁碟的寫入速度</li>
+<li>優點：系統可靠度很高，極佳的資料安全性，實作容易</li>
+<li>缺點：效率最差，且需花費兩倍的成本</li>
+</ul>
+<h3 id="raid-01mirror-striping"><a class="markdownIt-Anchor" href="#raid-01mirror-striping">#</a> RAID 0+1：Mirror + Striping</h3>
+<p>結合了 RAID 0 與 RAID 1 兩種模式。至少要 4 顆以上的磁碟，且硬碟總數需為偶數</p>
+<ul>
+<li>優點：擁有 RAID 1 容錯力，以及 RAID 0 整體讀寫速度</li>
+<li>缺點：成本很高，一次最少要用上 4 顆硬碟，且也要浪費一半的總容量</li>
+</ul>
+<h3 id="raid-2hamming-code"><a class="markdownIt-Anchor" href="#raid-2hamming-code">#</a> RAID 2：Hamming Code</h3>
+<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/RAID2_arch.svg/350px-RAID2_arch.svg.png" alt=""><br>
+以 ** 漢明碼（Hamming Code）** 的方式將資料進行編碼後分割為獨立的位元，資料分別寫入硬碟中，具錯誤檢查與更正能力，當一部硬碟壞掉時，可由其它硬碟的內容來更正</p>
+<ul>
+<li>在資料中加入了錯誤修正碼</li>
+<li>recover 任何單一個 disk failure<br>
+ 可以偵測兩個 disk 的錯誤（i.e. bits），但只能<strong>訂正一個 bit</strong> 的錯誤</li>
+<li>優點：空間有效率比 RAID 1 好（75% overhead）</li>
+</ul>
+<blockquote>
+<p>例如：Hamming code (7,4)</p>
+<ul>
+<li>4 data bits (on 4 disks) + 3 parity bits (on 3 disks)</li>
+<li>Each parity bit is linear code of 3 data bits</li>
+</ul>
+</blockquote>
+<h3 id="raid-3parallel-with-parity"><a class="markdownIt-Anchor" href="#raid-3parallel-with-parity">#</a> RAID 3：Parallel with Parity</h3>
+<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/RAID_3.svg/220px-RAID_3.svg.png" alt=""><br>
+多利用一顆磁碟儲存同位元資訊達到容錯功能</p>
+<ul>
+<li><strong>Bit-level</strong> striping</li>
+<li>通過編碼再將資料位元分割後分別存在硬碟中，而將同位元檢查後單獨存在一個硬碟中</li>
+<li>當硬碟有問題，可由同位元檢測得知</li>
+<li>優點：所需的硬碟數較 RAID 2 節省</li>
+<li>缺點：不是個好方法，因為全部的 disk 都不斷被寫 (Bit－interleaving)，效能低落</li>
+</ul>
+<h3 id="raid-4parallel-with-parity-block"><a class="markdownIt-Anchor" href="#raid-4parallel-with-parity-block">#</a> RAID 4：Parallel with Parity (block)</h3>
+<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RAID_4.svg/220px-RAID_4.svg.png" alt=""><br>
+跟 RAID 3 相同，不過其支援的資料交插是以 block 為單位計算的</p>
+<ul>
+<li><strong>Block-level</strong> striping</li>
+<li>每次的資料存取都必須從同位元檢查的那個硬碟中取出對應的同位元資料進行核對</li>
+<li>優點：更好的空間效率（33% overhead）</li>
+<li>缺點：
+<ul>
+<li>計算與儲存 parity bit 的 cost</li>
+<li>P-disk 不斷被寫，效能瓶頸</li>
+</ul>
+</li>
+</ul>
+<h3 id="raid-5striping-with-rotating-parity"><a class="markdownIt-Anchor" href="#raid-5striping-with-rotating-parity">#</a> RAID 5：Striping with Rotating Parity</h3>
+<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/RAID_5.svg/220px-RAID_5.svg.png" alt=""><br>
+RAID 5 是一種儲存效能、資料安全和儲存成本兼顧的儲存解決方案，有較多的商業應用</p>
+<ul>
+<li>Distributed Parity</li>
+<li>分散 data &amp; parity 在所有的 disks，避免過度使用單一個 disk（e.g. RAID 3，4）</li>
+<li>當 RAID 5 的一個磁碟資料發生損壞後，可以利用剩下的資料和相應的奇偶校驗資訊去恢復被損壞的資料</li>
+<li>與 RAID 4 雷同，但是 RAID 5 把同位元分散依序儲存於陣列中的每顆磁碟內，改善了 P-disk 不斷被寫的效能瓶頸</li>
+</ul>
+<h4 id="read-bw"><a class="markdownIt-Anchor" href="#read-bw">#</a> Read BW</h4>
+<p>增加 N 倍，因為所有四個 disks 可以服務一個 read request</p>
+<h4 id="write-bw"><a class="markdownIt-Anchor" href="#write-bw">#</a> Write BW</h4>
+<p><img data-src="https://i.imgur.com/BE4Y6zb.png" alt=""></p>
+<ul>
+<li>Method1
+<ol>
+<li>read out all unmodified (N-2) data bits.</li>
+<li>re-compute parity bit.</li>
+<li>write both modified bit and parity bit to disks.<br>
+–-&gt; write BW = N / ((N-2)+2) = 1 –-&gt; remains the same</li>
+</ol>
+</li>
+<li>Method2
+<ol>
+<li>only read the parity bit and modified bit.</li>
+<li>re-compute parity bit by the difference.</li>
+<li>write both modified bit and parity bit.<br>
+–-&gt; write BW = N / (2+2) = N/4 times faster</li>
+</ol>
+</li>
+</ul>
+<h3 id="raid-6read-solomon-code"><a class="markdownIt-Anchor" href="#raid-6read-solomon-code">#</a> RAID 6：Read Solomon Code</h3>
+<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/RAID_6.svg/300px-RAID_6.svg.png" alt=""><br>
+RAID 6 增加第 2 個獨立的奇偶校驗資訊塊。容許 2 個硬碟同時損壞，至少必須具備 4 或 4 個以上硬碟才能生效</p>
+<ul>
+<li>P+Q Dual Parity Redundancy</li>
+<li>增加第二個獨立的奇偶校驗資訊塊，提高可靠性</li>
+<li>使用 ECC code（i.e. Error Correction Code）而不是單一個 parity bit</li>
+<li>Parity bits are also striped across disks</li>
+<li>與 RAID 5 雷同，但是儲存額外的 redundant information 去防止多個 disk failure</li>
+<li>RAID 6 在硬體磁碟陣列卡的功能中，也是最常見的磁碟陣列等級</li>
+</ul>
+<h3 id="hybrid-raid"><a class="markdownIt-Anchor" href="#hybrid-raid">#</a> Hybrid RAID</h3>
+<ul>
+<li>RAID 0+1：Stripe then replicate<br>
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RAID_01.svg/220px-RAID_01.svg.png" alt=""></li>
+<li>RAID 1+0：Replicate then stripe<br>
+<img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/RAID_10.svg/220px-RAID_10.svg.png" alt=""></li>
+</ul>
+<h1 id="ref-notes"><a class="markdownIt-Anchor" href="#ref-notes">#</a> Ref Notes</h1>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vOVk3UW8wT0VSZGE2aHRLN09PSTM2UQ==">Kipper’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQENoYW5nLUNoaWEtQ2hpL09TL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGJTQwQ2hhbmctQ2hpYS1DaGklMkZPUy1DSDEy">Chang-Chia-Chi’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQFBsLWVRVDlDUWFTMGpoRXhLcUw4X3cvQmtoT1NSNGpXL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGcyUyRnJKTElSdmRYRw==">陳品媛的筆記</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cubXJvcGVuZ2F0ZS5jb20vMjAxNS8wMS9vcGVyYXRpbmctc3lzdGVtLWNoMTItc2Vjb25kYXJ5LXN0b3JhZ2UuaHRtbA==">Mr. Opengate. OS - Ch10</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93YW5nd2lsbHkuZ2l0aHViLmlvL3dpbGx5d2FuZ2thYS8yMDE4LzA5LzEwL09wZXJhdGluZy1TeXN0ZW0tRGlzay1NYW5hZ2VtZW50Lw==">WillyWangkaa’s Note</span></li>
+</ul>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新於</span>
+    <time title="修改時間：2026-01-22 21:56:26" itemprop="dateModified" datetime="2026-01-22T21:56:26+08:00">2026-01-22</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>作者： </strong>Maru <i class="ic i-at"><em>@</em></i>一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ
+  </li>
+  <li class="link">
+    <strong>文章連結：</strong>
+    <a href="https://marumarumarsh.github.io/2026/01/22/OS/13_Mass_Storage_System/" title="Chapter 12. Mass Storage System">https://marumarumarsh.github.io/2026/01/22/OS/13_Mass_Storage_System/</a>
+  </li>
+  <li class="license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2026/01/21/OS/12_File_System_Implementation/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res040014_rip&#x2F;card_normal.png" title="Chapter 11. File System Implementation">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 11. File System Implementation</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2026/01/23/OS/14_IO_Systems/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;anihonetwallpaper.com&#x2F;image&#x2F;2024&#x2F;10&#x2F;202402203-ProjectSEKAI-AkiyamaMizuki.jpg" title="Chapter 13. I&#x2F;O Systems">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 13. I/O Systems</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目錄">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#disk-%E7%B0%A1%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text"> Disk 簡介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#disk-structure"><span class="toc-number">1.1.</span> <span class="toc-text"> Disk Structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A3%81%E7%A2%9F%E9%80%A3%E7%B5%90disk-attachment"><span class="toc-number">1.2.</span> <span class="toc-text"> 磁碟連結 (Disk Attachment)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#disk-system"><span class="toc-number">1.3.</span> <span class="toc-text"> Disk system</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#disk-access-time"><span class="toc-number">1.4.</span> <span class="toc-text"> Disk access time</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ex1"><span class="toc-number">1.4.1.</span> <span class="toc-text"> Ex1：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ex2"><span class="toc-number">1.4.2.</span> <span class="toc-text"> Ex2：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ex3"><span class="toc-number">1.4.3.</span> <span class="toc-text"> Ex3：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#disk-scheduling-algorithm"><span class="toc-number">2.</span> <span class="toc-text"> Disk Scheduling Algorithm</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#fcfs-%E6%BC%94%E7%AE%97%E6%B3%95-first-come-first-serve"><span class="toc-number">2.1.</span> <span class="toc-text"> FCFS 演算法 (first-come, first-serve)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sstf-%E6%BC%94%E7%AE%97%E6%B3%95-short-seek-time-first"><span class="toc-number">2.2.</span> <span class="toc-text"> SSTF 演算法 (short-seek time first)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#scan-%E6%BC%94%E7%AE%97%E6%B3%95aka-elevator-algorithm"><span class="toc-number">2.3.</span> <span class="toc-text"> SCAN 演算法（A.k.a. elevator algorithm）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#c-scan-%E6%BC%94%E7%AE%97%E6%B3%95"><span class="toc-number">2.4.</span> <span class="toc-text"> C-SCAN 演算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#look-%E6%BC%94%E7%AE%97%E6%B3%95-c-look-%E6%BC%94%E7%AE%97%E6%B3%95"><span class="toc-number">2.5.</span> <span class="toc-text"> LOOK 演算法、C-LOOK 演算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#disk-management"><span class="toc-number">3.</span> <span class="toc-text"> Disk Management</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A3%81%E7%A2%9F%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="toc-number">3.1.</span> <span class="toc-text"> 磁碟格式化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%95%9F%E5%8B%95%E5%8D%80%E6%AE%B5boot-block"><span class="toc-number">3.2.</span> <span class="toc-text"> 啟動區段 (boot block)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AF%80%E6%90%8D%E5%8D%80%E6%AE%B5bad-block"><span class="toc-number">3.3.</span> <span class="toc-text"> 毀損區段 (bad block)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%AE%E6%8F%9B%E7%A9%BA%E9%96%93%E7%AE%A1%E7%90%86swap-space-management"><span class="toc-number">3.4.</span> <span class="toc-text"> 置換空間管理 (Swap-Space Management)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#raid"><span class="toc-number">4.</span> <span class="toc-text"> RAID</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#raid-level"><span class="toc-number">4.1.</span> <span class="toc-text"> RAID level</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#raid-0stripingspan"><span class="toc-number">4.1.1.</span> <span class="toc-text"> RAID 0：Striping&#x2F;Span</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#raid-1mirroring"><span class="toc-number">4.1.2.</span> <span class="toc-text"> RAID 1：Mirroring</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#raid-01mirror-striping"><span class="toc-number">4.1.3.</span> <span class="toc-text"> RAID 0+1：Mirror + Striping</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#raid-2hamming-code"><span class="toc-number">4.1.4.</span> <span class="toc-text"> RAID 2：Hamming Code</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#raid-3parallel-with-parity"><span class="toc-number">4.1.5.</span> <span class="toc-text"> RAID 3：Parallel with Parity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#raid-4parallel-with-parity-block"><span class="toc-number">4.1.6.</span> <span class="toc-text"> RAID 4：Parallel with Parity (block)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#raid-5striping-with-rotating-parity"><span class="toc-number">4.1.7.</span> <span class="toc-text"> RAID 5：Striping with Rotating Parity</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#read-bw"><span class="toc-number">4.1.7.1.</span> <span class="toc-text"> Read BW</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#write-bw"><span class="toc-number">4.1.7.2.</span> <span class="toc-text"> Write BW</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#raid-6read-solomon-code"><span class="toc-number">4.1.8.</span> <span class="toc-text"> RAID 6：Read Solomon Code</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hybrid-raid"><span class="toc-number">4.1.9.</span> <span class="toc-text"> Hybrid RAID</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ref-notes"><span class="toc-number">5.</span> <span class="toc-text"> Ref Notes</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="本站概要">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Maru"
+      data-src="/images/ava1.jpg">
+  <p class="name" itemprop="name">Maru</p>
+  <div class="description" itemprop="description">垮惹</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">28</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首頁</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>歸檔</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分類</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>標籤</a>
+  </li>
+
+  </ul>
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2026/01/21/OS/12_File_System_Implementation/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2026/01/23/OS/14_IO_Systems/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>隨機文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/11/10/%E6%97%A5%E6%96%87/%E6%97%A5%E6%9C%AC%E8%AA%9E%E3%81%AE%E6%A3%AE/" title="【一冊で合格する】Ｎ1  - 錯題集">【一冊で合格する】Ｎ1  - 錯題集</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/04/13/Wireless%20Internet/Ch2_Signal/" title="Signal">Signal</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Resampling%20Methods/" title="Resampling Methods">Resampling Methods</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Classification/" title="Classification">Classification</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/22/OS/13_Mass_Storage_System/" title="Chapter 12. Mass Storage System">Chapter 12. Mass Storage System</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/%E5%89%8D%E8%A8%80/" title="先備軟體介紹">先備軟體介紹</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/17/OS/8_%20Deadlocks/" title="Chapter 7. Deadlocks">Chapter 7. Deadlocks</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/09/OS/0_Start/" title="作業系統(Operating System)筆記版面介紹">作業系統(Operating System)筆記版面介紹</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/19/OS/10_Virtual_Memory_Management/" title="Chapter 9. Virtual Memory Management">Chapter 9. Virtual Memory Management</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/20/OS/11_File_System_Interface/" title="Chapter 10. File System Interface">Chapter 10. File System Interface</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新評論</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maru @ 棉花糖小窩</span>
+  </div>
+  <div class="powered-by">
+    基於 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2026/01/22/OS/13_Mass_Storage_System/',
+    favicon: {
+      show: "（●´3｀●）復活成功",
+      hide: "(´Д｀)瀏覽器崩潰啦"
+    },
+    search : {
+      placeholder: "文章搜尋",
+      empty: "關於 「 ${query} 」 ，什麼也沒搜到",
+      stats: "${time} ms 內找到 ${hits} 條結果"
+    },
+    valine: true,copy_tex: true,
+    katex: true,fancybox: true,
+    copyright: '複製成功，轉載請遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 協議。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/sakiko.model.json"},"display":{"position":"left","width":280,"height":400,"hOffset":0,"vOffset":-50},"mobile":{"show":false},"react":{"opacity":1},"dialog":{"enable":false,"hitokoto":false},"log":false});</script></body>
+</html>

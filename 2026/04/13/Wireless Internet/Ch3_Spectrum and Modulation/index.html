@@ -1,0 +1,609 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.gif">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://marumarumarsh.github.io/2026/04/13/Wireless%20Internet/Ch3_Spectrum%20and%20Modulation/">
+
+
+
+  <title>
+Spectrum and Modulation |
+棉花糖小窩 = 一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ = 棉花糖絕對不能烤！！</title>
+<meta name="generator" content="Hexo 8.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Spectrum and Modulation
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="創建時間：2026-04-13 11:45:55">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">發表於</span>
+    <time itemprop="dateCreated datePublished" datetime="2026-04-13T11:45:55+08:00">2026-04-13</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切換導航欄">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">棉花糖小窩</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res038011_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036010_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res039014_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res021082_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res040014_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res037012_rip/card_after_training.png"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首頁</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-TW">
+  <link itemprop="mainEntityOfPage" href="https://marumarumarsh.github.io/2026/04/13/Wireless%20Internet/Ch3_Spectrum%20and%20Modulation/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/ava1.jpg">
+    <meta itemprop="name" content="Maru">
+    <meta itemprop="description" content="棉花糖絕對不能烤！！, 垮惹">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="communication-spectrum"><a class="markdownIt-Anchor" href="#communication-spectrum">#</a> Communication spectrum</h1>
+<ul>
+<li>Radio waves:
+<ul>
+<li>30 MHz ~ 1 GHz</li>
+<li>可以從電離層反射，傳播距離很遠<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNEXviN"><img data-src="https://iili.io/BNEXviN.md.png" alt="BNEXviN.md.png"></a></li>
+<li>適合 Omnidirectional transmission: 信號在所有方向上均勻傳播</li>
+</ul>
+</li>
+<li>Microwaves:
+<ul>
+<li>1 GHz ~ 40 GHz</li>
+<li>通常用於點對點通信，例如衛星通信和微波鏈路。</li>
+<li>容易受到障礙物的影響，傳播距離較短。</li>
+</ul>
+</li>
+<li>Infrared:
+<ul>
+<li>從放熱物體發出的電磁波。</li>
+<li>Line of sight transmission: 信號需要直接視線才能傳播，容易被障礙物阻擋。</li>
+<li>適合在特定區域內點對點通信，例如遙控器和近距離無線通信。</li>
+</ul>
+</li>
+</ul>
+<h1 id="spreading-spectrum"><a class="markdownIt-Anchor" href="#spreading-spectrum">#</a> Spreading spectrum</h1>
+<ul>
+<li>由 International Telecommunication Union (ITU) 定義<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNEwjRe"><img data-src="https://iili.io/BNEwjRe.md.png" alt="BNEwjRe.md.png"></a></li>
+<li>要得到一個頻率範圍的使用權，通常有以下幾種方式：
+<ul>
+<li>Lottery</li>
+<li>Auction</li>
+<li>Comparative bidding</li>
+</ul>
+</li>
+<li>有些頻率範圍是專用的，有些頻率範圍是免費的
+<ul>
+<li><strong>licensed spectrum</strong>，需要向政府申請並支付費用才能使用。
+<ul>
+<li>Cellular system</li>
+<li>Paging system</li>
+<li>Personal communication system</li>
+</ul>
+</li>
+<li><strong>unlicensed spectrum</strong>，任何人都可以使用<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNENFs4"><img data-src="https://iili.io/BNENFs4.md.png" alt="BNENFs4.md.png"></a>
+<ul>
+<li>ISM (Industrial, Scientific, and Medical) bands</li>
+<li>2.4 GHz band: Wi-Fi, Bluetooth, Zigbee</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Spread spectrum: 一種將信號分散在較寬頻率範圍內的技術，可以提高抗干擾能力和安全性。
+<ul>
+<li>Frequency hopping spread spectrum (FHSS):<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNEO5js"><img data-src="https://iili.io/BNEO5js.md.png" alt="BNEO5js.md.png"></a>
+<ul>
+<li>對噪音和干擾具有更強的抵抗力，因為信號在不同頻率之間跳躍，使得干擾者難以鎖定和干擾信號</li>
+<li>每個時槽頻率需分開足夠遠，以避免相互干擾</li>
+<li>傳送端：<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNEvIaV"><img data-src="https://iili.io/BNEvIaV.md.png" alt="BNEvIaV.md.png"></a></li>
+<li>接收端：<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNEvtSV"><img data-src="https://iili.io/BNEvtSV.md.png" alt="BNEvtSV.md.png"></a></li>
+</ul>
+</li>
+<li>Direct sequence spread spectrum (DSSS):<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNESJm7"><img data-src="https://iili.io/BNESJm7.md.png" alt="BNESJm7.md.png"></a>
+<ul>
+<li>用<strong> chipping code</strong> 將數據信號擴展到更寬的頻率範圍</li>
+<li>Spectral energy 因為擴展而分散，使得信號更難被干擾和截獲</li>
+<li>傳送端：<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNEStTP"><img data-src="https://iili.io/BNEStTP.md.png" alt="BNEStTP.md.png"></a></li>
+<li>接收端：<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNEUzFf"><img data-src="https://iili.io/BNEUzFf.md.png" alt="BNEUzFf.md.png"></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>對比 FHSS 和 DSSS：<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNErfBn"><img data-src="https://iili.io/BNErfBn.md.png" alt="BNErfBn.md.png"></a>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>FHSS</th>
+<th>DSSS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Frequency usage</td>
+<td>Jumps between frequencies</td>
+<td>Spreads signal across a wide frequency band</td>
+</tr>
+<tr>
+<td>Interference resistance</td>
+<td>High, due to frequency hopping</td>
+<td>High, due to spreading</td>
+</tr>
+<tr>
+<td>Degradation</td>
+<td>Linear with interference</td>
+<td>Degraded by half after certain point</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<h1 id="modulation-schemes"><a class="markdownIt-Anchor" href="#modulation-schemes">#</a> Modulation schemes</h1>
+<ul>
+<li>Amplitude modulation (AM): 通過改變信號的振幅來傳輸信息<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNEr4Gn"><img data-src="https://iili.io/BNEr4Gn.md.png" alt="BNEr4Gn.md.png"></a></li>
+<li>Frequency modulation (FM): 通過改變信號的頻率來傳輸信息<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNE4NV9"><img data-src="https://iili.io/BNE4NV9.md.png" alt="BNE4NV9.md.png"></a></li>
+</ul>
+<h2 id="am-vs-fm"><a class="markdownIt-Anchor" href="#am-vs-fm">#</a> AM vs. FM</h2>
+<p><a target="_blank" rel="noopener" href="https://freeimage.host/i/BNE63fn"><img data-src="https://iili.io/BNE63fn.md.png" alt="BNE63fn.md.png"></a></p>
+<h2 id="digital-modulation-schemes"><a class="markdownIt-Anchor" href="#digital-modulation-schemes">#</a> Digital modulation schemes</h2>
+<p>在無線通信中，數字調製方案用於將數字數據轉換為適合無線傳輸的信號形式。常見的數字調製方案包括：</p>
+<ul>
+<li>Amplitude Shift Keying (ASK): 通過改變信號的振幅來表示不同的數字值，例如 0 和 1。</li>
+<li>Frequency Shift Keying (FSK): 通過改變信號的頻率來表示不同的數字值，例如 0 和 1。</li>
+<li>Phase Shift Keying (PSK): 通過改變信號的相位來表示不同的數字值
+<ul>
+<li>Binary Phase Shift Keying (BPSK): 使用兩個相位來表示 0 和 1，在衛星通信中常用<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNEPqEF"><img data-src="https://iili.io/BNEPqEF.md.png" alt="BNEPqEF.md.png"></a></li>
+<li>Quadrature Phase Shift Keying (QPSK): 使用四個相位來表示 00、01、10 和 11，比 BPSK 更有效率，常用於 Wi-Fi 和 LTE 等無線通信系統<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNEP66F"><img data-src="https://iili.io/BNEP66F.md.png" alt="BNEP66F.md.png"></a></li>
+<li>Quadrature Amplitude Modulation (QAM): 結合振幅和相位的變化來表示更多的數字值，例如 16-QAM、64-QAM 等</li>
+<li>Differential Phase Shift Keying (DPSK): 通過比較當前信號的相位與前一個信號的相位來表示數字值，避免了對相位同步的需求</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mi mathvariant="normal">/</mi><mn>4</mn></mrow><annotation encoding="application/x-tex">\pi/4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span><span class="mord">/</span><span class="mord">4</span></span></span></span>-DPSK: 一種特殊的 DPSK，使用四個相位來表示數字值，提供更好的性能和抗干擾能力<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNEi5wQ"><img data-src="https://iili.io/BNEi5wQ.md.png" alt="BNEi5wQ.md.png"></a></li>
+</ul>
+</li>
+</ul>
+<h1 id="wireless-propagation-model"><a class="markdownIt-Anchor" href="#wireless-propagation-model">#</a> Wireless propagation model</h1>
+<ul>
+<li>Free-space path loss: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><msup><mi>r</mi><mn>2</mn></msup><mtext> </mtext><mn>1</mn><mi mathvariant="normal">/</mi><msup><mi>r</mi><mn>4</mn></msup></mrow><annotation encoding="application/x-tex">1/r^2~1/r^4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord">/</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace nobreak"> </span><span class="mord">1</span><span class="mord">/</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span> 的衰減，其中<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi></mrow><annotation encoding="application/x-tex">r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span></span></span> 是傳輸和接收的距離。</li>
+<li>Doppler shift: 當發射器和接收器之間存在相對運動時，接收的信號頻率會發生變化。</li>
+<li>Slow fading: 由於環境變化較慢，導致信號強度緩慢變化。
+<ul>
+<li>Reflection: 當信號遇到大於波長的物體時產生反射現象，導致信號強度減弱。</li>
+<li>Scattering: 當信號遇到小於波長的物體時產生散射現象，導致信號強度減弱。</li>
+<li>Diffraction / Shadowing: 當信號被障礙物阻擋時，會產生衍射現象導致信號強度減弱。</li>
+</ul>
+</li>
+<li>Fast fading: 由於多徑效應，信號在不同路徑上到達接收器，導致信號有可能被增強或抵消，信號強度快速變化。</li>
+</ul>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新於</span>
+    <time title="修改時間：2026-04-14 12:17:33" itemprop="dateModified" datetime="2026-04-14T12:17:33+08:00">2026-04-14</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>作者： </strong>Maru <i class="ic i-at"><em>@</em></i>一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ
+  </li>
+  <li class="link">
+    <strong>文章連結：</strong>
+    <a href="https://marumarumarsh.github.io/2026/04/13/Wireless%20Internet/Ch3_Spectrum%20and%20Modulation/" title="Spectrum and Modulation">https://marumarumarsh.github.io/2026/04/13/Wireless Internet/Ch3_Spectrum and Modulation/</a>
+  </li>
+  <li class="license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2026/04/13/Wireless%20Internet/Ch2_Signal/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res037010_rip&#x2F;card_after_training.png" title="Signal">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Signal</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2026/04/13/Wireless%20Internet/Ch4_Multiple%20access/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res021081_rip&#x2F;card_after_training.png" title="Multiple access">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Multiple access</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目錄">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#communication-spectrum"><span class="toc-number">1.</span> <span class="toc-text"> Communication spectrum</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spreading-spectrum"><span class="toc-number">2.</span> <span class="toc-text"> Spreading spectrum</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#modulation-schemes"><span class="toc-number">3.</span> <span class="toc-text"> Modulation schemes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#am-vs-fm"><span class="toc-number">3.1.</span> <span class="toc-text"> AM vs. FM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#digital-modulation-schemes"><span class="toc-number">3.2.</span> <span class="toc-text"> Digital modulation schemes</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#wireless-propagation-model"><span class="toc-number">4.</span> <span class="toc-text"> Wireless propagation model</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="本站概要">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Maru"
+      data-src="/images/ava1.jpg">
+  <p class="name" itemprop="name">Maru</p>
+  <div class="description" itemprop="description">垮惹</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">28</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首頁</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>歸檔</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分類</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>標籤</a>
+  </li>
+
+  </ul>
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2026/04/13/Wireless%20Internet/Ch2_Signal/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2026/04/13/Wireless%20Internet/Ch4_Multiple%20access/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>隨機文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/04/13/Wireless%20Internet/Ch4_Multiple%20access/" title="Multiple access">Multiple access</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/19/OS/10_Virtual_Memory_Management/" title="Chapter 9. Virtual Memory Management">Chapter 9. Virtual Memory Management</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/17/OS/8_%20Deadlocks/" title="Chapter 7. Deadlocks">Chapter 7. Deadlocks</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/12/OS/4_Processes_Concept/" title="Chapter 3. Processes Concept">Chapter 3. Processes Concept</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/10/OS/2_Introduction/" title="Chapter 1. Introduction">Chapter 1. Introduction</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Statistical%20Learning/" title="Statistical Learning">Statistical Learning</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Linear%20model%20selection%20and%20regularization/" title="Linear model selection and regularization">Linear model selection and regularization</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/21/OS/12_File_System_Implementation/" title="Chapter 11. File System Implementation">Chapter 11. File System Implementation</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/%E5%89%8D%E8%A8%80/" title="先備軟體介紹">先備軟體介紹</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/04/13/Wireless%20Internet/Ch3_Spectrum%20and%20Modulation/" title="Spectrum and Modulation">Spectrum and Modulation</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新評論</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maru @ 棉花糖小窩</span>
+  </div>
+  <div class="powered-by">
+    基於 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2026/04/13/Wireless Internet/Ch3_Spectrum and Modulation/',
+    favicon: {
+      show: "（●´3｀●）復活成功",
+      hide: "(´Д｀)瀏覽器崩潰啦"
+    },
+    search : {
+      placeholder: "文章搜尋",
+      empty: "關於 「 ${query} 」 ，什麼也沒搜到",
+      stats: "${time} ms 內找到 ${hits} 條結果"
+    },
+    valine: true,copy_tex: true,
+    katex: true,fancybox: true,
+    copyright: '複製成功，轉載請遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 協議。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/sakiko.model.json"},"display":{"position":"left","width":280,"height":400,"hOffset":0,"vOffset":-50},"mobile":{"show":false},"react":{"opacity":1},"dialog":{"enable":false,"hitokoto":false},"log":false});</script></body>
+</html>

@@ -1,0 +1,633 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.gif">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://marumarumarsh.github.io/2026/04/13/Wireless%20Internet/Ch4_Multiple%20access/">
+
+
+
+  <title>
+Multiple access |
+棉花糖小窩 = 一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ = 棉花糖絕對不能烤！！</title>
+<meta name="generator" content="Hexo 8.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Multiple access
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="創建時間：2026-04-13 11:48:33">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">發表於</span>
+    <time itemprop="dateCreated datePublished" datetime="2026-04-13T11:48:33+08:00">2026-04-13</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切換導航欄">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">棉花糖小窩</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036008_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://anihonetwallpaper.com/image/2025/10/202501842-BanG_Dream-MaruyamaAya.jpg"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res026046_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://anihonetwallpaper.com/image/2025/10/202501843-BanG_Dream-MaruyamaAya.jpg"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res027042_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res038012_rip/card_after_training.png"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首頁</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-TW">
+  <link itemprop="mainEntityOfPage" href="https://marumarumarsh.github.io/2026/04/13/Wireless%20Internet/Ch4_Multiple%20access/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/ava1.jpg">
+    <meta itemprop="name" content="Maru">
+    <meta itemprop="description" content="棉花糖絕對不能烤！！, 垮惹">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="macs-duty"><a class="markdownIt-Anchor" href="#macs-duty">#</a> MAC’s duty</h1>
+<ul>
+<li>主要功能：
+<ul>
+<li>Frame 劃定和辨認</li>
+<li>目標 stations 的位址，傳輸 source station 的位址</li>
+<li>保持透明、保護資料的完整性</li>
+<li><strong>協調各物理傳輸媒介的連接</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="broadcasting-shared-medium-networks"><a class="markdownIt-Anchor" href="#broadcasting-shared-medium-networks">#</a> Broadcasting / shared medium networks</h2>
+<p>一種網路架構，所有 stations 都連接在同一個 shared medium 上，傳輸訊號會被所有 stations 接收。例子：Ethernet, Wi-Fi, Hub-based LANs, Satellite / Radio networks, Cable television</p>
+<ul>
+<li>Local area networks (LANs)
+<ul>
+<li>Wired networks: Ethernet (IEEE 802.3)</li>
+<li>Wireless networks: Wi-Fi (IEEE 802.11)</li>
+</ul>
+</li>
+<li>Multiple access protocols:
+<ul>
+<li>Channel reservation protocols
+<ul>
+<li>FDMA</li>
+<li>TDMA</li>
+<li>CDMA</li>
+</ul>
+</li>
+<li>Random access protocols
+<ul>
+<li>ALOHA</li>
+<li>CSMA (including its variations)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Multiple access<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BNlkmDG"><img data-src="https://iili.io/BNlkmDG.md.png" alt="BNlkmDG.md.png"></a></li>
+</ul>
+<h1 id="channel-reservation-protocols"><a class="markdownIt-Anchor" href="#channel-reservation-protocols">#</a> Channel reservation protocols</h1>
+<h2 id="fdma"><a class="markdownIt-Anchor" href="#fdma">#</a> FDMA</h2>
+<p><a target="_blank" rel="noopener" href="https://freeimage.host/i/BN1eeja"><img data-src="https://iili.io/BN1eeja.md.png" alt="BN1eeja.md.png"></a><br>
+ 將頻寬分成多個頻道，每個 station 被事先分配一個頻道，只有在該頻道上傳輸訊號。例子：AM/FM radio, TV broadcasting, Cellular telephone systems</p>
+<ul>
+<li>優點：
+<ul>
+<li>簡單，容易實現。若有頻道不用可以閒置。</li>
+<li>在 station 數量不多的情況下，頻寬利用率較高</li>
+</ul>
+</li>
+<li>缺點：
+<ul>
+<li>需要 guard bands 來避免頻道間的干擾</li>
+<li>要 RF filters 來分離頻道，最小化相鄰頻道的干擾</li>
+<li>和 analog systems 差別不大</li>
+</ul>
+</li>
+</ul>
+<h2 id="tdma"><a class="markdownIt-Anchor" href="#tdma">#</a> TDMA</h2>
+<p><a target="_blank" rel="noopener" href="https://freeimage.host/i/BN1vA57"><img data-src="https://iili.io/BN1vA57.md.png" alt="BN1vA57.md.png"></a><br>
+ 將時間分成多個時隙，每個 station 被事先分配一個時隙，只有在該時隙上傳輸訊號。例子：GSM cellular telephone systems, Satellite communication systems</p>
+<ul>
+<li>優點：
+<ul>
+<li>不需要 guard bands、narrowband filters</li>
+<li>可提供較有彈性的 bit rate</li>
+<li>handoff 比較簡單</li>
+<li>較省電</li>
+</ul>
+</li>
+<li>缺點：
+<ul>
+<li>需要精確的時間同步</li>
+<li>會造成多徑失真</li>
+</ul>
+</li>
+</ul>
+<h2 id="cdma"><a class="markdownIt-Anchor" href="#cdma">#</a> CDMA</h2>
+<p><a target="_blank" rel="noopener" href="https://freeimage.host/i/BN1852p"><img data-src="https://iili.io/BN1852p.md.png" alt="BN1852p.md.png"></a><br>
+ 用多個 orthogonal codes 來分割頻譜，包含時間和頻率，每個 station 被事先分配一個 code 傳輸訊號。</p>
+<ul>
+<li>優點：
+<ul>
+<li>CDMA 允許多個使用者用同個頻率，使用者數量無上限可以很容易地增加</li>
+<li>多徑失真不會造成問題，因為訊號頻寬很大</li>
+<li>難被破譯</li>
+<li>更好的訊號品質</li>
+<li>沒有 handoff 的問題</li>
+</ul>
+</li>
+<li>缺點：
+<ul>
+<li>使用者增加整體品質會下降</li>
+<li>可能有 <strong>self-jamming</strong> 的問題，意即當一個 station 的訊號太強時，會干擾其他 station 的訊號</li>
+<li>遇到 <strong>near-far problem</strong> 時，near station 的訊號會干擾 far station 的訊號</li>
+</ul>
+</li>
+<li>例子：<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BN1UKOP"><img data-src="https://iili.io/BN1UKOP.md.png" alt="BN1UKOP.md.png"></a></li>
+</ul>
+<h1 id="random-access-protocols"><a class="markdownIt-Anchor" href="#random-access-protocols">#</a> Random access protocols</h1>
+<p>指沒有事先分配頻道或時隙的協定，station 在需要傳輸訊號時就直接傳輸，可能會發生碰撞。</p>
+<h2 id="aloha"><a class="markdownIt-Anchor" href="#aloha">#</a> ALOHA</h2>
+<ul>
+<li>Pure ALOHA: station 在任何時間點都可以傳輸訊號，若發生碰撞，則 station 會在一個隨機的時間點重新傳輸訊號<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BN1rKoF"><img data-src="https://iili.io/BN1rKoF.md.png" alt="BN1rKoF.md.png"></a></li>
+<li>Slotted ALOHA: 將時間分成多個時隙，station 只能在時隙開始時傳輸訊號，若發生碰撞，則 station 會在一個隨機的時隙重新傳輸訊號<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BN1r4ig"><img data-src="https://iili.io/BN1r4ig.md.png" alt="BN1r4ig.md.png"></a></li>
+</ul>
+<h2 id="csma"><a class="markdownIt-Anchor" href="#csma">#</a> CSMA</h2>
+<ul>
+<li>Persistent CSMA: station 在需要傳輸訊號時會持續監聽頻道，直到頻道空閒時才以特定的機率傳輸訊號。
+<ul>
+<li>1-persistent CSMA: 持續監聽，頻道空閒時立即傳輸訊號（機率為 1）</li>
+<li>p-persistent CSMA: 持續監聽，頻道空閒時以機率 p 傳輸訊號。在 slotted channels 中使用，而 slot 的長度當作 maximum propagation delay。</li>
+</ul>
+<blockquote>
+<ul>
+<li>CSMA/CD (Collision Detection): 用在有線網路中如 Ethernet</li>
+<li>CSMA/CA (Collision Avoidance): 用在無線網路中如 IEEE 802.11</li>
+</ul>
+</blockquote>
+</li>
+<li>Non-persistent CSMA: station 可以停止監聽頻道，等待一個事先定的時間點再重新監聽頻道</li>
+</ul>
+<h2 id="performance"><a class="markdownIt-Anchor" href="#performance">#</a> Performance</h2>
+<p><a target="_blank" rel="noopener" href="https://freeimage.host/i/BN1sN9f"><img data-src="https://iili.io/BN1sN9f.md.png" alt="BN1sN9f.md.png"></a></p>
+<h1 id="uplink-downlink"><a class="markdownIt-Anchor" href="#uplink-downlink">#</a> Uplink &amp; downlink</h1>
+<p><a target="_blank" rel="noopener" href="https://freeimage.host/i/BN1Lnln"><img data-src="https://iili.io/BN1Lnln.md.png" alt="BN1Lnln.md.png"></a></p>
+<h2 id="duplexing-schemes"><a class="markdownIt-Anchor" href="#duplexing-schemes">#</a> Duplexing schemes</h2>
+<p>為了在同個頻道上同時傳輸 uplink 和 downlink 的訊號，常見的 duplexing schemes 包括：</p>
+<ul>
+<li><strong>Frequency Division Duplexing (FDD)</strong>:<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BN1QM2n"><img data-src="https://iili.io/BN1QM2n.md.png" alt="BN1QM2n.md.png"></a>
+<ul>
+<li>uplink 和 downlink 使用不同的頻率</li>
+<li>需要 duplexer 來分離 uplink 和 downlink 的訊號</li>
+</ul>
+</li>
+<li><strong>Time Division Duplexing (TDD)</strong>:<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BN1ZzZl"><img data-src="https://iili.io/BN1ZzZl.md.png" alt="BN1ZzZl.md.png"></a>
+<ul>
+<li>能多個 station 共享一個 radio channel</li>
+<li>不需要 duplexer</li>
+</ul>
+</li>
+</ul>
+<h1 id="issues-of-wireless-mac"><a class="markdownIt-Anchor" href="#issues-of-wireless-mac">#</a> Issues of wireless MAC</h1>
+<ul>
+<li>Signal interference: 由於無線訊號會受到其他訊號的干擾
+<ul>
+<li>Intra-system interference: 來自同一個系統的訊號干擾</li>
+<li>Inter-system interference: 來自不同系統的訊號干擾</li>
+</ul>
+</li>
+<li>Power management</li>
+<li>System interoperability: 不同系統之間的互通性，也是我們需要無線網路標準的理由</li>
+</ul>
+<h2 id="to-improve-the-performance"><a class="markdownIt-Anchor" href="#to-improve-the-performance">#</a> To improve the performance</h2>
+<ul>
+<li>Antenna diversity: 使用多個天線來接收訊號（branches），可減少多徑失真因為不同天線接收的訊號可能會有不同的相位和幅度，透過適當的組合可以增強訊號品質<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BN1DkEN"><img data-src="https://iili.io/BN1DkEN.md.png" alt="BN1DkEN.md.png"></a></li>
+<li>Smart antennas: 使用多個天線來傳輸訊號，所以可以透過 beamforming 技術來增強訊號品質，減少干擾<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BN1bTnR"><img data-src="https://iili.io/BN1bTnR.md.png" alt="BN1bTnR.md.png"></a></li>
+<li>Power control: 調整傳輸功率以減少干擾和增加訊號品質<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BN1biHF"><img data-src="https://iili.io/BN1biHF.md.png" alt="BN1biHF.md.png"></a></li>
+<li>Data integrity: 使用 error detection 和 error correction techniques 來確保資料的完整<br>
+<a target="_blank" rel="noopener" href="https://freeimage.host/i/BN1m5Wx"><img data-src="https://iili.io/BN1m5Wx.md.png" alt="BN1m5Wx.md.png"></a></li>
+</ul>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新於</span>
+    <time title="修改時間：2026-04-14 11:52:01" itemprop="dateModified" datetime="2026-04-14T11:52:01+08:00">2026-04-14</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>作者： </strong>Maru <i class="ic i-at"><em>@</em></i>一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ
+  </li>
+  <li class="link">
+    <strong>文章連結：</strong>
+    <a href="https://marumarumarsh.github.io/2026/04/13/Wireless%20Internet/Ch4_Multiple%20access/" title="Multiple access">https://marumarumarsh.github.io/2026/04/13/Wireless Internet/Ch4_Multiple access/</a>
+  </li>
+  <li class="license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2026/04/13/Wireless%20Internet/Ch3_Spectrum%20and%20Modulation/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;anihonetwallpaper.com&#x2F;image&#x2F;2025&#x2F;10&#x2F;202501842-BanG_Dream-MaruyamaAya.jpg" title="Spectrum and Modulation">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Spectrum and Modulation</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2026/04/13/Wireless%20Internet/Ch5_Wifi/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res039012_rip&#x2F;card_normal.png" title="Wifi">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Wifi</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目錄">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#macs-duty"><span class="toc-number">1.</span> <span class="toc-text"> MAC’s duty</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#broadcasting-shared-medium-networks"><span class="toc-number">1.1.</span> <span class="toc-text"> Broadcasting &#x2F; shared medium networks</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#channel-reservation-protocols"><span class="toc-number">2.</span> <span class="toc-text"> Channel reservation protocols</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#fdma"><span class="toc-number">2.1.</span> <span class="toc-text"> FDMA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tdma"><span class="toc-number">2.2.</span> <span class="toc-text"> TDMA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cdma"><span class="toc-number">2.3.</span> <span class="toc-text"> CDMA</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#random-access-protocols"><span class="toc-number">3.</span> <span class="toc-text"> Random access protocols</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#aloha"><span class="toc-number">3.1.</span> <span class="toc-text"> ALOHA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#csma"><span class="toc-number">3.2.</span> <span class="toc-text"> CSMA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#performance"><span class="toc-number">3.3.</span> <span class="toc-text"> Performance</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#uplink-downlink"><span class="toc-number">4.</span> <span class="toc-text"> Uplink &amp; downlink</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#duplexing-schemes"><span class="toc-number">4.1.</span> <span class="toc-text"> Duplexing schemes</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#issues-of-wireless-mac"><span class="toc-number">5.</span> <span class="toc-text"> Issues of wireless MAC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#to-improve-the-performance"><span class="toc-number">5.1.</span> <span class="toc-text"> To improve the performance</span></a></li></ol></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="本站概要">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Maru"
+      data-src="/images/ava1.jpg">
+  <p class="name" itemprop="name">Maru</p>
+  <div class="description" itemprop="description">垮惹</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">28</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首頁</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>歸檔</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分類</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>標籤</a>
+  </li>
+
+  </ul>
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2026/04/13/Wireless%20Internet/Ch3_Spectrum%20and%20Modulation/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2026/04/13/Wireless%20Internet/Ch5_Wifi/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>隨機文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/19/OS/10_Virtual_Memory_Management/" title="Chapter 9. Virtual Memory Management">Chapter 9. Virtual Memory Management</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Regression/" title="Regression">Regression</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/04/13/Wireless%20Internet/Ch6_Bluetooth/" title="Bluetooth">Bluetooth</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/27/Intro/" title="练习题与答案（測試）">练习题与答案（測試）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/17/OS/8_%20Deadlocks/" title="Chapter 7. Deadlocks">Chapter 7. Deadlocks</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/18/OS/9_Memory_Management/" title="Chapter 8. Memory Management">Chapter 8. Memory Management</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/14/OS/6_Process_Scheduling/" title="Chapter 5. Process Scheduling">Chapter 5. Process Scheduling</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/04/13/Wireless%20Internet/Ch2_Signal/" title="Signal">Signal</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/11/OS/3_OS_Structure/" title="Chapter 2. OS Structure">Chapter 2. OS Structure</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/22/OS/13_Mass_Storage_System/" title="Chapter 12. Mass Storage System">Chapter 12. Mass Storage System</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新評論</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maru @ 棉花糖小窩</span>
+  </div>
+  <div class="powered-by">
+    基於 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2026/04/13/Wireless Internet/Ch4_Multiple access/',
+    favicon: {
+      show: "（●´3｀●）復活成功",
+      hide: "(´Д｀)瀏覽器崩潰啦"
+    },
+    search : {
+      placeholder: "文章搜尋",
+      empty: "關於 「 ${query} 」 ，什麼也沒搜到",
+      stats: "${time} ms 內找到 ${hits} 條結果"
+    },
+    valine: true,copy_tex: true,
+    katex: true,fancybox: true,
+    copyright: '複製成功，轉載請遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 協議。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/sakiko.model.json"},"display":{"position":"left","width":280,"height":400,"hOffset":0,"vOffset":-50},"mobile":{"show":false},"react":{"opacity":1},"dialog":{"enable":false,"hitokoto":false},"log":false});</script></body>
+</html>

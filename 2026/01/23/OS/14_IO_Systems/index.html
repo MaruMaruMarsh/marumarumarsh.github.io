@@ -1,0 +1,744 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#FFF">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.gif">
+
+<link rel="icon" type="image/ico" sizes="32x32" href="/images/favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+<link rel="alternate" type="application/rss+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/rss.xml" />
+<link rel="alternate" type="application/atom+xml" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/atom.xml" />
+<link rel="alternate" type="application/json" title="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ" href="https://marumarumarsh.github.io/feed.json" />
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="/css/app.css?v=0.2.5">
+
+  
+
+<link rel="canonical" href="https://marumarumarsh.github.io/2026/01/23/OS/14_IO_Systems/">
+
+
+
+  <title>
+Chapter 13. I/O Systems |
+棉花糖小窩 = 一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ = 棉花糖絕對不能烤！！</title>
+<meta name="generator" content="Hexo 8.1.0"></head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div id="loading">
+    <div class="cat">
+      <div class="body"></div>
+      <div class="head">
+        <div class="face"></div>
+      </div>
+      <div class="foot">
+        <div class="tummy-end"></div>
+        <div class="bottom"></div>
+        <div class="legs left"></div>
+        <div class="legs right"></div>
+      </div>
+      <div class="paw">
+        <div class="hands left"></div>
+        <div class="hands right"></div>
+      </div>
+    </div>
+  </div>
+  <div id="container">
+    <header id="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="inner">
+        <div id="brand">
+          <div class="pjax">
+          
+  <h1 itemprop="name headline">Chapter 13. I/O Systems
+  </h1>
+  
+<div class="meta">
+  <span class="item" title="創建時間：2026-01-23 14:10:27">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">發表於</span>
+    <time itemprop="dateCreated datePublished" datetime="2026-01-23T14:10:27+08:00">2026-01-23</time>
+  </span>
+</div>
+
+
+          </div>
+        </div>
+        <nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切換導航欄">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start">棉花糖小窩</a></li>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search">
+        <i class="ic i-search"></i>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+      </div>
+      <div id="imgs" class="pjax">
+        <ul>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res040012_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res034040_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://anihonetwallpaper.com/image/2025/10/202501840-BanG_Dream-WakamiyaEve.jpg"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res029039_rip/card_after_training.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res038011_rip/card_normal.png"></li>
+          <li class="item" data-background-image="https://bestdori.com/assets/jp/characters/resourceset/res036009_rip/card_after_training.png"></li>
+        </ul>
+      </div>
+    </header>
+    <div id="waves">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" />
+          <use xlink:href="#gentle-wave" x="48" y="3" />
+          <use xlink:href="#gentle-wave" x="48" y="5" />
+          <use xlink:href="#gentle-wave" x="48" y="7" />
+        </g>
+      </svg>
+    </div>
+    <main>
+      <div class="inner">
+        <div id="main" class="pjax">
+          
+  <div class="article wrap">
+    
+<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+<i class="ic i-home"></i>
+<span><a href="/">首頁</a></span>
+</div>
+
+    <article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-TW">
+  <link itemprop="mainEntityOfPage" href="https://marumarumarsh.github.io/2026/01/23/OS/14_IO_Systems/">
+
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" content="/images/ava1.jpg">
+    <meta itemprop="name" content="Maru">
+    <meta itemprop="description" content="棉花糖絕對不能烤！！, 垮惹">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ">
+  </span>
+
+  <div class="body md" itemprop="articleBody">
+    
+
+    <h1 id="overview"><a class="markdownIt-Anchor" href="#overview">#</a> Overview</h1>
+<p>I/O 裝置在功能與速度方面變化極大 (滑鼠、硬碟、光碟機)，因此需要許多不同的功能來控制</p>
+<ul>
+<li>I/O 裝置目前有兩個相互衝突的發展方向
+<ul>
+<li>軟體與硬體介面逐漸趨於<strong>標準化</strong>，有助於我們將裝置整合至電腦</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>I/O 裝置的種類與功能不斷增加，有些新裝置與舊裝置差異極大，將裝置整合至電腦變的很有挑戰性</li>
+</ul>
+<ul>
+<li>Device drivers<br>
+ 裝置驅動程式 (Device drivers) 讓 I/O subsystem 可取得設備控制的介面，類似 apps &amp; OS 之間的系統呼叫</li>
+<li>Device 分類 – 不同類型去設計不同的 interface
+<ul>
+<li>Storage devices：disks, tapes</li>
+<li>Transmission devices：network cards, modems</li>
+<li>Human-interface devices：keyboard, screen, mouse</li>
+<li>Specialized devices：joystick, touchpad</li>
+</ul>
+</li>
+</ul>
+<h1 id="io-hardware"><a class="markdownIt-Anchor" href="#io-hardware">#</a> I/O Hardware</h1>
+<ul>
+<li>Port
+<ul>
+<li>Host 與 I/O devices 之間的連接點</li>
+<li>E.g.：USB ports</li>
+</ul>
+</li>
+<li>Bus
+<ul>
+<li>一組 wires 和資料如何傳輸的 protocol，如 PCI bus</li>
+<li>E.g.：PCI bus</li>
+</ul>
+</li>
+<li>Controller
+<ul>
+<li>A collection of electronics 可以操控 port，bus，device</li>
+<li>controller 可以有他自己的 processor 和 memory, etc. (E.g.: SCSI controller)</li>
+</ul>
+</li>
+<li>Typical PC Bus Structure<br>
+<img data-src="https://i.imgur.com/ki5HrHq.png" alt="">
+<ul>
+<li>北橋晶片控制比較快的 controller，bw、freq 高</li>
+<li>南橋晶片接傳統 ide，比較慢的</li>
+</ul>
+</li>
+</ul>
+<h1 id="io-method"><a class="markdownIt-Anchor" href="#io-method">#</a> I/O Method</h1>
+<h2 id="basic-io-method"><a class="markdownIt-Anchor" href="#basic-io-method">#</a> Basic I/O Method</h2>
+<ul>
+<li>每個 I/O port (device) 被指定一個獨特的 port address，一開始就燒死與軟體無關</li>
+<li>每個 I/O port 包含四個 registers (1 ~ 4 Bytes)
+<ul>
+<li>資料輸入暫存器 (data-in register)：由主機讀取輸入</li>
+<li>資料輸出暫存器 (data-out register)：由主機寫入要輸出資料</li>
+<li>狀態暫存器 (status register)：包含可被主機讀取的位元資料，這些位元指出是否可讀、裝置錯誤的狀態</li>
+<li>控制暫存器 (control register)：用以起始指令或改變裝置模式</li>
+</ul>
+</li>
+<li>Program 與 I/O port 的互動透過 <strong>special I/O instructions</strong>，i/o instruction 裡一定有 port address<br>
+<img data-src="https://i.imgur.com/atEqBPB.png" alt=""></li>
+</ul>
+<h2 id="io-method-categorization"><a class="markdownIt-Anchor" href="#io-method-categorization">#</a> I/O Method Categorization</h2>
+<ul>
+<li>Depending on how to address a device
+<ul>
+<li>Port-mapped I/O
+<ul>
+<li>與 memory 用不一樣的 address space</li>
+<li>透過 special I/O instruction (e.g. IN, OUT) 做存取</li>
+</ul>
+</li>
+<li>Memory-mapped I/O
+<ul>
+<li>保留特別的 memory space 給 device</li>
+<li>透過標準的 data-transfer instruction (e.g. MOV) 做存取</li>
+<li>寫到 memory 等於寫到某個 device 的 buffer，要事先 register 好</li>
+<li>優點：對大量的 memory I/O 更有效率 (e.g. graphic card)</li>
+<li>缺點：Vulnerable to accidental modification, error</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Depending on how to interact with a device
+<ul>
+<li>Poll (busy-waiting)：processor 週期性的檢查 device 的 status register</li>
+<li>Interrupt：device 通知 processor I/O 的完成，若是資料量大，選擇用 interrupt</li>
+</ul>
+</li>
+<li>Depending on who to control the transfer
+<ul>
+<li>Programmed I/O：由 CPU 控制
+<ul>
+<li>CPU 會一直接收到 interrupt，速度變慢</li>
+</ul>
+</li>
+<li>Direct memory access (DMA) I/O：由 DMA controller 控制 (一個有特別目的的 controller)
+<ul>
+<li>由 I/O controller 負責搬資料，不屬於任何一個 I/O device</li>
+<li>設計給大量資料傳輸</li>
+<li>通常搭配使用 memory-mapped I/O 和 interrupt I/O method</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="interrupt"><a class="markdownIt-Anchor" href="#interrupt">#</a> Interrupt</h3>
+<ul>
+<li>Interrupt Vector Table<br>
+<img data-src="https://i.imgur.com/6sZkA0N.png" alt=""></li>
+<li>Interrupt Prioritization
+<ul>
+<li>Maskable interrupt
+<ul>
+<li>參照 IRQ 透過設定中斷遮罩暫存器（interrupt mask register; IMR）內的位元遮罩（bit-mask）值來讓它可被系統忽略</li>
+<li>比當前較低優先度的 interrupt 不被認定直到 pending interrupt 完成</li>
+</ul>
+</li>
+<li>Non-maskable interrupt (NMI)：highest-priority, never masked
+<ul>
+<li>無法被系統忽略的</li>
+<li>NMI 通常使用於計時器（timers）</li>
+<li>Often used for power-down, memory error</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Interrupt-Driven I/O<br>
+<img data-src="https://i.imgur.com/DFdbC2V.png" alt=""></li>
+<li>CPU and device Interrupt handshake
+<ol>
+<li>Device asserts interrupt request (IRQ)</li>
+<li>CPU 在每個 instruction cycle 的開始檢查 interrupt request line</li>
+<li>Save the status and address of interrupted process</li>
+<li>CPU 認知 interrupt，接著在 interrupt vector table 搜尋 interrupt handler routines</li>
+<li>CPU 從 interrupt handler routine 抓下一個 instruction</li>
+<li>在完成執行 interrupt handler routine 後恢復 interrupted process</li>
+</ol>
+</li>
+</ul>
+<h1 id="kernel-io-subsystem"><a class="markdownIt-Anchor" href="#kernel-io-subsystem">#</a> Kernel I/O Subsystem</h1>
+<ul>
+<li>I/O 排班程式：透過 I/O queue 中任務的排序，提昇系統效能
+<ul>
+<li>當核心支援非同步 I/O 時，必須能同一時間記錄許多 I/O 需求</li>
+<li>e.g. disk I/O order scheduling</li>
+</ul>
+</li>
+<li>緩衝 (buffer)：資料在 I/O devices 之間傳輸時，將資料存在記憶體中
+<ul>
+<li>使用原因：為了解決生產者和消費者速度不相等</li>
+<li>在不同資料傳輸大小的裝置之間做調整</li>
+<li>提供應用 I/O 的複製語法</li>
+</ul>
+</li>
+<li>快取 (cache)：持有資料的快速記憶體
+<ul>
+<li>與緩衝的不同是，緩衝可能只有持有資料項的現備份，快取持有一個存在於其他位置之項目的複本在快速儲存體</li>
+</ul>
+</li>
+<li>spooling 和裝置預約
+<ul>
+<li>spoolilng 是一個用來保留裝置輸出的緩衝器
+<ul>
+<li>它不能接收交錯的資料串列</li>
+<li>作業系統採用攔截輸出的方式來解決</li>
+</ul>
+</li>
+<li>裝置預約 (Device reservation)
+<ul>
+<li>提供對設備的互斥存取</li>
+<li>必須注意死結問題</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>錯誤處理 (error handle)
+<ul>
+<li>作業系統可以從錯誤中回復</li>
+<li>大部分 I/O 送回一位元的資訊，以便說明此呼叫的執行狀態為成功或失敗</li>
+<li>系統 ** 錯誤日誌 (error log)** 記錄錯誤訊息</li>
+</ul>
+</li>
+<li>I/O 保護 (I/O Protection)
+<ul>
+<li>為了避免使用者執行非法操作，定義所有 I/O 指令為特權指令，必須由作業系統發出</li>
+<li>任何記憶體映對和 I/O 阜記憶體位置必須被保護</li>
+</ul>
+</li>
+</ul>
+<h1 id="performance"><a class="markdownIt-Anchor" href="#performance">#</a> Performance</h1>
+<p>I/O 在系統效能上是一個主要的因素，因其</p>
+<ul>
+<li>讓 CPU 執行 device driver code</li>
+<li>每 call 一層 driver，subsystem 都是不同的 process，需要 context switches</li>
+<li>因為有一堆 layer，controllers、buffer、 cache 有一堆的 data copy</li>
+<li>Interrupt handling is a <strong>relatively expensive task</strong><br>
+ 當 I/O 的時間少，Busy-waiting 可以比 interrupt-driven 表現的更以效率</li>
+</ul>
+<h2 id="improving-performance"><a class="markdownIt-Anchor" href="#improving-performance">#</a> Improving Performance</h2>
+<ul>
+<li>減少 context switches 的次數</li>
+<li>減少 data copying</li>
+<li>藉由 large transfers，smart controllers，polling 減少 interrupts</li>
+<li>Use DMA，CPU 可以空出來</li>
+<li>Balance CPU，memory，bus，and I/O performance for highest throughput</li>
+</ul>
+<h2 id="intercomputer-communications"><a class="markdownIt-Anchor" href="#intercomputer-communications">#</a> Intercomputer Communications</h2>
+<p><img data-src="https://i.imgur.com/a78aIQS.png" alt=""></p>
+<ul>
+<li>Network traffic could cause high context switch rate</li>
+<li>Interrupt generated during keyboard &amp; network I/O</li>
+<li>Context switch occurs between prog. &amp; kernel (drivers)</li>
+</ul>
+<h1 id="application-io-interface"><a class="markdownIt-Anchor" href="#application-io-interface">#</a> Application I/O Interface</h1>
+<ul>
+<li>Device drivers 讓 I/O subsystem 可取得設備控制的介面，並隱藏這些 device controllers 之間的差異<br>
+<img data-src="https://i.imgur.com/uwjTRFM.png" alt=""></li>
+<li>Characteristics of I/O Devices<br>
+<img data-src="https://i.imgur.com/NTEc0fz.png" alt=""></li>
+</ul>
+<h2 id="io-device-class"><a class="markdownIt-Anchor" href="#io-device-class">#</a> I/O Device Class</h2>
+<ul>
+<li>Device class is fairly standard across different OS
+<ul>
+<li>Block I/O</li>
+<li>Char-stream I/O</li>
+<li>Memory-mapped file access</li>
+<li>Network sockets</li>
+<li>Clock &amp; timer interfaces</li>
+</ul>
+</li>
+<li><strong>Back-door</strong> interfaces (e.g. ioctl () ) 難以歸類到以上的類別
+<ul>
+<li>call system call：ioctl () 完後，可以去操作任何的 I/O device</li>
+<li>使 application 可以任意 access 被 device driver 實作函式，而不用透過 system call</li>
+</ul>
+</li>
+</ul>
+<h3 id="block-char-devices"><a class="markdownIt-Anchor" href="#block-char-devices">#</a> Block &amp; Char Devices</h3>
+<ul>
+<li>Block devices
+<ul>
+<li>system calls：read (), write (), seek ( )，一整個 memory buffer 的概念</li>
+<li>Memory-mapped file can be layered on top</li>
+<li>大的，用 interrupt 做 I/O</li>
+</ul>
+</li>
+<li>Char devices
+<ul>
+<li>system calls：get (), put ()，以 bytes 為單位</li>
+<li>Libraries layered on top allow line editing</li>
+<li>小的，用 polling 做 I/O</li>
+</ul>
+</li>
+</ul>
+<h3 id="network-devices"><a class="markdownIt-Anchor" href="#network-devices">#</a> Network Devices</h3>
+<ul>
+<li>有很多種形式（block、character…），對於個別有自己的 interface
+<ul>
+<li>System call: send(), recv(), select()</li>
+<li>select() returns which socket is waiting to send or receive, eliminates the need of busy waiting</li>
+</ul>
+</li>
+<li>Many other approaches
+<ul>
+<li>pipes, FIFOS, STREAMS, message queues</li>
+</ul>
+</li>
+</ul>
+<h1 id="ref-notes"><a class="markdownIt-Anchor" href="#ref-notes">#</a> Ref Notes</h1>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vOVk3UW8wT0VSZGE2aHRLN09PSTM2UQ==">Kipper’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQENoYW5nLUNoaWEtQ2hpL09TL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGJTQwQ2hhbmctQ2hpYS1DaGklMkZPUy1DSDEz">Chang-Chia-Chi’s Note</span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9oYWNrbWQuaW8vQFBsLWVRVDlDUWFTMGpoRXhLcUw4X3cvQmtoT1NSNGpXL2h0dHBzJTNBJTJGJTJGaGFja21kLmlvJTJGcyUyRkh5bkU5NGtWRw==">陳品媛的筆記</span></li>
+</ul>
+
+  </div>
+
+   <footer>
+
+    <div class="meta">
+  <span class="item">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新於</span>
+    <time title="修改時間：2026-01-25 16:32:02" itemprop="dateModified" datetime="2026-01-25T16:32:02+08:00">2026-01-25</time>
+  </span>
+</div>
+
+      
+
+<div id="copyright">
+<ul>
+  <li class="author">
+    <strong>作者： </strong>Maru <i class="ic i-at"><em>@</em></i>一個充滿了廚力的神奇世界o (*￣▽￣*) ゞ
+  </li>
+  <li class="link">
+    <strong>文章連結：</strong>
+    <a href="https://marumarumarsh.github.io/2026/01/23/OS/14_IO_Systems/" title="Chapter 13. I&#x2F;O Systems">https://marumarumarsh.github.io/2026/01/23/OS/14_IO_Systems/</a>
+  </li>
+  <li class="license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</span> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+  </footer>
+
+</article>
+
+  </div>
+  
+
+<div class="post-nav">
+    <div class="item left">
+      
+
+  <a href="/2026/01/22/OS/13_Mass_Storage_System/" itemprop="url" rel="prev" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res028041_rip&#x2F;card_after_training.png" title="Chapter 12. Mass Storage System">
+  <span class="type">上一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Chapter 12. Mass Storage System</h3>
+  </a>
+
+    </div>
+    <div class="item right">
+      
+
+  <a href="/2026/04/13/Wireless%20Internet/Ch2_Signal/" itemprop="url" rel="next" data-background-image="https:&#x2F;&#x2F;bestdori.com&#x2F;assets&#x2F;jp&#x2F;characters&#x2F;resourceset&#x2F;res037013_rip&#x2F;card_normal.png" title="Signal">
+  <span class="type">下一篇</span>
+  <span class="category"><i class="ic i-flag"></i> </span>
+  <h3>Signal</h3>
+  </a>
+
+    </div>
+</div>
+
+  
+  <div class="wrap" id="comments"></div>
+
+
+        </div>
+        <div id="sidebar">
+          
+
+<div class="inner">
+
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目錄">
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#overview"><span class="toc-number">1.</span> <span class="toc-text"> Overview</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#io-hardware"><span class="toc-number">2.</span> <span class="toc-text"> I&#x2F;O Hardware</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#io-method"><span class="toc-number">3.</span> <span class="toc-text"> I&#x2F;O Method</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#basic-io-method"><span class="toc-number">3.1.</span> <span class="toc-text"> Basic I&#x2F;O Method</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#io-method-categorization"><span class="toc-number">3.2.</span> <span class="toc-text"> I&#x2F;O Method Categorization</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#interrupt"><span class="toc-number">3.2.1.</span> <span class="toc-text"> Interrupt</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#kernel-io-subsystem"><span class="toc-number">4.</span> <span class="toc-text"> Kernel I&#x2F;O Subsystem</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#performance"><span class="toc-number">5.</span> <span class="toc-text"> Performance</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#improving-performance"><span class="toc-number">5.1.</span> <span class="toc-text"> Improving Performance</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#intercomputer-communications"><span class="toc-number">5.2.</span> <span class="toc-text"> Intercomputer Communications</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#application-io-interface"><span class="toc-number">6.</span> <span class="toc-text"> Application I&#x2F;O Interface</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#io-device-class"><span class="toc-number">6.1.</span> <span class="toc-text"> I&#x2F;O Device Class</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#block-char-devices"><span class="toc-number">6.1.1.</span> <span class="toc-text"> Block &amp; Char Devices</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#network-devices"><span class="toc-number">6.1.2.</span> <span class="toc-text"> Network Devices</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ref-notes"><span class="toc-number">7.</span> <span class="toc-text"> Ref Notes</span></a></li></ol>
+      </div>
+      <div class="related panel pjax" data-title="系列文章">
+      </div>
+      <div class="overview panel" data-title="本站概要">
+        <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="image" itemprop="image" alt="Maru"
+      data-src="/images/ava1.jpg">
+  <p class="name" itemprop="name">Maru</p>
+  <div class="description" itemprop="description">垮惹</div>
+</div>
+
+<nav class="state">
+    <div class="item posts">
+      <a href="/archives/">
+        <span class="count">28</span>
+        <span class="name">文章</span>
+      </a>
+    </div>
+</nav>
+
+<div class="social">
+</div>
+
+<ul class="menu">
+  
+    
+  <li class="item">
+    <a href="/" rel="section"><i class="ic i-home"></i>首頁</a>
+  </li>
+
+        
+  <li class="item dropdown">
+      <a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a>
+    <ul class="submenu">
+
+        
+  <li class="item">
+    <a href="/archives/" rel="section"><i class="ic i-list-alt"></i>歸檔</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/categories/" rel="section"><i class="ic i-th"></i>分類</a>
+  </li>
+
+        
+  <li class="item">
+    <a href="/tags/" rel="section"><i class="ic i-tags"></i>標籤</a>
+  </li>
+
+  </ul>
+
+</ul>
+
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick">
+    <li class="prev pjax">
+        <a href="/2026/01/22/OS/13_Mass_Storage_System/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+        <a href="/2026/04/13/Wireless%20Internet/Ch2_Signal/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a>
+    </li>
+    <li class="percent"></li>
+  </ul>
+</div>
+
+
+        </div>
+        <div class="dimmer"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <div class="inner">
+        <div class="widgets">
+          
+<div class="rpost pjax">
+  <h2>隨機文章</h2>
+  <ul>
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/09/OS/0_Start/" title="作業系統(Operating System)筆記版面介紹">作業系統(Operating System)筆記版面介紹</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/21/OS/12_File_System_Implementation/" title="Chapter 11. File System Implementation">Chapter 11. File System Implementation</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/04/13/Wireless%20Internet/Ch5_Wifi/" title="Wifi">Wifi</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/27/Intro/" title="练习题与答案（測試）">练习题与答案（測試）</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/11/OS/3_OS_Structure/" title="Chapter 2. OS Structure">Chapter 2. OS Structure</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/13/OS/5_Multithreaded_Programming/" title="Chapter 4. Multithreaded Programming">Chapter 4. Multithreaded Programming</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/20/OS/11_File_System_Interface/" title="Chapter 10. File System Interface">Chapter 10. File System Interface</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/12/OS/4_Processes_Concept/" title="Chapter 3. Processes Concept">Chapter 3. Processes Concept</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2025/10/28/Statistical%20Learning%20and%20Data%20Mining/Statistical%20Learning/" title="Statistical Learning">Statistical Learning</a></span>
+  </li>
+
+      
+  <li class="item">
+    
+<div class="breadcrumb">
+</div>
+
+    <span><a href="/2026/01/14/OS/6_Process_Scheduling/" title="Chapter 5. Process Scheduling">Chapter 5. Process Scheduling</a></span>
+  </li>
+
+  </ul>
+</div>
+<div>
+  <h2>最新評論</h2>
+  <ul class="leancloud-recent-comment"></ul>
+</div>
+
+        </div>
+        <div class="status">
+  <div class="copyright">
+    
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Maru @ 棉花糖小窩</span>
+  </div>
+  <div class="powered-by">
+    基於 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & Theme.<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+  </div>
+</div>
+
+      </div>
+    </footer>
+  </div>
+<script data-config type="text/javascript">
+  var LOCAL = {
+    path: '2026/01/23/OS/14_IO_Systems/',
+    favicon: {
+      show: "（●´3｀●）復活成功",
+      hide: "(´Д｀)瀏覽器崩潰啦"
+    },
+    search : {
+      placeholder: "文章搜尋",
+      empty: "關於 「 ${query} 」 ，什麼也沒搜到",
+      stats: "${time} ms 內找到 ${hits} 條結果"
+    },
+    valine: true,copy_tex: true,
+    katex: true,fancybox: true,
+    copyright: '複製成功，轉載請遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 協議。',
+    ignores : [
+      function(uri) {
+        return uri.includes('#');
+      },
+      function(uri) {
+        return new RegExp(LOCAL.path+"$").test(uri);
+      }
+    ]
+  };
+</script>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+
+<script src="/js/app.js?v=0.2.5"></script>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/sakiko.model.json"},"display":{"position":"left","width":280,"height":400,"hOffset":0,"vOffset":-50},"mobile":{"show":false},"react":{"opacity":1},"dialog":{"enable":false,"hitokoto":false},"log":false});</script></body>
+</html>
